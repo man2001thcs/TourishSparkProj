@@ -21,6 +21,12 @@ import { HeaderUserComponent } from '../header/header.user.component';
 import { BookUserlistComponent } from '../booklist/book-user-list.component';
 import { BookUserDetailComponent } from '../book-detail/book-user-detail.component';
 import { BookCardComponent } from 'src/app/utility/book-card/book-card.component';
+import { EffectsModule } from '@ngrx/effects';
+
+import { BookListEffects } from '../booklist/booklist.store.effect';
+import { storeKey as BookListStoreKey}  from '../booklist/booklist.store.action';
+import {reducer as BookListReducer}from '../booklist/booklist.store.reducer';
+import { StoreModule } from '@ngrx/store';
 
 @NgModule({
   declarations: [
@@ -47,6 +53,11 @@ import { BookCardComponent } from 'src/app/utility/book-card/book-card.component
     MatMenuModule,
     HttpClientModule,
     ReactiveFormsModule,
+
+    StoreModule.forFeature( BookListStoreKey,  BookListReducer ),
+    
+    EffectsModule.forRoot([BookListEffects])
+
   ],
   exports: [RouterModule],
 })

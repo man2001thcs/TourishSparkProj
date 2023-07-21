@@ -16,6 +16,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { ReactiveFormsModule } from '@angular/forms';
 import { NotifyDialogComponent } from './utility/notification/notify-dialog.component';
+import { StoreModule } from '@ngrx/store';
 @NgModule({
   declarations: [
     AppComponent,
@@ -36,6 +37,8 @@ import { NotifyDialogComponent } from './utility/notification/notify-dialog.comp
     MatIconModule,
     MatInputModule,
     ReactiveFormsModule,
+
+    StoreModule.forRoot({})
   ],
   providers: [],
   bootstrap: [AppComponent],

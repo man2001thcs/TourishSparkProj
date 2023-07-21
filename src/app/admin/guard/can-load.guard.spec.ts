@@ -1,13 +1,13 @@
 import { TestBed } from '@angular/core/testing';
 
-import { CanLoadGuard } from './can-load.guard';
+import { CanLoadGuardAdmin } from './can-load.guard';
 
 describe('CanLoadGuard', () => {
-  let guard: CanLoadGuard;
+  let guard: CanLoadGuardAdmin;
 
   beforeEach(() => {
     TestBed.configureTestingModule({});
-    guard = TestBed.inject(CanLoadGuard);
+    guard = TestBed.inject(CanLoadGuardAdmin);
   });
 
   it('should be created', () => {
