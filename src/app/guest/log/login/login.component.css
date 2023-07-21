@@ -1,0 +1,31 @@
+* {
+  box-sizing: border-box;
+}
+.signInForm {
+  background: url(https://media4.giphy.com/media/BHNfhgU63qrks/giphy.gif) center
+    center no-repeat;
+  background-size: 100% 100%;
+  padding: 10px 20px 10px;
+  height: 420px;
+  width: 290px;
+}
+.mat .signInForm .signInAction {
+  justify-content: center;
+  align-items: "center";
+  left: auto;
+  right: auto;
+}
+
+.signInForm .signInAction button#sign_in {
+  margin-right: 10px;
+}
+
+.input-full-width {
+  width: 100%;
+}
+ h3.error-message {
+  font-size: 14px !important;
+  color: whitesmoke; 
+  word-wrap: break-word;
+  padding: 0px 12px 0px;
+ }

@@ -1,0 +1,34 @@
+<div class="container-fluid">
+    <div class="row justify-content-start align-items-center g-2">
+        <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8">
+            <!-- Nav tabs -->
+            <ul class="nav">
+                <li class="nav-item">
+                    <img src="../../../assets/book_logo.png" class="img-logo">
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link active" href="#">Home</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link active" href="#">Book list</a>
+                </li>
+                <li class="nav-item">
+                    <button [matMenuTriggerFor]="appMenu" [matMenuTriggerData]="{name: 'Bob'}">
+                        Menu
+                    </button>
+                </li>
+            </ul>
+            <mat-menu #appMenu="matMenu">
+                <ng-template matMenuContent let-name="name">
+                    <button mat-menu-item>Settings</button>
+                    <button mat-menu-item>Log off {{name}}</button>
+                </ng-template>
+            </mat-menu>
+        </div>
+        <div class="col">
+            <div class="row" id="log-button-group">
+                <img mat-card-image id="avatar" src="/api/img/user/{{id}}/avatar/avatar_this.png" width="40px" height="40px">
+            </div>
+        </div>
+    </div>
+</div>

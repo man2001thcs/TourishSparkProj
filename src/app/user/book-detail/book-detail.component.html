@@ -1,0 +1,139 @@
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+<div class="card">
+    <div class="card__body">
+        <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+            <div class="featured_text">
+                <h2>
+                    Category: <span>abc</span>
+                </h2>
+                <h3>
+                    Author:
+                    <span style="font-size: 20px">def</span>
+                </h3>
+            </div>
+            <div class="slide-container">
+
+            </div>
+        </div>
+        <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8" style="display: 'inline-block'">
+            <div class="description">
+                <h2>Tên sách</h2>
+                <p>{{book.WpBook.name}}</p>
+            </div>
+            <div class="description">
+                <h2>Tác giả</h2>
+                <p>abc</p>
+            </div>
+            <div class="description">
+                <h2>Thể loại</h2>
+                <p>{{book.WpBook.type}}</p>
+            </div>
+            <div class="description">
+                <h2>Ưu đãi</h2>
+
+                <span style="
+                  display: 'inline';
+                  padding: '5px 6px 5px';
+                  font-style: 'italic';
+                ">
+                    None
+                </span>
+
+            </div>
+            <div class="description">
+                <h2>Status</h2>
+                ok
+            </div>
+            <div class="description">
+                <h2>Number</h2>
+
+                <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+                    <button type="button" class="quantity-input__modifier quantity-input__modifier--left">
+                        &mdash;
+                    </button>
+                </div>
+                <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+                    <input class="quantity-input__screen" type="text"
+                        max="book?.Number.remain_number" />
+                </div>
+                <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+                    <button type="button" class="quantity-input__modifier quantity-input__modifier--right">
+                        &#xff0b;
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="card__footer">
+        <div class="recommend">
+            <p>Recommended</p>
+        </div>
+        <div class="action">
+            <form action method="post" onsubmit="alert('Thêm thành công!')">
+                <div>
+                    <button type="button" class="active" name="buy_button" disabled="false" id="buy_button">
+                        Add to cart
+                    </button>
+                    <button type="button" class="active" style=" background-color: red ; border-color: red; ">
+                        Back
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div class="card__footer" style=" margin-top: 20px ; margin-bottom: 20px; ">
+    <ul class="nav nav-tabs">
+        <li class="nav-item">
+            <button id="description_button" name="description_button" class="nav-link active"
+                style=" color: black ; font-weight: bold ; font-size: 16px;">
+                Description
+            </button>
+        </li>
+        <li class="nav-item">
+            <button style="color: black ; font-weight: bold ; font-size: 16px;" id="author_button" name="author_button"
+                class="nav-link">
+                Author detail
+            </button>
+        </li>
+    </ul>
+    
+</div>
+
+<div class="card__footer">
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h2 class="panel-title">
+                <strong style="font-size: 20px">Same category</strong>
+            </h2>
+        </div>
+        <div class="panel-body">
+            <div style=" padding-left: 2% ; overflow-x: scroll; height: 400px ; overflow: auto  ">
+
+                <p>
+                    <strong>No similar book found</strong>
+                </p>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="card__footer">
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h2 class="panel-title">
+                <strong style="font-size: 20px">Same author</strong>
+            </h2>
+        </div>
+        <div class="panel-body">
+            <div style="padding-left: 2% ; overflow-x: scroll ; height: 400px ; overflow: auto;">
+                <p>
+                    <strong>No similar book found</strong>
+                </p>
+            </div>
+        </div>
+    </div>
+</div>

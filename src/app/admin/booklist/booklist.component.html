@@ -1,0 +1,53 @@
+<div>
+    <table mat-table [dataSource]="book_list" matSort matSort class="mat-elevation-z8"
+        (matSortChange)="announceSortChange($event)">
+
+        <!-- Position Column -->
+        <ng-container matColumnDef="id">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by id"> No. </th>
+            <td mat-cell *matCellDef="let element"><a routerLink="/admin/detail/{{element.WpBook.id}}/edit">
+                    {{element.WpBook.id}}</a>
+            </td>
+        </ng-container>
+
+        <!-- Name Column -->
+        <ng-container matColumnDef="name">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by name"> Name </th>
+            <td mat-cell *matCellDef="let element"> {{element.WpBook.name}} </td>
+        </ng-container>
+
+        <!-- Symbol Column -->
+        <ng-container matColumnDef="description">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by description">
+                Description </th>
+            <td mat-cell *matCellDef="let element"> {{element.WpBook.description.length > 50 ?
+                element.WpBook.description.substring(0,50) + " ..." : element.WpBook.description}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="page_number">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by page_number"> Page
+                number </th>
+            <td mat-cell *matCellDef="let element"> {{element.WpBook.page_number}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="type">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by type"> Type </th>
+            <td mat-cell *matCellDef="let element"> {{element.WpBook.type}} </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;" [class.demo-row-is-clicked]=""></tr>
+
+    </table>
+    <mat-paginator [pageSizeOptions]="[10]" [length]="books_length" showFirstLastButtons
+        aria-label="Select page of periodic elements">
+    </mat-paginator>
+
+    <ul>
+        <li *ngFor="let clickedRow of clickedRows">
+            Clicked on {{clickedRow.WpBook.name}}
+        </li>
+    </ul>
+
+    <div>fuck</div>
+</div>

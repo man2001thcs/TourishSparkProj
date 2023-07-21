@@ -1,0 +1,31 @@
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+<div class="signInForm">
+    <form (ngSubmit)="formSubmit()" [formGroup]="signInformGroup">
+        <h2 mat-dialog-title style="color: whitesmoke">Đăng nhập</h2>
+        <h3 class="error-message">{{errorMessage}}</h3>
+        <mat-dialog-content>
+            <div class="row">
+                <mat-form-field class="example-full-width">
+                    <mat-label>Tài khoản</mat-label>
+                    <input matInput type="text" id="emailS" placeholder="Tài khoản" formControlName="emailS" class="input-full-width">
+                </mat-form-field>
+            </div>
+            <div class="row">
+                <mat-form-field>
+                    <mat-label>Mật khẩu</mat-label>
+                    <input matInput type="password" id="passwordS" placeholder="Mật khẩu" formControlName="passwordS" class="input-full-width">
+                </mat-form-field>
+            </div>
+        </mat-dialog-content>
+        <mat-dialog-actions>
+            <div class="signInAction">
+                <button type="submit" mat-flat-button color="primary" id="sign_in">
+                    <span>Đăng nhập</span>
+                </button>
+                <button type="button" mat-flat-button color="accent" id="escape" (click)=" onNoClick()">
+                    <span>Thoát</span>
+                </button>
+            </div>
+        </mat-dialog-actions>
+    </form>
+</div>

@@ -1,0 +1,44 @@
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+
+<div class="container">
+    <ul class="nav navbar-nav">
+        <li class="active">
+            <img src="../../../assets/book_logo.png" class="img-logo">
+        </li>
+        <li class="active">
+            <a href="#">Home</a>
+        </li>
+        <li>
+            <a href="#">Book list</a>
+        </li>
+        <li>
+            <a href="/user/list">User</a>
+        </li>
+        <li>
+            <a href="/admin/list">Admin</a>
+        </li>
+        <li>
+            <button [matMenuTriggerFor]="appMenu" [matMenuTriggerData]="{name: 'Bob'}">
+                Menu
+            </button>
+        </li>
+    </ul>
+
+    <mat-menu #appMenu="matMenu">
+        <ng-template matMenuContent let-name="name">
+            <button mat-menu-item>Settings</button>
+            <button mat-menu-item>Log off {{name}}</button>
+        </ng-template>
+    </mat-menu>
+    <img mat-card-image>
+
+    
+    <div class="row" id="log-button-group">
+        <div class="col-xs-2 col-sm-2 col-md-1 col-lg-1">
+            <button type="button" class="btn btn-primary" (click)=" openDialog()">Đăng nhập</button>
+        </div>
+        <div class="col-xs-2 col-sm-2 col-md-1 col-lg-1">
+            <button type="button" class="btn btn-danger">Đăng kí</button>
+        </div>
+    </div>
+</div>
