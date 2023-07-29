@@ -17,6 +17,10 @@ import { MatInputModule } from '@angular/material/input';
 import { ReactiveFormsModule } from '@angular/forms';
 import { NotifyDialogComponent } from './utility/notification/notify-dialog.component';
 import { StoreModule } from '@ngrx/store';
+import { EffectsModule } from '@ngrx/effects';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
+import { AuthInterceptor } from './utility/user_service/http.inceptor';
+import { RouterModule } from '@angular/router';
 @NgModule({
   declarations: [
     AppComponent,
@@ -25,7 +29,10 @@ import { StoreModule } from '@ngrx/store';
     NotifyDialogComponent,
   ],
   imports: [
+    StoreModule.forRoot({}),
+    EffectsModule.forRoot([]),
     BrowserModule,
+    HttpClientModule,
     GuestModule,
     AppRoutingModule,
     BrowserAnimationsModule,
@@ -37,10 +44,14 @@ import { StoreModule } from '@ngrx/store';
     MatIconModule,
     MatInputModule,
     ReactiveFormsModule,
-
-    StoreModule.forRoot({})
   ],
-  providers: [],
+  providers: [
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: AuthInterceptor,
+      multi: true,
+    }
+  ],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

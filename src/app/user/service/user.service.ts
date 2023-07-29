@@ -46,9 +46,6 @@ export class UserDataService {
     //codeS: 'dochu8@gmail.com-2023-03-27 12:21:49-497';
     //emailS: 'dochu8@gmail.com';
     const post_body = {
-      emailS: this.userService.current_user.email,
-      codeS: this.userService.current_user.codeS,
-      page_number: page_number,
       page_offset: page_offset,
     };
     let post_body_en = this.hash.encrypted_string(post_body, password_key);
@@ -61,8 +58,6 @@ export class UserDataService {
   getBook(id: string): Observable<Book> {
     const url = '/api/controller/book/find_book_user.php';
     let post_body = {
-      emailS: this.userService.current_user.email,
-      codeS: this.userService.current_user.codeS,
       book_id: id,
     };
     let password_key = 'admin_get';
@@ -80,8 +75,6 @@ export class UserDataService {
 
   getAuthors(authors_id: string): Observable<Response> {
     let post_body = {
-      emailS: this.userService.current_user.email,
-      codeS: this.userService.current_user.codeS,
       authors_id: authors_id,
     };
     let url_author = '/api/controller/author/list_admin.php';
@@ -104,8 +97,6 @@ export class UserDataService {
 
   getVouchers(vouchers_id: string): Observable<Response> {
     let post_body = {
-      emailS: this.userService.current_user.email,
-      codeS: this.userService.current_user.codeS,
       vouchers_id: vouchers_id,
     };
     let url_voucher = '/api/controller/voucher/list_admin.php';

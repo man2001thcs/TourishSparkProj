@@ -1,21 +1,45 @@
 import { Injectable, inject } from '@angular/core';
-import { CanActivateFn, Route, UrlSegment, UrlTree } from '@angular/router';
+import { CanActivateFn, Route, Router, UrlSegment, UrlTree } from '@angular/router';
 import { Observable } from 'rxjs';
+import { TokenStorageService } from 'src/app/utility/user_service/token.service';
 import { UserService } from 'src/app/utility/user_service/user.service';
+
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class CanLoadGuardAdmin {
-  constructor(private userService: UserService){}
+  constructor(private tokenService: TokenStorageService, private router: Router) {}
   canLoad(
     route: Route,
-    segments: UrlSegment[]): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
-    return (this.userService.current_user.id_admin === 1);
+    segments: UrlSegment[]
+  ):
+    | Observable<boolean | UrlTree>
+    | Promise<boolean | UrlTree>
+    | boolean
+    | UrlTree {
+    let roles = route.data?.['permittedRoles'] as Array<string>;
+    console.log(roles);
+
+    if (roles) {
+      if (this.tokenService.getUserRole() === roles[0]) return true;
+      else {
+        this.router.navigate(['/forbidden']);
+        return false;
+      }
+    }
+
+    return true;
+    // return this.userService.current_user.id_admin === 1;
   }
 }
 
-export const isAdminGuard  = (
+export const isAdminGuard = (
   route: Route,
-  segments: UrlSegment[]) : Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree => {
-    return inject(CanLoadGuardAdmin).canLoad(route, segments);
-  }
+  segments: UrlSegment[]
+):
+  | Observable<boolean | UrlTree>
+  | Promise<boolean | UrlTree>
+  | boolean
+  | UrlTree => {
+  return inject(CanLoadGuardAdmin).canLoad(route, segments);
+};

@@ -10,6 +10,6 @@ export class BooklistStoreService {
   constructor(private http: HttpClient) { }
 
   getBookList (payload: any) : Observable<any> {
-    return this.http.get("../", payload);
+    return this.http.get("api/Books", payload);
   }
 }

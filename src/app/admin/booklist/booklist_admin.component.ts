@@ -8,8 +8,8 @@ import { Book } from 'src/app/model/book';
 import { catchError, map, startWith, switchMap } from 'rxjs/operators';
 @Component({
   selector: 'app-booklist',
-  templateUrl: './booklist.component.html',
-  styleUrls: ['./booklist.component.css'],
+  templateUrl: './booklist_admin.component.html',
+  styleUrls: ['./booklist_admin.component.css'],
 })
 export class BooklistAdminComponent implements OnInit, AfterViewInit {
   book_list !: Book[];

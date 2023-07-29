@@ -2,7 +2,9 @@
   box-sizing: border-box;
   font-family: Helvetica;
 }
-.container {
+@import "~bootstrap/dist/css/bootstrap.min.css";
+
+.container-fluid {
   padding-left: 20px;
   background-color: #3f51b5 !important;
   margin-left: 0;

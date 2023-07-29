@@ -1,44 +1,47 @@
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
 
-<div class="container">
-    <ul class="nav navbar-nav">
-        <li class="active">
-            <img src="../../../assets/book_logo.png" class="img-logo">
-        </li>
-        <li class="active">
-            <a href="#">Home</a>
-        </li>
-        <li>
-            <a href="#">Book list</a>
-        </li>
-        <li>
-            <a href="/user/list">User</a>
-        </li>
-        <li>
-            <a href="/admin/list">Admin</a>
-        </li>
-        <li>
-            <button [matMenuTriggerFor]="appMenu" [matMenuTriggerData]="{name: 'Bob'}">
-                Menu
-            </button>
-        </li>
-    </ul>
-
-    <mat-menu #appMenu="matMenu">
-        <ng-template matMenuContent let-name="name">
-            <button mat-menu-item>Settings</button>
-            <button mat-menu-item>Log off {{name}}</button>
-        </ng-template>
-    </mat-menu>
-    <img mat-card-image>
-
-    
-    <div class="row" id="log-button-group">
-        <div class="col-xs-2 col-sm-2 col-md-1 col-lg-1">
-            <button type="button" class="btn btn-primary" (click)=" openDialog()">Đăng nhập</button>
+<div class="container-fluid" style="background-color: black;">
+    <div class="row justify-content-start align-items-center g-2">
+        <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
+            <!-- Nav tabs -->
+            <ul class="nav">
+                <li class="nav-item">
+                    <img src="../../../assets/book_logo.png" class="img-logo">
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link active" href="#">Home</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link active" href="#">Book list</a>
+                </li>
+                <li>
+                    <a class="nav-link active" href="/user/list">User</a>
+                </li>
+                <li>
+                    <a class="nav-link active" href="/admin/list">Admin</a>
+                </li>
+                <li class="nav-item">
+                    <button [matMenuTriggerFor]="appMenu" [matMenuTriggerData]="{name: 'Bob'}">
+                        Menu
+                    </button>
+                </li>
+            </ul>
+            <mat-menu #appMenu="matMenu">
+                <ng-template matMenuContent let-name="name">
+                    <button mat-menu-item>Settings</button>
+                    <button mat-menu-item>Log off {{name}}</button>
+                </ng-template>
+            </mat-menu>
         </div>
-        <div class="col-xs-2 col-sm-2 col-md-1 col-lg-1">
-            <button type="button" class="btn btn-danger">Đăng kí</button>
+        <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+            <div class="row" id="log-button-group" style="margin-top: 20px;">
+                <div class="col-xs-4 col-sm-4 col-md-2 col-lg-2">
+                    <button type="button" class="btn btn-primary" (click)=" openDialog()">Đăng nhập</button>
+                </div>
+                <div class="col-xs-4 col-sm-4 col-md-2 col-lg-2">
+                    <button type="button" class="btn btn-danger">Đăng kí</button>
+                </div>
+            </div>
         </div>
     </div>
 </div>

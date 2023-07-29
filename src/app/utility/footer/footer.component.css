@@ -6,6 +6,9 @@
   font-size:15px;
   line-height:24px;
   color:#8e8b8b;
+  position: absolute;
+  bottom: 0px;
+  width: 100%;
 }
 .site-footer hr
 {

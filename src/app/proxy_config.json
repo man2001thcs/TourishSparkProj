@@ -1,6 +1,6 @@
 {
-    "/api": {
-        "target": "http://localhost/php_server/",
+    "/api/*": {
+        "target": "https://localhost:7070/",
         "secure": false,
         "pathRewrite": {
             "^/api": ""

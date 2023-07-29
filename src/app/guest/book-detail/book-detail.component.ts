@@ -1,5 +1,4 @@
 import { Book } from 'src/app/model/book';
-import { GuestService } from './../service/guest.service';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { HashService } from '../../utility/user_service/hash.service';
@@ -33,16 +32,15 @@ export class BookDetailComponent implements OnInit {
     },
   };
   constructor(
-    private guestService: GuestService,
     private _route: ActivatedRoute,
     private hash: HashService
   ) {}
   ngOnInit(): void {
-    this.guestService
-      .getBook(this._route.snapshot.paramMap.get('id')!)
-      .subscribe((book) => (this.book = book));
-    let encrypted = this.hash.encrypted_string('abc', '123');
-    console.log(encrypted);
-    console.log(this.hash.dencrypted_array(encrypted, '123'));
+    // this.guestService
+    //   .getBook(this._route.snapshot.paramMap.get('id')!)
+    //   .subscribe((book) => (this.book = book));
+    // let encrypted = this.hash.encrypted_string('abc', '123');
+    // console.log(encrypted);
+    // console.log(this.hash.dencrypted_array(encrypted, '123'));
   }
 }

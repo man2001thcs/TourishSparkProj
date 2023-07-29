@@ -9,6 +9,8 @@ import { CanLeaveEditGuard } from '../guard/can-leave-edit.guard';
 import { RouterModule } from '@angular/router';
 
 import { EditDetailResolver } from '../resolver/edit-detail.resolver';
+import { CategoryListAdminComponent } from '../category_list/categoryList_admin.component';
+import { CategoryDetailComponent } from '../category-detail/category-detail.component';
 const routes: Routes = [
   {
     path: '',
@@ -27,6 +29,16 @@ const routes: Routes = [
       {
         path: 'list',
         component: BooklistAdminComponent,
+      },
+      {
+        path: 'category/list',
+        component: CategoryListAdminComponent,
+      },
+      {
+        path: 'categoryDetail/:id/edit',
+        component: CategoryDetailComponent,
+        canActivate: [CanEditAdminGuard], // <== this is an array, we can have multiple guards
+        canDeactivate: [CanLeaveEditGuard],
       },
     ],
   },

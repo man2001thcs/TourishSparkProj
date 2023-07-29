@@ -44,8 +44,6 @@ export class AdminService {
 
   getBookList(page_number: number, page_offset: number): Observable<Response> {
     let post_body = {
-      emailS: this.userService.current_user.email,
-      codeS: this.userService.current_user.codeS,
       page_number: page_number,
       page_offset: page_offset,
     };
@@ -61,8 +59,6 @@ export class AdminService {
 
   getBook(id: string): Observable<Book> {
     let post_body = {
-      emailS: this.userService.current_user.email,
-      codeS: this.userService.current_user.codeS,
       book_id: id,
     };
     let post_body_encrypted = this.hashService.encrypted_string(
@@ -84,8 +80,6 @@ export class AdminService {
 
   getAuthors(authors_id: string): Observable<Response> {
     let post_body = {
-      emailS: this.userService.current_user.email,
-      codeS: this.userService.current_user.codeS,
       authors_id: authors_id,
     };
     let url_author = '/api/controller/author/list_admin.php';
@@ -108,8 +102,6 @@ export class AdminService {
 
   getVouchers(vouchers_id: string): Observable<Response> {
     let post_body = {
-      emailS: this.userService.current_user.email,
-      codeS: this.userService.current_user.codeS,
       vouchers_id: vouchers_id,
     };
     let url_voucher = '/api/controller/voucher/list_admin.php';
@@ -138,8 +130,6 @@ export class AdminService {
     page_number: number
   ): Observable<Response> {
     let post_body = {
-      emailS: this.userService.current_user.email,
-      codeS: this.userService.current_user.codeS,
       book_id: id,
       name: name,
       type: type,

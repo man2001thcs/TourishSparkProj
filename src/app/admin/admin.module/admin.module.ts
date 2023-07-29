@@ -9,7 +9,6 @@ import { MatTableModule } from '@angular/material/table';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatSortModule } from '@angular/material/sort';
 import { MatInputModule } from '@angular/material/input';
-import { HttpClientModule } from '@angular/common/http';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatDialogModule } from '@angular/material/dialog';
 import { HeaderAdminComponent } from '../header/header.admin.component';
@@ -22,15 +21,35 @@ import { MatChipsModule } from '@angular/material/chips';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
+import { StoreModule } from '@ngrx/store';
+import { EffectsModule } from '@ngrx/effects';
+
+import { storeKey as CategoryStoreKey } from '../category-detail/category-detail.store.action';
+import { storeKey as CategoryListStoreKey } from '../category_list/categoryList_admin.store.action';
+
+import { reducer as CategoryReducer } from '../category-detail/category-detail.store.reducer';
+import { reducer as CategoryListReducer } from '../category_list/categoryList_admin.store.reducer';
+
+import { CategoryListAdminComponent } from '../category_list/categoryList_admin.component';
+import { CategoryDetailComponent } from '../category-detail/category-detail.component';
+
+import { CategoryListEffects } from '../category_list/categoryList_admin.store.effect';
+import { CategoryEffects } from '../category-detail/category-detail.store.effect';
+import { NgbDropdownModule } from '@ng-bootstrap/ng-bootstrap';
+import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
+import { AuthInterceptor } from 'src/app/utility/user_service/http.inceptor';
+
 @NgModule({
   declarations: [
     BooklistAdminComponent,
     BookDetailAdminComponent,
+    CategoryDetailComponent,
+    CategoryListAdminComponent,
     AdminMainComponent,
     HeaderAdminComponent,
     FooterComponent,
     AuthorMultiselectAutocompleteComponent,
-    VoucherMultiselectAutocompleteComponent
+    VoucherMultiselectAutocompleteComponent,
   ],
   imports: [
     CommonModule,
@@ -40,15 +59,22 @@ import { MatButtonModule } from '@angular/material/button';
     MatMenuModule,
     MatPaginatorModule,
     MatSortModule,
-    HttpClientModule,
     MatListModule,
     ReactiveFormsModule,
     MatDialogModule,
     MatAutocompleteModule,
-    MatChipsModule ,
+    MatChipsModule,
     MatFormFieldModule,
     MatIconModule,
-    MatButtonModule 
+    MatButtonModule,
+    NgbDropdownModule,
+
+    StoreModule.forFeature(CategoryListStoreKey, CategoryListReducer),
+    StoreModule.forFeature(CategoryStoreKey, CategoryReducer),
+
+    EffectsModule.forFeature([CategoryListEffects]),
+    EffectsModule.forFeature([CategoryEffects]),
   ],
+  
 })
 export class AdminModule {}
