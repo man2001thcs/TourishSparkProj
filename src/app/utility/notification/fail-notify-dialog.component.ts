@@ -6,14 +6,14 @@ export interface DialogData {
 }
 
 @Component({
-  selector: 'app-confirm-dialog',
-  templateUrl: './notify-dialog.component.html',
+  selector: 'app-fail-confirm-dialog',
+  templateUrl: './fail-notify-dialog.component.html',
   styleUrls: ['./notify-dialog.component.css'],
 })
-export class NotifyDialogComponent implements OnInit {
+export class FailNotifyDialogComponent implements OnInit {
   title = '';
   constructor(
-    public dialogRef: MatDialogRef<NotifyDialogComponent>,
+    public dialogRef: MatDialogRef<FailNotifyDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: DialogData
   ) {}
 

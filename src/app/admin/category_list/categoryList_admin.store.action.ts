@@ -24,15 +24,42 @@ export const getCategoryListSystemFailed = createAction(
   props<{ error: any }>()
 );
 
+export const deleteCategory = createAction(
+  `[${storeKey}] deleteCategory`,
+  props<{ payload: any }>()
+);
+
+export const deleteCategorySuccess = createAction(
+  `[${storeKey}] deleteCategorySuccess`,
+  props<{ response: any }>()
+);
+
+export const deleteCategoryFailed = createAction(
+  `[${storeKey}] deleteCategoryFailed`,
+  props<{ response: any }>()
+);
+
+export const deleteCategorySystemFailed = createAction(
+  `[${storeKey}] deleteCategorySystemFailed`,
+  props<{ error: any }>()
+);
+
+
 export const resetCategoryList = createAction(
-  `[${storeKey}] resetCategoryListSystemFailed`
+  `[${storeKey}] resetCategorySystemFailed`
 );
 
 const actions = union({
   initial,
+
   getCategoryList,
   getCategoryListFailed,
   getCategoryListSystemFailed,
+
+  deleteCategory,
+  deleteCategoryFailed,
+  deleteCategorySystemFailed,
+
   resetCategoryList,
 });
 

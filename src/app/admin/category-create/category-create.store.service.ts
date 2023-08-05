@@ -8,12 +8,7 @@ import { Observable } from 'rxjs';
 export class CategoryStoreService {
   constructor(private http: HttpClient) {}
 
-  getCategory(payload: any): Observable<any> {
-    return this.http.get('/api/GetCategory/' + payload.id);
-  }
-
-  editCategory(payload: any): Observable<any> {
-    console.log('ok');
-    return this.http.put('/api/UpdateCategory/' + payload.id, payload);
+  createCategory(payload: any): Observable<any> {
+    return this.http.post('/api/AddCategory', payload);
   }
 }

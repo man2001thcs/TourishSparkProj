@@ -45,7 +45,7 @@ export const editCategorySystemFailed = createAction(
 );
 
 export const resetCategory = createAction(
-  `[${storeKey}] resetCategorySystemFailed`
+  `[${storeKey}] resetCategoryFailed`
 );
 
 const actions = union({

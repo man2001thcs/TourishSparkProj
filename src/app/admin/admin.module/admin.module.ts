@@ -1,7 +1,5 @@
-import { BookDetailAdminComponent } from './../book-detail/book-detail_admin.component';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { BooklistAdminComponent } from '../booklist/booklist_admin.component';
 import { AdminMainComponent } from '../main/admin.main.component';
 import { AdminRouter } from './admin.router';
 import { MatListModule } from '@angular/material/list';
@@ -24,17 +22,25 @@ import { MatButtonModule } from '@angular/material/button';
 import { StoreModule } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
 
+import { BooklistAdminComponent } from '../booklist/booklist_admin.component';
+import { BookDetailAdminComponent } from './../book-detail/book-detail_admin.component';
+import { CategoryCreateComponent } from './../category-create/category-create.component';
+
 import { storeKey as CategoryStoreKey } from '../category-detail/category-detail.store.action';
 import { storeKey as CategoryListStoreKey } from '../category_list/categoryList_admin.store.action';
+import { storeKey as CategoryCreateStoreKey } from '../category-create/category-create.store.action';
 
 import { reducer as CategoryReducer } from '../category-detail/category-detail.store.reducer';
 import { reducer as CategoryListReducer } from '../category_list/categoryList_admin.store.reducer';
+import { reducer as CategoryCreateReducer } from '../category-create/category-create.store.reducer';
 
 import { CategoryListAdminComponent } from '../category_list/categoryList_admin.component';
 import { CategoryDetailComponent } from '../category-detail/category-detail.component';
 
 import { CategoryListEffects } from '../category_list/categoryList_admin.store.effect';
 import { CategoryEffects } from '../category-detail/category-detail.store.effect';
+import { CategoryCreateEffects } from '../category-create/category-create.store.effect';
+
 import { NgbDropdownModule } from '@ng-bootstrap/ng-bootstrap';
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { AuthInterceptor } from 'src/app/utility/user_service/http.inceptor';
@@ -45,9 +51,12 @@ import { AuthInterceptor } from 'src/app/utility/user_service/http.inceptor';
     BookDetailAdminComponent,
     CategoryDetailComponent,
     CategoryListAdminComponent,
+    CategoryCreateComponent,
+
     AdminMainComponent,
     HeaderAdminComponent,
     FooterComponent,
+
     AuthorMultiselectAutocompleteComponent,
     VoucherMultiselectAutocompleteComponent,
   ],
@@ -71,9 +80,11 @@ import { AuthInterceptor } from 'src/app/utility/user_service/http.inceptor';
 
     StoreModule.forFeature(CategoryListStoreKey, CategoryListReducer),
     StoreModule.forFeature(CategoryStoreKey, CategoryReducer),
+    StoreModule.forFeature(CategoryCreateStoreKey, CategoryCreateReducer),
 
     EffectsModule.forFeature([CategoryListEffects]),
     EffectsModule.forFeature([CategoryEffects]),
+    EffectsModule.forFeature([CategoryCreateEffects ]),
   ],
   
 })

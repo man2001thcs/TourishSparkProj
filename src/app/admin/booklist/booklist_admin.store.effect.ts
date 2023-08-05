@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { Observable, of } from 'rxjs';
 import { catchError, map, mergeMap, switchMap } from 'rxjs/operators';
-import { BooklistStoreService } from './booklist.store.service';
+import { BooklistStoreService } from './booklist_admin.store.service';
 import * as BooklistAction from './booklist_admin.store.action';
 import { BookListUnionActions } from './booklist_admin.store.action';
 

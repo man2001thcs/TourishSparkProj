@@ -20,9 +20,7 @@ export class CategoryEffects {
       switchMap((action) => {
         return this.storeService.getCategory(action).pipe(
           map((response) => {
-            console.log(response);
             if (response.resultCd === 0) {
-              console.log(response);
               return CategoryAction.getCategorySuccess({
                 response: response,
               });

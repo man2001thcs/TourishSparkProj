@@ -4,11 +4,13 @@ import { IBaseState } from 'src/app/model/IBaseModel';
 
 export interface State extends IBaseState {
   category: any;
+  categoryReturn: any;
 }
 
 export const initialState: State = {
   category: null,
   resultCd: 0,
+  categoryReturn: null
 };
 
 export const reducer = createReducer(
@@ -30,7 +32,7 @@ export const reducer = createReducer(
 
   on(CategoryAction.getCategoryFailed, (state, { response }) => ({
     ...state,
-    message: response.message,
+    messageCode: response.messageCode,
   })),
 
   on(CategoryAction.getCategorySystemFailed, (state, { error }) => ({
@@ -44,16 +46,22 @@ export const reducer = createReducer(
 
   on(CategoryAction.editCategorySuccess, (state, { response }) => ({
     ...state,
-    messageCode: response.messageCode,
+    categoryReturn: response,
   })),
 
   on(CategoryAction.editCategoryFailed, (state, { response }) => ({
     ...state,
-    message: response.message,
+    messageCode: response.messageCode,
   })),
 
   on(CategoryAction.editCategorySystemFailed, (state, { error }) => ({
     ...state,
     error: error,
+  })), 
+
+  on(CategoryAction.resetCategory, (state) => ({
+    ...state,
+    category: null,
+    categoryReturn: null
   }))
 );

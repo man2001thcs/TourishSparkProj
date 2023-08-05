@@ -16,17 +16,21 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { ReactiveFormsModule } from '@angular/forms';
 import { NotifyDialogComponent } from './utility/notification/notify-dialog.component';
+import { FailNotifyDialogComponent } from './utility/notification/fail-notify-dialog.component';
 import { StoreModule } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { AuthInterceptor } from './utility/user_service/http.inceptor';
 import { RouterModule } from '@angular/router';
+import {MatButtonModule} from '@angular/material/button';
+
 @NgModule({
   declarations: [
     AppComponent,
     ConfirmDialogComponent,
     AuthorTagDynamicComponent,
     NotifyDialogComponent,
+    FailNotifyDialogComponent,
   ],
   imports: [
     StoreModule.forRoot({}),
@@ -44,6 +48,8 @@ import { RouterModule } from '@angular/router';
     MatIconModule,
     MatInputModule,
     ReactiveFormsModule,
+
+    MatButtonModule
   ],
   providers: [
     {

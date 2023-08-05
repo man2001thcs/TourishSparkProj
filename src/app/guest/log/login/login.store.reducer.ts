@@ -31,7 +31,7 @@ export const reducer = createReducer(
 
   on(BooklistAction.loginFailed, (state, { response }) => ({
     ...state,
-    message: response.message,
+    messageCode: response.messageCode,
   })),
 
   on(BooklistAction.loginSystemFailed, (state, { error }) => ({

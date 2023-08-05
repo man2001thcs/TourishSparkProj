@@ -1,5 +1,10 @@
-<h4>{{ data.title }}</h4>
-<div>
-  <button mat-raised-button (click)="doAction(false)">No</button>
+<mat-card class="example-card">
+  <mat-card-header>
+    <mat-card-title>Thông báo:</mat-card-title>
+  </mat-card-header>
+  <mat-card-content>
+    <p> {{ data.title }} <i class="fa fa-trash-o" style="font-size:20px;color:green"></i></p>
+    <button mat-raised-button (click)="doAction(false)">No</button>
   <button mat-raised-button color="accent" (click)="doAction(true)">Yes</button>
-</div>
+  </mat-card-content>
+</mat-card>

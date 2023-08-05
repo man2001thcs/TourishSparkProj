@@ -1,17 +1,12 @@
 import { createFeatureSelector, createSelector } from '@ngrx/store';
-import { storeKey } from './category-detail.store.action';
-import { State } from './category-detail.store.reducer';
+import { storeKey } from './category-create.store.action';
+import { State } from './category-create.store.reducer';
 
 export const categoryFeatureState = createFeatureSelector<State>(storeKey);
 
-export const getCategory = createSelector(
+export const createCategory = createSelector(
   categoryFeatureState,
-  (state) => state.category
-);
-
-export const editCategory = createSelector(
-  categoryFeatureState,
-  (state) => state.categoryReturn
+  (state) => state.createStatus
 );
 
 export const getMessage = createSelector(
