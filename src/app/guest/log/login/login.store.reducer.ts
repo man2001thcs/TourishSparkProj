@@ -1,7 +1,6 @@
-import { createReducer, on } from '@ngrx/store';
-import * as BooklistAction from './login.store.action';
-import { IBaseState } from 'src/app/model/IBaseModel';
-
+import { createReducer, on } from "@ngrx/store";
+import * as BooklistAction from "./login.store.action";
+import { IBaseState } from "src/app/model/IBaseModel";
 
 export interface State extends IBaseState {
   loginProfile: any;
@@ -9,7 +8,7 @@ export interface State extends IBaseState {
 
 export const initialState: State = {
   resultCd: 0,
-  loginProfile: null
+  loginProfile: null,
 };
 
 export const reducer = createReducer(
@@ -17,9 +16,14 @@ export const reducer = createReducer(
 
   on(BooklistAction.initial, (state) => ({
     ...state,
-    initialState
+    initialState,
   })),
-  
+
+  on(BooklistAction.resetLogin, (state) => ({
+    ...state,
+    loginProfile: null,
+  })),
+
   on(BooklistAction.login, (state, { payload }) => ({
     ...state,
   })),

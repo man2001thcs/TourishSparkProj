@@ -93,36 +93,53 @@ export class AuthInterceptor implements HttpInterceptor {
               this.isRefreshing = false;
 
               this.tokenService.signOut();
+
+              this.messageService.openFailNotifyDialog("Có lỗi xảy ra, vui lòng thử lại").subscribe(() => {
+                setTimeout(() => {
+                  this.router.navigate(["/guest/list"]);
+                }, 1000);
+              });
               return throwError(() => err);
             })
           )
           .subscribe((token: any) => {
-            console.log("Response: ", token);
-            this.isRefreshing = false;
-
+            this.isRefreshing = false;       
             if (token.data) {
               this.tokenService.saveToken(token.data.accessToken);
               this.tokenService.saveRefreshToken(token.data.refreshToken);
 
-              this.refreshTokenSubject.next(token.data.refreshToken);              
+              this.refreshTokenSubject.next(token.data.refreshToken);        
+              
+              return next.handle(
+                this.addTokenHeader(request, this.tokenService.getToken())
+              );
             } else {
-              this.tokenService.saveToken("");
-              this.tokenService.saveRefreshToken("");
+              this.tokenService.signOut();
+        
+              this.messageService.closeAllDialog();
+              this.refreshTokenSubject.next("");   
 
-              this.refreshTokenSubject.next("");      
+              this.messageService.openFailNotifyDialog("Phiên đăng nhập đã hết hiệu lực").subscribe(() => {
+                setTimeout(() => {
+                  this.router.navigate(["/guest/list"]);
+                }, 1000);
+              });
+
+              return null;
             }
 
-            return next.handle(
-              this.addTokenHeader(request, this.tokenService.getToken())
-            );
           });
       } else {
         this.isRefreshing = false;
         this.tokenService.signOut();
-        
+        this.refreshTokenSubject.next("");  
+
         this.messageService.closeAllDialog();
-        this.messageService.openFailNotifyDialog("Phiên đăng nhập đã hết hiệu lực");
-        this.router.navigate(["/guest/list"]);
+        this.messageService.openFailNotifyDialog("Phiên đăng nhập đã hết hiệu lực").subscribe(() => {
+          setTimeout(() => {
+            this.router.navigate(["/guest/list"]);
+          }, 1000);
+        });
       }
     }
   }

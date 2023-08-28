@@ -1,28 +1,29 @@
-import { Component, OnInit, Inject } from '@angular/core';
-import { FormGroup, Validators } from '@angular/forms';
-import { FormBuilder } from '@angular/forms';
-import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { UserService } from '../../../utility/user_service/user.service';
-import { HashService } from '../../../utility/user_service/hash.service';
-import { Router } from '@angular/router';
-import { Observable, Subscription, timeout } from 'rxjs';
-import { LoginUnionActions } from './login.store.action';
-import { Store } from '@ngrx/store';
-import { getLoginProfile } from './login.store.selector';
-import * as LoginAction from './login.store.action';
-import { TokenStorageService } from 'src/app/utility/user_service/token.service';
+import { Component, OnInit, Inject } from "@angular/core";
+import { FormGroup, Validators } from "@angular/forms";
+import { FormBuilder } from "@angular/forms";
+import { MatDialogRef, MAT_DIALOG_DATA } from "@angular/material/dialog";
+import { UserService } from "../../../utility/user_service/user.service";
+import { HashService } from "../../../utility/user_service/hash.service";
+import { Router } from "@angular/router";
+import { Observable, Subscription, timeout } from "rxjs";
+import { LoginUnionActions } from "./login.store.action";
+import { Store } from "@ngrx/store";
+import { getLoginProfile } from "./login.store.selector";
+import * as LoginAction from "./login.store.action";
+import { TokenStorageService } from "src/app/utility/user_service/token.service";
+import { MessageService } from "src/app/utility/user_service/message.service";
 export interface DialogSignInData {
   title: string;
 }
 
 @Component({
-  selector: 'app-login',
-  templateUrl: './login.component.html',
-  styleUrls: ['./login.component.css'],
+  selector: "app-login",
+  templateUrl: "./login.component.html",
+  styleUrls: ["./login.component.css"],
 })
 export class LoginComponent implements OnInit {
   signInformGroup!: FormGroup;
-  errorMessage = '';
+  errorMessage = "";
 
   getLoginProfile: Observable<any>;
   subscriptions: Subscription[] = [];
@@ -33,6 +34,7 @@ export class LoginComponent implements OnInit {
     public dialogRef: MatDialogRef<LoginComponent>,
     private tokenStorage: TokenStorageService,
     private userService: UserService,
+    private messageService: MessageService,
     private hash: HashService,
     private router: Router,
     private store: Store<LoginUnionActions>,
@@ -44,7 +46,7 @@ export class LoginComponent implements OnInit {
   ngOnInit(): void {
     this.signInformGroup = this.fb.group({
       userName: [
-        '',
+        "",
         Validators.compose([
           Validators.required,
           Validators.minLength(4),
@@ -52,7 +54,7 @@ export class LoginComponent implements OnInit {
         ]),
       ],
       password: [
-        '',
+        "",
         Validators.compose([Validators.required, Validators.minLength(3)]),
       ],
     });
@@ -63,33 +65,39 @@ export class LoginComponent implements OnInit {
           this.loginProfile = state;
           console.log(state);
           const response = JSON.parse(
-            window.atob(state.accessToken.split('.')[1])
+            window.atob(state.accessToken.split(".")[1])
           );
-          console.log(response);
 
           this.tokenStorage.saveToken(state.accessToken);
           this.tokenStorage.saveRefreshToken(state.refreshToken);
           this.tokenStorage.saveUser(response);
+          console.log(response);
 
-          console.log( this.tokenStorage.getToken());
-
-          setTimeout(() => {
-            // <<<---using ()=> syntax
-            if (response) {
-              console.log(response);
-              this.onNoClick();
-              if (response.Role === 'User') {
-                this.router.navigate(['/user/list']);
-              } else if (response.Role === 'Admin') {
-                this.router.navigate(['/admin/list']);
+          this.messageService
+            .openNotifyDialog("Đăng nhập thành công")
+            .subscribe((res) => {
+              if (response) {
+                console.log(response);
+                this.onNoClick();
+                if (response.Role === "User") {
+                  this.router.navigate(["/user/list"]);
+                } else if (response.Role === "Admin") {
+                  this.router.navigate(["/admin/book/list"]);
+                }
               }
-            }
-          }, 2000);
+            });
         }
       })
     );
 
     this.store.dispatch(LoginAction.initial());
+  }
+
+  ngOnDestroy(): void {
+    console.log("Destroy");
+    this.store.dispatch(LoginAction.resetLogin());
+
+    this.subscriptions.forEach((subscription) => subscription.unsubscribe());
   }
 
   onNoClick(): void {
@@ -103,8 +111,8 @@ export class LoginComponent implements OnInit {
 
   formReset(): void {
     this.signInformGroup.setValue({
-      userName: 'man2001thcs',
-      password: '123',
+      userName: "man2001thcs",
+      password: "123",
     });
   }
 

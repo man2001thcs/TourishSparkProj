@@ -1,0 +1,117 @@
+<div>
+  <div class="addContainer">
+    <button mat-raised-button class="demo-button" (click) ="addNotification()">Add notification</button>
+    <button mat-raised-button class="demo-button" (click) ="stopConnection()">Stop notification</button>
+  </div>
+
+  <table
+    mat-table
+    [dataSource]="notificationList"
+    matSort
+    matSort
+    class="mat-elevation-z8"
+    (matSortChange)="announceSortChange($event)"
+  >
+    <!-- Position Column -->
+    <ng-container matColumnDef="id">
+      <th
+        mat-header-cell
+        *matHeaderCellDef
+        mat-sort-header
+        sortActionDescription="Sort by id"
+      >
+        No.
+      </th>
+      <td mat-cell *matCellDef="let element">
+        <a routerLink="/admin/notificationDetail/{{ element.id }}/edit">
+          {{ element.id }}</a
+        >
+      </td>
+    </ng-container>
+
+    <!-- Name Column -->
+    <ng-container matColumnDef="userId">
+      <th
+        mat-header-cell
+        *matHeaderCellDef
+        mat-sort-header
+        sortActionDescription="Sort by userId"
+      >
+        UserId
+      </th>
+      <td mat-cell *matCellDef="let element">{{ element.userId }}</td>
+    </ng-container>
+
+    <!-- SS Column -->
+    <ng-container matColumnDef="content">
+      <th
+        mat-header-cell
+        *matHeaderCellDef
+        mat-sort-header
+        sortActionDescription="Sort by content"
+      >
+        Content
+      </th>
+      <td mat-cell *matCellDef="let element">{{ element.content }}</td>
+    </ng-container>
+
+    <!-- SS Column -->
+    <ng-container matColumnDef="isRead">
+      <th
+        mat-header-cell
+        *matHeaderCellDef
+        mat-sort-header
+        sortActionDescription="Sort by isRead"
+      >
+        isRead
+      </th>
+      <td mat-cell *matCellDef="let element">{{ element.isRead }}</td>
+    </ng-container>
+
+    <!-- SS Column -->
+    <ng-container matColumnDef="isDeleted">
+      <th
+        mat-header-cell
+        *matHeaderCellDef
+        mat-sort-header
+        sortActionDescription="Sort by isDeleted"
+      >
+        IsDeleted
+      </th>
+      <td mat-cell *matCellDef="let element">{{ element.isDeleted }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="createDate">
+      <th
+        mat-header-cell
+        *matHeaderCellDef
+        mat-sort-header
+        sortActionDescription="Sort by create_date"
+      >
+        Create date
+      </th>
+      <td mat-cell *matCellDef="let element">{{ element.createDate }}</td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr
+      mat-row
+      *matRowDef="let row; columns: displayedColumns"
+      [class.demo-row-is-clicked]=""
+    ></tr>
+  </table>
+  <mat-paginator
+    [pageSizeOptions]="pageSizeOpstion"
+    [length]="length"
+    (page)="handlePageEvent($event)"
+    showFirstLastButtons
+    aria-label="Select page of periodic elements"
+  >
+  </mat-paginator>
+
+  <ul>
+    <li *ngFor="let clickedRow of notificationHub">
+      {{ clickedRow.content }}
+    </li>
+  </ul>
+</div>

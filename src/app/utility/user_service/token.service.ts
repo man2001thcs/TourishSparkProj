@@ -65,7 +65,7 @@ export class TokenStorageService {
   }
 
   refreshToken(accessToken: string, refreshToken: string) {
-    return this.http.post('/api/api/User/RenewToken', {
+    return this.http.post('/api/User/RenewToken', {
       accessToken: accessToken,
       refreshToken: refreshToken
     }, httpOptions);

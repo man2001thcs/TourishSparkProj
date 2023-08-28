@@ -1,0 +1,84 @@
+<div class="container">
+  <div class="outlet">
+    <h2 mat-form-label style="font-weight: heavy">Chỉnh sửa Publisher</h2>
+    <form [formGroup]="editformGroup_info">
+      <div class="row">
+        <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6 edit-form">
+          <h3 mat-form-label style="font-weight: bold">Thông tin cơ bản</h3>
+
+          <mat-form-field appearance="outline">
+            <mat-label>Publisher name</mat-label>
+            <input matInput placeholder="UserpublisherName" formControlName="publisherName" />
+          </mat-form-field>
+
+          <div class="row">
+            <mat-form-field appearance="outline">
+              <mat-label>Email</mat-label>
+              <input
+                matInput
+                placeholder="Email"
+                formControlName="email"
+              />
+            </mat-form-field>
+          </div>
+
+          <div class="row">
+            <mat-form-field appearance="outline">
+              <mat-label>Phone number</mat-label>
+              <input
+                matInput
+                placeholder="Phone number"
+                formControlName="phoneNumber"
+              />
+            </mat-form-field>
+          </div>
+        </div>
+
+        <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6 create-form">
+          <mat-form-field appearance="outline">
+            <mat-label>Address</mat-label>
+            <input
+              matInput
+              placeholder="Address"
+              formControlName="address"
+            />
+          </mat-form-field>
+
+          <mat-form-field style="width: 90%">
+            <textarea
+              matInput
+              class="form-control"
+              id="description"
+              placeholder="Nội dung"
+              formControlName="description"
+              rows="10"
+            ></textarea>
+          </mat-form-field>
+        </div>
+        
+        <div class="row">
+          <div class="col-xs-6 col-sm-4 col-md-4 col-lg-2">
+            <button
+              mat-raised-button
+              color="primary"
+              (click)="formSubmit_edit_info()"
+            >
+              Lưu
+            </button>
+          </div>
+
+          <div class="col-xs-6 col-sm-4 col-md-4 col-lg-4">
+            <button
+              mat-raised-button
+              color="warn"
+              type="button"
+              (click)="formReset()"
+            >
+              Khôi phục
+            </button>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>

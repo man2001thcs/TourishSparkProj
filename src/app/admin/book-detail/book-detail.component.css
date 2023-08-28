@@ -5,8 +5,8 @@
 
 .edit-form{
    
-    padding-top: 20px;
-    padding-bottom: 20px;
+    padding-top: 10px;
+    padding-bottom: 10px;
 }
 .input-group{
     width: 100% !important; 
@@ -14,4 +14,9 @@
 
 .full-width-input {
     width: 80% !important;
+}
+
+mat-error {
+    margin-top: -5px;
+    margin-bottom: 10px;
 }

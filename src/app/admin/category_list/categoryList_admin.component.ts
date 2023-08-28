@@ -124,7 +124,7 @@ export class CategoryListAdminComponent
     this.subscriptions.push(
       this.errorSystemState.subscribe((state) => {
         if (state) {
-          this.messageService.openFailNotifyDialog(state);
+          this.messageService.openSystemFailNotifyDialog(state);
         }
       })
     );

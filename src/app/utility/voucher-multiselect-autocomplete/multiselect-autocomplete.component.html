@@ -1,20 +1,49 @@
 <form>
-  <mat-form-field class="example-chip-list" appearance="fill" class="full-width">
+  <mat-form-field
+    class="example-chip-list"
+    appearance="fill"
+    class="full-width"
+  >
     <mat-label>Favorite Vouchers</mat-label>
     <mat-chip-grid #chipGrid aria-label="Fruit selection">
-      <mat-chip-row *ngFor="let voucher of vouchers" (removed)="remove(voucher)">
-        {{voucher}}
+      <mat-chip-row
+        *ngFor="let voucher of voucherNameList"
+        (removed)="remove(voucher)"
+      >
+        {{ voucher }}
         <button matChipRemove [attr.aria-label]="'remove ' + voucher">
           <mat-icon>cancel</mat-icon>
         </button>
       </mat-chip-row>
     </mat-chip-grid>
-    <input placeholder="New Voucher..." #voucherInput [formControl]="voucherCtrl" [matChipInputFor]="chipGrid"
-      [matAutocomplete]="auto" [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
-      (matChipInputTokenEnd)="add($event)" />
-    <mat-autocomplete #auto="matAutocomplete" (optionSelected)="selected($event)">
-      <mat-option *ngFor="let voucher of filteredVouchers | async" [value]="voucher">
-        {{voucher}}
+    <input
+      placeholder="New Voucher..."
+      #voucherInput
+      [formControl]="voucherCtrl"
+      [matChipInputFor]="chipGrid"
+      [matAutocomplete]="auto"
+      [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+      (matChipInputTokenEnd)="add($event)"
+    />
+
+    <mat-autocomplete
+      #auto="matAutocomplete"
+      (optionSelected)="selected($event)"
+      (optionsScroll)="onScroll($event)"
+    >
+      <mat-option
+        *ngFor="let voucher of data"
+        [value]="voucher"
+        [disabled]="isChecked(voucher)"
+      >
+        <div>
+          <div style="font-weight: bold">
+            {{ voucher.name }}
+            <mat-icon>{{ isChecked(voucher) && "checked" }}</mat-icon>
+          </div>
+
+          <small>{{ onDisplayAtr(voucher) }}</small>
+        </div>
       </mat-option>
     </mat-autocomplete>
   </mat-form-field>

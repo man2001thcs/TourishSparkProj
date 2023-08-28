@@ -24,7 +24,7 @@ export const loginSystemFailed = createAction(
   props<{ error: any }>()
 );
 
-export const resetBookList = createAction(
+export const resetLogin = createAction(
   `[${storeKey}] resetBookListSystemFailed`
 );
 
@@ -33,7 +33,7 @@ const actions = union({
   login,
   loginFailed,
   loginSystemFailed,
-  resetBookList,
+  resetLogin,
 });
 
 export type LoginUnionActions = typeof actions;

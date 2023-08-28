@@ -1,131 +1,323 @@
 <div class="container">
-    <div class="outlet">
-        <h2 mat-form-label style="font-weight: heavy">Chỉnh sửa sách</h2>
-
-        <ng-template #inputFormButton let-reset="reset">
-            <div class="row">
-                <div class="col-xs-6 col-sm-4 col-md-4 col-lg-2">
-                    <button mat-raised-button color="primary">Lưu</button>
-                </div>
-                <div class="col-xs-6 col-sm-4 col-md-4 col-lg-4">
-                    <button mat-raised-button color="warn" type="button" (click)=" formReset_edit_info()">Khôi phục</button>
-                </div>
-            </div>
-        </ng-template>
-
-
-        <div class="row">
-            <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6 edit-form">
-                <form [formGroup]="editformGroup_info" (ngSubmit)="formSubmit_edit_info()">
-
-                    <ng-template #inputFormBook1 let-label="label" let-id="id" let-form_control_name="form_control_name"
-                        let-type="type" let-form_group="form_group">
-                        <div class="input-group">
-                            <mat-form-field class="full-width-input">
-                                <mat-label>{{label}}</mat-label>
-                                <input matInput type="{{type}}" id="{{id}}" placeholder="{{label}}"
-                                    formControlName="{{form_control_name}}" style="width: 100%">
-                            </mat-form-field>
-                            <mat-error
-                                *ngIf="editformGroup_info.get(form_control_name)!.errors && editformGroup_info.get(form_control_name)!.errors!['required']">
-                                Vui lòng nhập nội dung
-                            </mat-error>
-                        </div>
-                    </ng-template>
-
-                    <h3 mat-form-label style="font-weight: bold">Thông tin cơ bản</h3>
-                    <ng-container [ngTemplateOutlet]="inputFormBook1"
-                        [ngTemplateOutletContext]="{ label: 'Name', id: 'name', form_control_name: 'name', type: 'text', form_group: 'editformGroup_info' }">
-                    </ng-container>
-                    <ng-container [ngTemplateOutlet]="inputFormBook1"
-                        [ngTemplateOutletContext]="{ label: 'Page number', id: 'page_number', form_control_name: 'page_number', type: 'text', form_group: 'editformGroup_info' }">
-                    </ng-container>
-                    <ng-container [ngTemplateOutlet]="inputFormBook1"
-                        [ngTemplateOutletContext]="{ label: 'type', id: 'type', form_control_name: 'type', type: 'text', form_group: 'editformGroup_info' }">
-                    </ng-container>
-                    <ng-container [ngTemplateOutlet]="inputFormButton"></ng-container>
-                </form>
-            </div>
-
-
-
-            <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6 edit-form">
-                <form [formGroup]="editformGroup_number" (ngSubmit)="formSubmit()">
-                    <ng-template #inputFormBook2 let-label="label" let-id="id" let-form_control_name="form_control_name"
-                        let-type="type">
-                        <div class="input-group">
-                            <mat-form-field class="full-width-input">
-                                <mat-label>{{label}}</mat-label>
-                                <input matInput type="{{type}}" id="{{id}}" placeholder="{{label}}"
-                                    formControlName="{{form_control_name}}" style="width: 100%">
-                            </mat-form-field>
-                            <mat-error
-                                *ngIf="editformGroup_number.get(form_control_name)!.errors && editformGroup_info.get(form_control_name)!.errors!['required']">
-                                Vui lòng nhập nội dung
-                            </mat-error>
-                        </div>
-                    </ng-template>
-
-                    <h3 mat-form-label style="font-weight: bold">Thông tin giá và số lượng</h3>
-                    <ng-container [ngTemplateOutlet]="inputFormBook2"
-                        [ngTemplateOutletContext]="{ label: 'Price', id: 'price', form_control_name: 'price', type: 'number' }">
-                    </ng-container>
-                    <ng-container [ngTemplateOutlet]="inputFormBook2"
-                        [ngTemplateOutletContext]="{ label: 'Bought number', id: 'bought_number', form_control_name: 'bought_number', type: 'number' }">
-                    </ng-container>
-                    <ng-container [ngTemplateOutlet]="inputFormBook2"
-                        [ngTemplateOutletContext]="{ label: 'Remain number', id: 'remain_number', form_control_name: 'remain_number', type: 'number' }">
-                    </ng-container>
-                    <ng-container [ngTemplateOutlet]="inputFormButton"></ng-container>
-                </form>
-
-            </div>
-        </div>
-
-        <div class="row">
-
-            <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
-                <h3 mat-form-label style="font-weight: bold">Tác giả</h3>
-                <author-multiselect-autocomplete [data_selected]="author_list" [data]="author_all"
-                    (result)="selectChange_author($event)">
-                </author-multiselect-autocomplete>
-                <ng-container [ngTemplateOutlet]="inputFormButton"></ng-container>
-            </div>
-            <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
-                <h3 mat-form-label style="font-weight: bold">Voucher</h3>
-                <voucher-multiselect-autocomplete [data_selected]="voucher_list" [data]="voucher_all"
-                    (result)="selectChange_voucher($event)">
-                </voucher-multiselect-autocomplete>
-                <ng-container [ngTemplateOutlet]="inputFormButton"></ng-container>
-            </div>
-
-        </div>
-        <form class="edit-form" [formGroup]="editformGroup_description" (ngSubmit)="formSubmit()">
-            <div class="row">
-                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-                    <h3 mat-form-label style="font-weight: bold">Miêu tả nội dung</h3>
-                    <div class="input-group">
-                        <mat-form-field style="width: 90%">
-                            <textarea matInput class="form-control" id="description" placeholder="Nội dung"
-                                formControlName="description" rows="10"></textarea>
-                        </mat-form-field>
-                        <mat-error
-                            *ngIf="editformGroup_description.get('description')!.errors && editformGroup_description.get('description')!.errors!['required']">Vui
-                            lòng nhập nội dung
-                        </mat-error>
-                    </div>
-                </div>
-
-            </div>
-            <div class="row">
-                <div class="col-xs-6 col-sm-4 col-md-4 col-lg-1">
-                    <button mat-raised-button color="primary">Lưu</button>
-                </div>
-                <div class="col-xs-6 col-sm-2 col-md-2 col-lg-2">
-                    <button mat-raised-button color="warn">Khôi phục</button>
-                </div>
-            </div>
-        </form>
-
+  <div class="outlet">
+    <h2 mat-form-label style="font-weight: heavy">Tạo sách</h2>
+    <div class="row edit-form">
+      <h3 mat-form-label style="font-weight: bold">Thông tin cơ bản</h3>
     </div>
+    <div [formGroup]="editformGroup_info">
+      <div class="row">
+        <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6 edit-form">
+          <ng-template
+            #inputFormBook1
+            let-label="label"
+            let-id="id"
+            let-form_control_name="form_control_name"
+            let-type="type"
+            let-form_group="form_group"
+          >
+            <div class="input-group">
+              <h3 mat-form-label style="font-weight: bold">{{ label }}</h3>
+              <mat-form-field class="full-width-input">
+                <input
+                  matInput
+                  type="{{ type }}"
+                  id="{{ id }}"
+                  placeholder="Vui lòng nhập nội dung"
+                  formControlName="{{ form_control_name }}"
+                  style="width: 100%"
+                />
+              </mat-form-field>
+              <mat-error
+                *ngIf="
+                  isSubmitting &&
+                  editformGroup_info.get(form_control_name)!.errors &&
+                  editformGroup_info.get(form_control_name)!.errors!['required']
+                "
+              >
+                Vui lòng nhập nội dung
+              </mat-error>
+            </div>
+          </ng-template>
+          <ng-container
+            [ngTemplateOutlet]="inputFormBook1"
+            [ngTemplateOutletContext]="{
+              label: 'Title',
+              id: 'title',
+              form_control_name: 'title',
+              type: 'text',
+              form_group: 'editformGroup_info'
+            }"
+          >
+          </ng-container>
+          <ng-container
+            [ngTemplateOutlet]="inputFormBook1"
+            [ngTemplateOutletContext]="{
+              label: 'Page number',
+              id: 'page_number',
+              form_control_name: 'pageNumber',
+              type: 'text',
+              form_group: 'editformGroup_info'
+            }"
+          >
+          </ng-container>
+        </div>
+
+        <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6 edit-form">
+          <h3 mat-form-label style="font-weight: bold">Nhà xuất bản</h3>
+          <publisher-multiselect-autocomplete
+            [data_selected]="publisher_list"
+            (result)="selectChange_publisher($event)"
+          >
+          </publisher-multiselect-autocomplete>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="input-group">
+          <mat-form-field style="width: 90%">
+            <textarea
+              matInput
+              class="form-control"
+              id="description"
+              placeholder="Nội dung"
+              formControlName="description"
+              rows="10"
+            ></textarea>
+          </mat-form-field>
+          <mat-error
+            *ngIf="
+              isSubmitting &&
+              editformGroup_info.get('description')!.errors &&
+              editformGroup_info.get('description')!.errors!['required']
+            "
+            >Vui lòng nhập nội dung
+          </mat-error>
+        </div>
+      </div>
+
+      <div class="row" style="margin-bottom: 20px">
+        <div class="col-xs-3 col-sm-3 col-md-4 col-lg-1">
+          <button
+            mat-raised-button
+            color="primary"
+            (click)="formSubmit_edit_info()"
+          >
+            Lưu
+          </button>
+        </div>
+        <div class="col-xs-3 col-sm-3 col-md-4 col-lg-2">
+          <button
+            mat-raised-button
+            color="warn"
+            type="button"
+            (click)="formSubmitInfoReset()"
+          >
+            Khôi phục
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6 edit-form">
+        <div [formGroup]="editformGroup_status">
+          <ng-template
+            #inputFormBook2
+            let-label="label"
+            let-id="id"
+            let-form_control_name="form_control_name"
+            let-type="type"
+          >
+            <div class="input-group">
+              <mat-form-field class="full-width-input">
+                <h3 mat-form-label style="font-weight: bold">{{ label }}</h3>
+                <input
+                  matInput
+                  type="{{ type }}"
+                  id="{{ id }}"
+                  placeholder="Vui lòng nhập nội dung"
+                  formControlName="{{ form_control_name }}"
+                  style="width: 100%"
+                />
+              </mat-form-field>
+              <mat-error
+                *ngIf="
+                  isSubmitting &&
+                  editformGroup_status.get(form_control_name)!.errors &&
+                  editformGroup_status.get(form_control_name)!.errors![
+                    'required'
+                  ]
+                "
+              >
+                Vui lòng nhập nội dung
+              </mat-error>
+            </div>
+          </ng-template>
+
+          <h3 mat-form-label style="font-weight: bold">
+            Thông tin giá và số lượng
+          </h3>
+          <ng-container
+            [ngTemplateOutlet]="inputFormBook2"
+            [ngTemplateOutletContext]="{
+              label: 'Current price',
+              id: 'currentPrice',
+              form_control_name: 'currentPrice',
+              type: 'number'
+            }"
+          >
+          </ng-container>
+          <ng-container
+            [ngTemplateOutlet]="inputFormBook2"
+            [ngTemplateOutletContext]="{
+              label: 'Total sold number',
+              id: 'totalSoldNumber',
+              form_control_name: 'totalSoldNumber',
+              type: 'number'
+            }"
+          >
+          </ng-container>
+          <ng-container
+            [ngTemplateOutlet]="inputFormBook2"
+            [ngTemplateOutletContext]="{
+              label: 'Sold number in month',
+              id: 'soldNumberInMonth',
+              form_control_name: 'soldNumberInMonth',
+              type: 'number'
+            }"
+          >
+          </ng-container>
+          <ng-container
+            [ngTemplateOutlet]="inputFormBook2"
+            [ngTemplateOutletContext]="{
+              label: 'Remain number',
+              id: 'remainNumber',
+              form_control_name: 'remainNumber',
+              type: 'number'
+            }"
+          >
+          </ng-container>
+
+          <div class="row">
+            <div class="col-xs-4 col-sm-4 col-md-4 col-lg-2">
+              <button
+                mat-raised-button
+                color="primary"
+                (click)="formSubmit_edit_status()"
+              >
+                Lưu
+              </button>
+            </div>
+            <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+              <button
+                mat-raised-button
+                color="warn"
+                type="button"
+                (click)="formSubmitStatusReset()"
+              >
+                Khôi phục
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6" style=" margin-top: 10px">
+        <h3 mat-form-label style="font-weight: bold">Tác giả</h3>
+        <author-multiselect-autocomplete
+          [data_selected]="author_list"
+          (result)="selectChange_author($event)"
+        >
+        </author-multiselect-autocomplete>
+        <div class="row" style="margin-bottom: 20px">
+          <div class="col-xs-6 col-sm-4 col-md-4 col-lg-2">
+            <button
+              mat-raised-button
+              color="primary"
+              (click)="formSubmit_edit_author()"
+            >
+              Lưu
+            </button>
+          </div>
+          <div class="col-xs-6 col-sm-4 col-md-4 col-lg-4">
+            <button
+              mat-raised-button
+              color="warn"
+              type="button"
+              (click)="formSubmitAuthorReset()"
+            >
+              Khôi phục
+            </button>
+          </div>
+        </div>
+
+        <h3 mat-form-label style="font-weight: bold">Thể loại</h3>
+        <category-multiselect-autocomplete
+          [data_selected]="category_list"
+          (result)="selectChange_category($event)"
+        >
+        </category-multiselect-autocomplete>
+        <div class="row" style="margin-bottom: 20px">
+          <div class="col-xs-6 col-sm-4 col-md-4 col-lg-2">
+            <button
+              mat-raised-button
+              color="primary"
+              (click)="formSubmit_edit_category()"
+            >
+              Lưu
+            </button>
+          </div>
+          <div class="col-xs-6 col-sm-4 col-md-4 col-lg-4">
+            <button
+              mat-raised-button
+              color="warn"
+              type="button"
+              (click)="formSubmitCategoryReset()"
+            >
+              Khôi phục
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
+        <file-upload [productId]="bookId" (onUploadFinished)="uploadFinished($event)"></file-upload>
+      </div>
+      <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
+        <h3 mat-form-label style="font-weight: bold">Voucher</h3>
+        <voucher-multiselect-autocomplete
+          [data_selected]="voucher_list"
+          (result)="selectChange_voucher($event)"
+        >
+        </voucher-multiselect-autocomplete>
+        <mat-error *ngIf="isSubmitting && voucherSubmitString === ''"
+          >Vui lòng nhập nội dung
+        </mat-error>
+
+        <div class="row" style="margin-bottom: 20px">
+          <div class="col-xs-6 col-sm-4 col-md-4 col-lg-2">
+            <button
+              mat-raised-button
+              color="primary"
+              (click)="formSubmit_edit_voucher()"
+            >
+              Lưu
+            </button>
+          </div>
+          <div class="col-xs-6 col-sm-4 col-md-4 col-lg-4">
+            <button
+              mat-raised-button
+              color="warn"
+              type="button"
+              (click)="formSubmitVoucherReset()"
+            >
+              Khôi phục
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>

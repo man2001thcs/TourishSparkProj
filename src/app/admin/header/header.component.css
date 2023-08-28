@@ -1,4 +1,3 @@
-
 * {
   box-sizing: border-box;
   font-family: Helvetica;
@@ -82,4 +81,9 @@ ul li a:hover {
   border: 3px solid rgb(15, 116, 45);
   top: -8px;
   right: 24px;
+}
+
+button#dropdownBasic1 {
+  font-weight: bold !important;
+  margin-top: 3px;
 }

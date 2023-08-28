@@ -11,3 +11,7 @@
 .chip-list-wrapper {
   min-height: 3em;
 }
+
+:host /deep/ .mat-autocomplete-panel {
+  max-height: 150px !important;
+}

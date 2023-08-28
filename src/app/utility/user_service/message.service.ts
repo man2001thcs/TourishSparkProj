@@ -33,6 +33,22 @@ export class MessageService {
     return ref.afterClosed();
   }
 
+  openSystemFailNotifyDialog(httpStatus: any) {
+    let this_announce = "";
+    if (httpStatus.status == "403") {
+      this_announce = "Bạn không có thẩm quyền để thực hiện hành động này";
+    } else if (httpStatus.status == "504") {
+      this_announce = "Mất kết nối với server, vui lòng thử lại sau";
+    }
+
+    const ref = this.dialog.open(FailNotifyDialogComponent, {
+      data: {
+        title: this_announce,
+      },
+    });
+    return ref.afterClosed();
+  }
+
   closeAllDialog() {
     this.dialog.closeAll();
   }
