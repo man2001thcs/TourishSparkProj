@@ -1,6 +1,6 @@
 {
     "/api/*": {
-        "target": "https://localhost:64171/api/",
+        "target": "https://webapplication120230906202115.azurewebsites.net/api/",
         "secure": false,
         "pathRewrite": {
             "^/api": ""

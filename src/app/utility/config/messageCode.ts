@@ -38,6 +38,18 @@ export const ERR_MESSAGE_CODE_EN: Map<string, string> = new Map([
   ["C502", "Publisher update error"],
   ["C503", "Publisher delete error"],
   ["C504", "Publisher SQL error"],
+
+  ["C600", "Message not found"],
+  ["C601", "Message add error"],
+  ["C602", "Message update error"],
+  ["C603", "Message delete error"],
+  ["C604", "Message SQL error"],
+
+  ["C700", "Notification not found"],
+  ["C701", "Notification add error"],
+  ["C702", "Notification update error"],
+  ["C703", "Notification delete error"],
+  ["C704", "Notification SQL error"],
 ]);
 
 export const ERR_MESSAGE_CODE_VI: Map<string, string> = new Map([
@@ -80,6 +92,18 @@ export const ERR_MESSAGE_CODE_VI: Map<string, string> = new Map([
     ["C502", "Publisher lỗi cập nhật"],
     ["C503", "Publisher xóa thất bại"],
     ["C504", "Publisher lỗi cơ sở dữ liệu"],
+
+    ["C600", "Tin nhắn không tồn tại"],
+    ["C601", "Tin nhắn thêm vào bị lỗi"],
+    ["C602", "Tin nhắn lỗi cập nhật"],
+    ["C603", "Tin nhắn xóa thất bại"],
+    ["C604", "Tin nhắn lỗi cơ sở dữ liệu"],
+
+    ["C700", "Thông báo không tồn tại"],
+    ["C701", "Thông báo thêm vào bị lỗi"],
+    ["C702", "Thông báo lỗi cập nhật"],
+    ["C703", "Thông báo xóa thất bại"],
+    ["C704", "Thông báo lỗi cơ sở dữ liệu"],
   ]);
 
 export const SUCCESS_MESSAGE_CODE_EN: Map<string, string> = new Map([
@@ -105,6 +129,15 @@ export const SUCCESS_MESSAGE_CODE_EN: Map<string, string> = new Map([
     ["I501", "Publisher add ok"],
     ["I502", "Publisher update ok"],
     ["I503", "Publisher delete ok"],
+
+    ["I601", "Message add ok"],
+    ["I602", "Message update ok"],
+    ["I603", "Message delete ok"],
+
+    ["I701", "Notification add ok"],
+    ["I702", "Notification update ok"],
+    ["I703", "Notification delete ok"],
+    
   ]);
 
   export const SUCCESS_MESSAGE_CODE_VI: Map<string, string> = new Map([
@@ -130,4 +163,12 @@ export const SUCCESS_MESSAGE_CODE_EN: Map<string, string> = new Map([
     ["I501", "Publisher thêm thành công"],
     ["I502", "Publisher update thành công"],
     ["I503", "Publisher xóa thành công"],
+
+    ["I601", "Tin nhắn thêm thành công"],
+    ["I602", "Tin nhắn update thành công"],
+    ["I603", "Tin nhắn xóa thành công"],
+
+    ["I701", "Thông báo thêm thành công"],
+    ["I702", "Thông báo update thành công"],
+    ["I703", "Thông báo xóa thành công"],
   ]);

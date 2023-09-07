@@ -82,18 +82,16 @@ export class SignalRService {
     (<HubConnection>this.hubConnection).on(
       listenPort,
       (data1: any, data2: any) => {
-        console.log("data1: " + data1, "data2: " + data2);
         if (data1) {
-          console.log(data2);
           this.$allFeed.next(data2);
         }
       }
     );
   }
 
-  public invokeFeed(listenMethod: string, userId: string, data: any) {
+  public invokeFeed(listenMethod: string, userSendId: string, userReceiveId: string, data: any) {
     console.log(this.hubConnection.baseUrl);
-    (<HubConnection>this.hubConnection).invoke(listenMethod, userId, data);
+    (<HubConnection>this.hubConnection).invoke(listenMethod, userReceiveId, data);
   }
 
   public invokeAllFeeds(listenMethod: string, data: any) {
