@@ -1,21 +1,19 @@
-<mat-card class="example-card">
-    <div style="width: 100%;display: flex; justify-content: center;" >
-        <img mat-card-image id="img_book" src="/api/img/book/3/1.jpg" alt="Photo of a Shiba Inu">
-    </div>
-    <mat-card-content>
-        <p id="name">
-            Đất rừng phương nam
-        </p>
-        <p id="price">
-            123000đ
-        </p>
-        <p id="price_discount">
-            117000đ
-        </p>
-        <p id="bought_number">
-            Đã bán: ...
-        </p>
-        <mat-progress-bar mode="determinate" value="40" style="width: 100%">32</mat-progress-bar>
-    </mat-card-content>
+<div
+  style="
+    display: block;
+    min-width: 250px !important;
+    min-height: 400px !important;
+  "
+>
+  <nb-card size="small">
+    <nb-card-header>Nebula</nb-card-header>
 
-</mat-card>
+    <nb-card-body> {{ name }}</nb-card-body>
+    <nb-card-footer>
+      <nb-progress-bar
+        [value]="(totalSoldInMonth / (totalSoldInMonth + remainNumber)) * 100"
+        >Đã bán</nb-progress-bar
+      ></nb-card-footer
+    >
+  </nb-card>
+</div>

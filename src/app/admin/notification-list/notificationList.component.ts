@@ -207,6 +207,7 @@ export class NotificationListAdminComponent
     this.signalRService.invokeFeed(
       "SendOffersToUser",
       this.tokenService.getUser()?.Id,
+      this.tokenService.getUser()?.Id,
       notification
     );
     //this.signalRService.invokeAllFeeds("SendString", "abc");

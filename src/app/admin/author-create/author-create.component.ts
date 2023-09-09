@@ -105,18 +105,9 @@ export class AuthorCreateComponent implements OnInit, OnDestroy {
         "",
         Validators.compose([Validators.required, Validators.minLength(3)]),
       ],
-      address: [
-        "",
-        Validators.compose([Validators.required, Validators.minLength(3)]),
-      ],
-      phoneNumber: [
-        "",
-        Validators.compose([Validators.required, Validators.minLength(3)]),
-      ],
-      email: [
-        "",
-        Validators.compose([Validators.required, Validators.minLength(3)]),
-      ],
+      address: [""],
+      phoneNumber: [""],
+      email: [""],
       description: "",
     });
   }

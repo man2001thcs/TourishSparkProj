@@ -132,6 +132,8 @@ import { OptionsScrollDirective } from 'src/app/utility/config/multiselect-scrol
 import { NgbDropdownModule } from '@ng-bootstrap/ng-bootstrap';
 import { BookDetailEffects } from '../book-detail/book-detail.store.effect';
 import { FileUploadComponent } from 'src/app/utility/image_service/imageUpload.component';
+import { ChatComponent } from 'src/app/utility/chatUI/chat.component';
+import { NbChatModule } from '@nebular/theme';
 
 @NgModule({
   declarations: [
@@ -167,6 +169,8 @@ import { FileUploadComponent } from 'src/app/utility/image_service/imageUpload.c
     NotificationListAdminComponent,
     FileUploadComponent,
 
+    ChatComponent,
+
     OptionsScrollDirective,
   ],
   imports: [
@@ -186,6 +190,8 @@ import { FileUploadComponent } from 'src/app/utility/image_service/imageUpload.c
     MatIconModule,
     MatButtonModule,
     NgbDropdownModule,
+
+    NbChatModule,
 
     StoreModule.forFeature(BookCreateStoreKey, BookCreateReducer),
     StoreModule.forFeature(BookListStoreKey, BookListReducer),

@@ -187,6 +187,17 @@ export class BookDetailAdminComponent implements OnInit, OnDestroy {
             state.description
           );
 
+          this.editformGroup_status.controls["remainNumber"].setValue(state.bookStatus.remainNumber);
+          this.editformGroup_status.controls["currentPrice"].setValue(
+            state.bookStatus.currentPrice
+          );
+          this.editformGroup_status.controls["soldNumberInMonth"].setValue(
+            state.bookStatus.soldNumberInMonth
+          );
+          this.editformGroup_status.controls["totalSoldNumber"].setValue(
+            state.bookStatus.totalSoldNumber
+          );
+
           this.author_list = state.bookAuthors ?? [];
           this.voucher_list = state.bookVouchers ?? [];
           this.publisher_list = [state.publisher] ?? [];

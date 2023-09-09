@@ -29,11 +29,11 @@ import { SignalRService } from "src/app/user/service/signalR.service";
 import { TokenStorageService } from "../user_service/token.service";
 
 @Component({
-  selector: "app-book-create",
-  templateUrl: "./message-create.component.html",
-  styleUrls: ["./message-create.component.css"],
+  selector: "app-chat",
+  templateUrl: "./chat.component.html",
+  styleUrls: ["./chat.component.css"],
 })
-export class MessageCreateComponent implements OnInit, OnDestroy {
+export class ChatComponent implements OnInit, OnDestroy {
   isEditing: boolean = true;
 
   this_announce = "";

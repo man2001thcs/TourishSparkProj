@@ -14,6 +14,7 @@ export const ERR_MESSAGE_CODE_EN: Map<string, string> = new Map([
   ["C102", "Book update error"],
   ["C103", "Book delete error"],
   ["C104", "Book SQL error"],
+  ["C106", "Image upload error"],
 
   ["C200", "Category not found"],
   ["C201", "Category add error"],
@@ -68,6 +69,7 @@ export const ERR_MESSAGE_CODE_VI: Map<string, string> = new Map([
     ["C102", "Sách lỗi cập nhật"],
     ["C103", "Sách xóa thất bại"],
     ["C104", "Sách lỗi cơ sở dữ liệu"],
+    ["C106", "Ảnh upload bị lỗi"],
   
     ["C200", "Category không tồn tại"],
     ["C201", "Category thêm vào bị lỗi"],
@@ -113,6 +115,7 @@ export const SUCCESS_MESSAGE_CODE_EN: Map<string, string> = new Map([
     ["I101", "Book add ok"],
     ["I102", "Book update ok"],
     ["I103", "Book delete ok"],
+    ["I106", "Image upload success"],
 
     ["I201", "Category add ok"],
     ["I202", "Category update ok"],
@@ -147,6 +150,7 @@ export const SUCCESS_MESSAGE_CODE_EN: Map<string, string> = new Map([
     ["I101", "Sách thêm thành công"],
     ["I102", "Sách update thành công"],
     ["I103", "Sách xóa thành công"],
+    ["I106", "Ảnh upload thành công"],
 
     ["I201", "Category thêm thành công"],
     ["I202", "Category update thành công"],

@@ -7,7 +7,6 @@ import {
   ERR_MESSAGE_CODE_VI,
   SUCCESS_MESSAGE_CODE_VI,
 } from "../config/messageCode";
-import { ConfirmDialogComponent } from "../confirm-dialog/confirm-dialog.component";
 
 @Injectable({
   providedIn: "root",

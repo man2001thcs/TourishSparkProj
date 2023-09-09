@@ -34,7 +34,6 @@ import { StoreModule } from '@ngrx/store';
     BookUserlistComponent,
     BookUserDetailComponent,
     HeaderUserComponent,
-    BookCardComponent,
   ],
   imports: [
     CommonModule,

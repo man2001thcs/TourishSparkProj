@@ -3,11 +3,19 @@ import { RouterModule, Routes, CanLoad } from '@angular/router';
 import { CanLoadGuardAdmin } from './admin/guard/can-load.guard';
 import { CanLoadUserGuard } from './user/guard/can-load-user.guard';
 import { isAdminGuard } from './admin/guard/can-load.guard';
+import { isGuestGuard } from './guest/guard/can-load-guest.guard';
 const routes: Routes = [
   {
     path: '',
-    redirectTo: 'guest/list',
+    redirectTo: 'guest/home',
     pathMatch: 'full',
+  },
+  {
+    path: '',
+    loadChildren: () =>
+      import('./guest/guest.module/guest.module').then((m) => m.GuestModule),
+    canLoad: [isGuestGuard],
+    data :{permittedRoles:['Guest']}
   },
   {
     path: 'admin',

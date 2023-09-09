@@ -24,6 +24,9 @@ export class FileUploadComponent implements OnDestroy {
   productId?: string;
 
   @Input()
+  productType?: string;
+
+  @Input()
   requiredFileType?: string;
   @Output() public onUploadFinished = new EventEmitter();
 
@@ -51,9 +54,10 @@ export class FileUploadComponent implements OnDestroy {
     });
 
     formData.append("productId", this.productId ?? "");
+    formData.append("productType", this.productType ?? "");
 
     this.http
-      .post("/api/ImageUpload", formData, {
+      .post("/api/FileUpload", formData, {
         reportProgress: true,
         observe: "events",
       })

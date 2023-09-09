@@ -21,6 +21,7 @@
             "assets": ["src/favicon.ico", "src/assets"],
             "styles": [
               "@angular/material/prebuilt-themes/indigo-pink.css",
+              "src/default.css",
               "src/styles.css"
             ],
             "scripts": [
@@ -67,7 +68,7 @@
           },
           "options": {
             "browserTarget": "roxanne:build",
-            "proxyConfig": "src/app/proxy_config.json"
+            "proxyConfig": "src/app/proxy_config.json"           
           },
           "defaultConfiguration": "development"
         },
@@ -85,7 +86,8 @@
             "assets": ["src/favicon.ico", "src/assets"],
             "styles": [
               "@angular/material/prebuilt-themes/indigo-pink.css",
-              "src/styles.css"
+              "src/styles.css",
+              "src/default.css"
             ],
             "scripts": []
           }

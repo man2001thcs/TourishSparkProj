@@ -23,6 +23,9 @@ import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { AuthInterceptor } from './utility/user_service/http.inceptor';
 import { RouterModule } from '@angular/router';
 import {MatButtonModule} from '@angular/material/button';
+import { NbLayoutModule, NbThemeModule } from '@nebular/theme';
+import { BookCardComponent } from './utility/book-card/book-card.component';
+import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 
 @NgModule({
   declarations: [
@@ -35,9 +38,9 @@ import {MatButtonModule} from '@angular/material/button';
   imports: [
     StoreModule.forRoot({}),
     EffectsModule.forRoot([]),
+    
     BrowserModule,
     HttpClientModule,
-    GuestModule,
     AppRoutingModule,
     BrowserAnimationsModule,
     MatCardModule,
@@ -48,6 +51,7 @@ import {MatButtonModule} from '@angular/material/button';
     MatIconModule,
     MatInputModule,
     ReactiveFormsModule,
+    MatDialogModule,
 
     MatButtonModule
   ],
