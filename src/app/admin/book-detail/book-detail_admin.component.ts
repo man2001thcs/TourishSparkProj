@@ -62,6 +62,11 @@ export class BookDetailAdminComponent implements OnInit, OnDestroy {
     publisherId: "",
     pageNumber: 0,
 
+    bookSize: "",
+    bookWeight: 0,
+    coverMaterial: 0,
+    publishYear: 2000,
+
     bookStatus: {
       currentPrice: 0,
       totalSoldNumber: 0,
@@ -130,6 +135,27 @@ export class BookDetailAdminComponent implements OnInit, OnDestroy {
         this.book.pageNumber ?? 0,
         Validators.compose([Validators.required]),
       ],
+
+      bookSize: [
+        this.book.bookSize ?? 0,
+        Validators.compose([Validators.required]),
+      ],
+
+      coverMaterial: [
+        this.book.coverMaterial ?? 0,
+        Validators.compose([Validators.required]),
+      ],
+
+      publishYear: [
+        this.book.publishYear ?? 0,
+        Validators.compose([Validators.required]),
+      ],
+
+      bookWeight: [
+        this.book.bookWeight ?? 0,
+        Validators.compose([Validators.required]),
+      ],
+
       description: this.book.description,
     });
 
@@ -186,8 +212,22 @@ export class BookDetailAdminComponent implements OnInit, OnDestroy {
           this.editformGroup_info.controls["description"].setValue(
             state.description
           );
+          this.editformGroup_info.controls["bookSize"].setValue(state.bookSize);
+          this.editformGroup_info.controls["bookWeight"].setValue(
+            state.bookWeight
+          );
+          
+          this.editformGroup_info.controls["coverMaterial"].setValue(
+            state.coverMaterial
+          );
 
-          this.editformGroup_status.controls["remainNumber"].setValue(state.bookStatus.remainNumber);
+          this.editformGroup_info.controls["publishYear"].setValue(
+            state.publishYear
+          );
+
+          this.editformGroup_status.controls["remainNumber"].setValue(
+            state.bookStatus.remainNumber
+          );
           this.editformGroup_status.controls["currentPrice"].setValue(
             state.bookStatus.currentPrice
           );
@@ -260,6 +300,11 @@ export class BookDetailAdminComponent implements OnInit, OnDestroy {
       pageNumber: this.book.pageNumber,
       description: this.book.description,
       PublisherId: this.book.publisherId,
+
+      bookSize: this.book.bookSize,
+      bookWeight: this.book.bookWeight,
+      coverMaterial: this.book.coverMaterial,
+      publishYear: this.book.publishYear,
     });
   }
 
@@ -279,6 +324,11 @@ export class BookDetailAdminComponent implements OnInit, OnDestroy {
       description: this.editformGroup_info.value.description,
       pageNumber: this.editformGroup_info.value.pageNumber,
       publisherId: this.publisherSubmitString,
+
+      bookSize: this.editformGroup_info.value.bookSize,
+      bookWeight: this.editformGroup_info.value.bookWeight,
+      coverMaterial: this.editformGroup_info.value.coverMaterial,
+      publishYear: this.editformGroup_info.value.publishYear,
     };
 
     this.store.dispatch(
@@ -304,6 +354,12 @@ export class BookDetailAdminComponent implements OnInit, OnDestroy {
         payload: payload,
       })
     );
+  }
+
+  changeCoverMaterial(event: any) {
+    this.editformGroup_info.controls["coverMaterial"].setValue(event.value);
+
+    console.log(this.editformGroup_info.value.coverMaterial);
   }
 
   formSubmit_edit_voucher(): void {
@@ -396,7 +452,7 @@ export class BookDetailAdminComponent implements OnInit, OnDestroy {
     return ref.afterClosed();
   }
 
-  uploadFinished(event: any){
+  uploadFinished(event: any) {
     console.log(event);
   }
 

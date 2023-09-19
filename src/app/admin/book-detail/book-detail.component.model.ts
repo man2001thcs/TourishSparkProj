@@ -7,6 +7,11 @@ export interface Book {
   createDate?: Date;
   updateDate?: Date;
 
+  bookSize: string;
+  bookWeight: number;
+  coverMaterial: number;
+  publishYear: number;
+
   bookStatus: BookStatus;
 
   bookCategories?: Category[];
@@ -109,5 +114,10 @@ export interface BookInfoParam {
   description: string;
   createDate?: Date;
   updateDate?: Date;
+
+  bookSize: string;
+  bookWeight: number;
+  coverMaterial: number;
+  publishYear: number;
 }
 

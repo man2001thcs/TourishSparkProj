@@ -83,6 +83,53 @@
             }"
           >
           </ng-container>
+
+          <ng-container
+            [ngTemplateOutlet]="inputFormBook1"
+            [ngTemplateOutletContext]="{
+              label: 'Book size',
+              id: 'page_number',
+              form_control_name: 'bookSize',
+              type: 'text',
+              form_group: 'createformGroup'
+            }"
+          >
+          </ng-container>
+
+          <ng-container
+            [ngTemplateOutlet]="inputFormBook1"
+            [ngTemplateOutletContext]="{
+              label: 'Page number',
+              id: 'page_number',
+              form_control_name: 'bookWeight',
+              type: 'text',
+              form_group: 'createformGroup'
+            }"
+          >
+          </ng-container>
+
+          <ng-container
+            [ngTemplateOutlet]="inputFormBook1"
+            [ngTemplateOutletContext]="{
+              label: 'Publish year',
+              id: 'page_number',
+              form_control_name: 'publishYear',
+              type: 'text',
+              form_group: 'createformGroup'
+            }"
+          >
+          </ng-container>
+
+          <div class="input-group">
+            <mat-label>Cover material</mat-label>
+            <mat-radio-group
+              aria-label="Cover material"
+              (change)="changeCoverMaterial($event)"
+            >
+              <mat-radio-button value="0">Hard</mat-radio-button>
+              <mat-radio-button value="1">Soft</mat-radio-button>
+            </mat-radio-group>
+          </div>
         </div>
 
         <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6 edit-form">

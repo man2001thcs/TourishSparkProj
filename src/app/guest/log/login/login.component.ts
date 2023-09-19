@@ -1,7 +1,6 @@
 import { Component, OnInit, Inject } from "@angular/core";
 import { FormGroup, Validators } from "@angular/forms";
 import { FormBuilder } from "@angular/forms";
-import { MatDialogRef, MAT_DIALOG_DATA } from "@angular/material/dialog";
 import { UserService } from "../../../utility/user_service/user.service";
 import { HashService } from "../../../utility/user_service/hash.service";
 import { Router } from "@angular/router";
@@ -12,6 +11,7 @@ import { getLoginProfile } from "./login.store.selector";
 import * as LoginAction from "./login.store.action";
 import { TokenStorageService } from "src/app/utility/user_service/token.service";
 import { MessageService } from "src/app/utility/user_service/message.service";
+import { NbDialogRef } from "@nebular/theme";
 export interface DialogSignInData {
   title: string;
 }
@@ -31,14 +31,13 @@ export class LoginComponent implements OnInit {
 
   constructor(
     private fb: FormBuilder,
-    public dialogRef: MatDialogRef<LoginComponent>,
     private tokenStorage: TokenStorageService,
+    private dialogRef: NbDialogRef<LoginComponent>,
     private userService: UserService,
     private messageService: MessageService,
     private hash: HashService,
     private router: Router,
     private store: Store<LoginUnionActions>,
-    @Inject(MAT_DIALOG_DATA) public data: DialogSignInData
   ) {
     this.getLoginProfile = this.store.select(getLoginProfile);
   }
@@ -80,7 +79,7 @@ export class LoginComponent implements OnInit {
                 console.log(response);
                 this.onNoClick();
                 if (response.Role === "User") {
-                  this.router.navigate(["/user/list"]);
+                  this.router.navigate(["/user/home"]);
                 } else if (response.Role === "Admin") {
                   this.router.navigate(["/admin/book/list"]);
                 }

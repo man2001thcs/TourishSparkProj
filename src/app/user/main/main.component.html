@@ -1,7 +1,12 @@
+<nb-layout>
+  <nb-layout-header fixed>
+    <app-header></app-header>
+  </nb-layout-header>
 
-<app-user-header></app-user-header>
-
-<div class="container">
-    
-<router-outlet></router-outlet>
-</div>
+  <nb-layout-column>
+    <div class="container-fluid" style="width: 100%">
+        <router-outlet></router-outlet>
+      </div>
+  </nb-layout-column>
+  
+</nb-layout>

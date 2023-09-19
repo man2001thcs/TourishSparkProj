@@ -1,10 +1,15 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Routes } from '@angular/router';
-import { BookUserlistComponent } from '../booklist/book-user-list.component';
-import { BookUserDetailComponent } from '../book-detail/book-user-detail.component';
+
 import { MainUserComponent } from '../main/main.user.component';
 import { RouterModule } from '@angular/router';
+import { BookDetailComponent } from '../book-detail/book-detail.component';
+import { HomeComponent } from '../home/home.component';
+import { SearchComponent } from '../search/search.component';
+import { SearchResolver } from '../resolver/search.resolver';
+import { CartComponent } from '../cart/cart.component';
+
 
 const routes: Routes = [
   {
@@ -12,12 +17,23 @@ const routes: Routes = [
     component: MainUserComponent, // <== this is an array, we can have multiple guards
     children: [
       {
-        path: 'list',
-        component: BookUserlistComponent,
+        path: 'detail/:id',
+        component: BookDetailComponent,
       },
       {
-        path: 'detail/:id',
-        component: BookUserDetailComponent,
+        path: "home",
+        component: HomeComponent,
+      },
+      {
+        path: "cart",
+        component: CartComponent,
+      },
+      {
+        path: "search",
+        component: SearchComponent,
+        resolve: {
+          data: SearchResolver, // <== key: value (service or Dependency injection token)
+        },
       },
     ],
   },

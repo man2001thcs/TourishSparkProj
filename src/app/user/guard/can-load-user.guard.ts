@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { CanLoad, Route, UrlSegment, UrlTree } from '@angular/router';
+import { CanLoad, Route, Router, UrlSegment, UrlTree } from '@angular/router';
 import { Observable } from 'rxjs';
 import { TokenStorageService } from 'src/app/utility/user_service/token.service';
 import { UserService } from 'src/app/utility/user_service/user.service';
@@ -7,7 +7,7 @@ import { UserService } from 'src/app/utility/user_service/user.service';
   providedIn: 'root',
 })
 export class CanLoadUserGuard implements CanLoad {
-  constructor(private tokenService: TokenStorageService) {}
+  constructor(private tokenService: TokenStorageService, private router: Router) {}
   canLoad(
     route: Route,
     segments: UrlSegment[]
@@ -16,10 +16,17 @@ export class CanLoadUserGuard implements CanLoad {
     | Promise<boolean | UrlTree>
     | boolean
     | UrlTree {
-    let user = this.tokenService.getUser();
+      let roles = route.data?.["permittedRoles"] as Array<string>;
+      console.log(roles);
+  
+      if (roles) {
+        if (this.tokenService.getUserRole() === roles[0]) return true;
+        else {
+          this.router.navigate(["/forbidden"]);
+          return false;
+        }
+      }
 
-    if (user.Role === 1) {
       return true;
-    } else return false;
   }
 }

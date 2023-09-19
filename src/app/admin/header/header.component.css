@@ -4,7 +4,7 @@
 }
 
 .container-fluid {
-  padding: 0.5% 11% 1%;
+  padding: 0.5% 14% 1%;
   background-color: #282c34 !important;
   opacity: 0.95;
   margin-left: 0;
@@ -74,13 +74,13 @@ ul li a:hover {
 }
 
 #avatar:hover {
-  width: 50px !important;
-  height: 50px !important;
+  width: 60px !important;
+  height: 60px !important;
   border-radius: 100% !important;
   position: absolute;
   border: 3px solid rgb(15, 116, 45);
   top: -8px;
-  right: 24px;
+  right: 20px;
 }
 
 button#dropdownBasic1 {

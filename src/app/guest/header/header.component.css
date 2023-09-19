@@ -12,7 +12,7 @@
   justify-content: center !important;
   align-items: center !important;
 
-  opacity: 0.95;
+  opacity: 1;
   margin-left: 0;
   margin-right: 0 !important;
   top: 0;
@@ -60,4 +60,89 @@ img.img-logo {
 img.img-logo {
   max-width: 50px;
   max-height: 50px;
+}
+
+.sidenav {
+  height: 0%;
+  width: 70%;
+  position: fixed;
+  z-index: 1;
+  top: 50px;
+  background-color: #FFFFFF;
+  overflow-y: hidden;
+  transition: 0.5s;
+  flex-direction: column;
+
+  display: flex;
+
+  opacity: 1;
+
+  margin-top: 10px;
+
+  justify-content: center;
+  align-items: center;
+
+  border-end-end-radius: 20px;
+  border-bottom-left-radius: 20px;
+}
+
+.sidenav .sideNavContent{
+  flex-direction: row;
+  display: flex;
+}
+
+.autocomplete-search {
+  height: 0%;
+  width: 70%;
+  position: absolute;
+  z-index: 1;
+  top: 50px;
+  background-color: #FFFFFF;
+  overflow-y: hidden;
+  transition: 0.5s;
+  flex-direction: column;
+
+  display: flex;
+
+  opacity: 1;
+
+  margin-top: 10px;
+
+  justify-content: center;
+  align-items: center;
+
+  border-end-end-radius: 20px;
+  border-bottom-left-radius: 20px;
+}
+
+.autocomplete-search .searchContent{
+  flex-direction: row;
+  display: flex;
+}
+
+.sidenav a {
+  padding: 8px 8px 8px 32px;
+  text-decoration: none;
+  font-size: 25px;
+  color: #727889;
+  display: block;
+  transition: 0.3s;
+
+}
+
+.sidenav a:hover {
+  color: #f1f1f1;
+}
+
+.sidenav .closebtn {
+  position: absolute;
+  top: 0;
+  right: 25px;
+  font-size: 36px;
+  margin-left: 50px;
+}
+
+@media screen and (max-height: 450px) {
+  .sidenav {padding-top: 15px;}
+  .sidenav a {font-size: 18px;}
 }

@@ -95,15 +95,7 @@ export class CategoryDetailComponent
         if (state) {
           this.category = state;
           this.editformGroup_info.controls["name"].setValue(state.name);
-          this.editformGroup_info.controls["email"].setValue(
-            state.email
-          );
-          this.editformGroup_info.controls["address"].setValue(
-            state.address
-          );
-          this.editformGroup_info.controls["phoneNumber"].setValue(
-            state.phoneNumber
-          );
+      
           this.editformGroup_info.controls["description"].setValue(
             state.description
           );

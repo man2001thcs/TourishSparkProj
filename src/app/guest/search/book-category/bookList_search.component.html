@@ -1,0 +1,37 @@
+<nb-card status="{{ titleColor }}">
+  <nb-card-header>
+    <h4 style="font-size: 16px; color: black">
+      Lọc theo: {{ title }}
+      <nb-card
+        *ngIf="isLoading"
+        [nbSpinner]="isLoading"
+        nbSpinnerSize="medium"
+        nbSpinnerStatus="primary"
+      >
+        <nb-card-body> Đang tải </nb-card-body>
+      </nb-card>
+    </h4></nb-card-header
+  >
+
+  <div class="container-fluid">
+    <app-book-card
+      *ngFor="let book of bookList"
+      [id]="book.id ?? ''"
+      [name]="book.title"
+      [totalSoldInMonth]="book.bookStatus.soldNumberInMonth"
+      [remainNumber]="book.bookStatus.remainNumber"
+      [currentPrice]="book.bookStatus.currentPrice"
+      [cardType]="'normal'"
+      [discountFloat]="getDiscountFloat(book)"
+    ></app-book-card>
+
+    <h6 *ngIf="isEmpty">Không có sản phẩm thích hợp</h6>
+  </div>
+  <div class="container-fluid" style="padding-top: 0 !important">
+    <ngb-pagination
+      [(page)]="pageIndex"
+      [pageSize]="pageSize"
+      [collectionSize]="pageSize"
+    ></ngb-pagination>
+  </div>
+</nb-card>

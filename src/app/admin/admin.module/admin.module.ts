@@ -8,6 +8,7 @@ import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatSortModule } from '@angular/material/sort';
 import { MatInputModule } from '@angular/material/input';
 import { ReactiveFormsModule } from '@angular/forms';
+import {MatRadioModule} from '@angular/material/radio';
 import { MatDialogModule } from '@angular/material/dialog';
 import { HeaderAdminComponent } from '../header/header.admin.component';
 import { MatMenuModule } from '@angular/material/menu';
@@ -80,6 +81,9 @@ import { reducer as PublisherCreateReducer } from '../publisher-create/publisher
 import { storeKey as NotificationListStoreKey } from '../notification-list/notificationList.store.action';
 import { reducer as  NotificationListReducer } from '../notification-list/notificationList.store.reducer';
 
+import { storeKey as ImageListStoreKey } from '../../utility/image_service/imageUpload.store.action';
+import { reducer as  ImageListReducer } from '../../utility/image_service/imageUpload.store.reducer';
+
 import { BookCreateAdminComponent } from '../book-create/book-create_admin.component';
 //
 import { CategoryListAdminComponent } from '../category_list/categoryList_admin.component';
@@ -134,6 +138,8 @@ import { BookDetailEffects } from '../book-detail/book-detail.store.effect';
 import { FileUploadComponent } from 'src/app/utility/image_service/imageUpload.component';
 import { ChatComponent } from 'src/app/utility/chatUI/chat.component';
 import { NbChatModule } from '@nebular/theme';
+import { MatCardModule } from '@angular/material/card';
+import { ImageListEffects } from 'src/app/utility/image_service/imageUpload.store.effect';
 
 @NgModule({
   declarations: [
@@ -185,10 +191,12 @@ import { NbChatModule } from '@nebular/theme';
     ReactiveFormsModule,
     MatDialogModule,
     MatAutocompleteModule,
+    MatRadioModule,
     MatChipsModule,
     MatFormFieldModule,
     MatIconModule,
     MatButtonModule,
+    MatCardModule,
     NgbDropdownModule,
 
     NbChatModule,
@@ -219,6 +227,7 @@ import { NbChatModule } from '@nebular/theme';
     StoreModule.forFeature(CategoryAutocompleteStoreKey, CategoryAutocompleteReducer),
 
     StoreModule.forFeature(NotificationListStoreKey, NotificationListReducer),
+    StoreModule.forFeature(ImageListStoreKey, ImageListReducer),
 
     EffectsModule.forFeature([BookCreateEffects]),
     EffectsModule.forFeature([BookListEffects]),
@@ -246,6 +255,7 @@ import { NbChatModule } from '@nebular/theme';
     EffectsModule.forFeature([AuthorAutoCompleteListEffects ]),  
 
     EffectsModule.forFeature([NotificationListEffects]), 
+    EffectsModule.forFeature([ImageListEffects]), 
   ],
   
 })

@@ -5,10 +5,17 @@
   background: url(https://media4.giphy.com/media/BHNfhgU63qrks/giphy.gif) center
     center no-repeat;
   background-size: 100% 100%;
-  padding: 10px 20px 10px;
+  padding: 10px 50px 10px;
   height: 420px;
-  width: 290px;
+  width: 320px;
 }
+
+.signInForm input {
+  font-weight: 700 !important;
+  line-height: 1rem !important;
+  padding: 0.9375rem 0.5rem !important;
+}
+
 .mat .signInForm .signInAction {
   justify-content: center;
   align-items: "center";
@@ -23,9 +30,9 @@
 .input-full-width {
   width: 100%;
 }
- h3.error-message {
+h3.error-message {
   font-size: 14px !important;
-  color: whitesmoke; 
+  color: whitesmoke;
   word-wrap: break-word;
   padding: 0px 12px 0px;
- }
+}

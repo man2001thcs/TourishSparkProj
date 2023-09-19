@@ -43,6 +43,7 @@ export class BookCreateAdminComponent
   isEditing: boolean = true;
   isSubmitting: boolean = false;
 
+  coverMaterial = 0;
   this_announce = "";
 
   createformGroup!: FormGroup;
@@ -105,6 +106,11 @@ export class BookCreateAdminComponent
       totalSoldNumber: 0,
       remainNumber: 0,
       currentPrice: 0,
+
+      bookSize: "",
+      bookWeight: 0,
+      coverMaterial: 0,
+      publishYear: 2000,
     });
 
     this.subscriptions.push(
@@ -148,6 +154,11 @@ export class BookCreateAdminComponent
           pageNumber: this.createformGroup.value.pageNumber,
           PublisherId: this.publisherSubmitString,
 
+          bookSize: this.createformGroup.value.bookSize,
+          bookWeight: this.createformGroup.value. bookWeight,
+          coverMaterial: this.createformGroup.value.coverMaterial,
+          publishYear: this.createformGroup.value.publishYear,
+
           soldNumberInMonth: this.createformGroup.value.soldNumberInMonth,
           totalSoldNumber: this.createformGroup.value.totalSoldNumber,
           remainNumber: this.createformGroup.value.remainNumber,
@@ -170,6 +181,11 @@ export class BookCreateAdminComponent
       pageNumber: 0,
       description: "",
       PublisherId: "",
+
+      bookSize: "",
+      bookWeight: 0,
+      coverMaterial: 0,
+      publishYear: 2000,
 
       soldNumberInMonth: this.createformGroup.value.soldNumberInMonth,
       totalSoldNumber: this.createformGroup.value.totalSoldNumber,
@@ -199,6 +215,16 @@ export class BookCreateAdminComponent
     });
     return ref.afterClosed();
   }
+
+  changeCoverMaterial(event: any) {
+   
+    this.createformGroup.controls["coverMaterial"].setValue(
+      event.value
+    );
+
+    console.log(this.createformGroup.value.coverMaterial);
+  }
+
 
   checkDeactivate(
     currentRoute: ActivatedRouteSnapshot,

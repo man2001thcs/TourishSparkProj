@@ -38,6 +38,7 @@
               </mat-error>
             </div>
           </ng-template>
+
           <ng-container
             [ngTemplateOutlet]="inputFormBook1"
             [ngTemplateOutletContext]="{
@@ -60,15 +61,62 @@
             }"
           >
           </ng-container>
+
+          <ng-container
+            [ngTemplateOutlet]="inputFormBook1"
+            [ngTemplateOutletContext]="{
+              label: 'Book size',
+              id: 'book_size',
+              form_control_name: 'bookSize',
+              type: 'text',
+              form_group: 'editformGroup_info'
+            }"
+          >
+          </ng-container>
+
+          <ng-container
+            [ngTemplateOutlet]="inputFormBook1"
+            [ngTemplateOutletContext]="{
+              label: 'Book weight',
+              id: 'book_weight',
+              form_control_name: 'bookWeight',
+              type: 'text',
+              form_group: 'editformGroup_info'
+            }"
+          >
+          </ng-container>
         </div>
 
         <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6 edit-form">
+          <ng-container
+            [ngTemplateOutlet]="inputFormBook1"
+            [ngTemplateOutletContext]="{
+              label: 'Publish year',
+              id: 'publish_year',
+              form_control_name: 'publishYear',
+              type: 'text',
+              form_group: 'editformGroup_info'
+            }"
+          >
+          </ng-container>
+
           <h3 mat-form-label style="font-weight: bold">Nhà xuất bản</h3>
           <publisher-multiselect-autocomplete
             [data_selected]="publisher_list"
             (result)="selectChange_publisher($event)"
           >
           </publisher-multiselect-autocomplete>
+        </div>
+
+        <div class="input-group">
+          <mat-label>Cover material</mat-label>
+          <mat-radio-group
+            aria-label="Cover material"
+            (change)="changeCoverMaterial($event)"
+          >
+            <mat-radio-button value="0" [checked]="editformGroup_info.value.coverMaterial === 0">Hard</mat-radio-button>
+            <mat-radio-button value="1" [checked]="editformGroup_info.value.coverMaterial === 1">Soft</mat-radio-button>
+          </mat-radio-group>
         </div>
       </div>
 
@@ -222,7 +270,7 @@
         </div>
       </div>
 
-      <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6" style=" margin-top: 10px">
+      <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6" style="margin-top: 10px">
         <h3 mat-form-label style="font-weight: bold">Tác giả</h3>
         <author-multiselect-autocomplete
           [data_selected]="author_list"
@@ -283,7 +331,12 @@
 
     <div class="row">
       <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
-        <file-upload [productId]="bookId" [productType]="'book'" (onUploadFinished)="uploadFinished($event)"></file-upload>
+        <h3 mat-form-label style="font-weight: bold">Image</h3>
+        <file-upload
+          [productId]="bookId"
+          [productType]="1"
+          (onUploadFinished)="uploadFinished($event)"
+        ></file-upload>
       </div>
       <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
         <h3 mat-form-label style="font-weight: bold">Voucher</h3>

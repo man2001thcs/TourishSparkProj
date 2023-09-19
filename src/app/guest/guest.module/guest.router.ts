@@ -7,6 +7,8 @@ import { MainComponent } from "../main/main.component";
 import { RouterModule } from "@angular/router";
 import { BookListSaleComponent } from "../home/book-sale/bookList_sale.component";
 import { HomeComponent } from "../home/home.component";
+import { SearchComponent } from "../search/search.component";
+import { SearchResolver } from "../resolver/search.resolver";
 
 const routes: Routes = [
   {
@@ -16,6 +18,13 @@ const routes: Routes = [
       {
         path: "home",
         component: HomeComponent,
+      },
+      {
+        path: "search",
+        component: SearchComponent,
+        resolve: {
+          data: SearchResolver, // <== key: value (service or Dependency injection token)
+        },
       },
       {
         path: "list",

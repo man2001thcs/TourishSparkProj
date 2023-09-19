@@ -27,6 +27,22 @@ import { NbLayoutModule, NbThemeModule } from '@nebular/theme';
 import { BookCardComponent } from './utility/book-card/book-card.component';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 
+import {
+  NbButtonModule,
+  NbCardModule,
+  NbCheckboxModule,
+  NbDialogModule,
+  NbIconModule,
+  NbInputModule,
+  NbPopoverModule,
+  NbProgressBarModule,
+  NbRadioModule,
+  NbSidebarModule,
+  NbSpinnerModule,
+  NbTabsetModule,
+  NbTagModule,
+} from "@nebular/theme";
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -34,10 +50,25 @@ import { MatDialog, MatDialogModule } from '@angular/material/dialog';
     AuthorTagDynamicComponent,
     NotifyDialogComponent,
     FailNotifyDialogComponent,
+
   ],
   imports: [
     StoreModule.forRoot({}),
     EffectsModule.forRoot([]),
+
+    NbInputModule,
+    NbCardModule,
+    NbLayoutModule,
+    NbTagModule,
+    NbTabsetModule,
+    NbSpinnerModule,
+    NbRadioModule,
+    NbCheckboxModule,
+
+    NbPopoverModule,
+    NbButtonModule,
+    NbIconModule,
+    NbProgressBarModule,
     
     BrowserModule,
     HttpClientModule,

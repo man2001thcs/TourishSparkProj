@@ -1,0 +1,37 @@
+.nb-theme-default nb-layout-header nav {
+    height: fit-content !important;
+}
+
+.nb-theme-default nb-sidebar {
+    margin-top: 100px !important;
+    padding-top: 40px;
+}
+.nb-theme-default nb-layout-column {
+    padding-top: 0 !important;
+}
+
+.container-fluid-search {
+    display: flex;
+    flex-direction: column !important;
+    background-color: white;
+
+    min-width: 320px;
+
+    margin-right: 20px !important;
+  
+    flex-wrap: wrap;
+  
+    opacity: 0.95;
+    margin-left: 0;
+    top: 0;
+  
+    padding: 10px 20px 10px;
+  
+    border: 0.2px solid rgb(184, 183, 183);
+    border-radius: 1%;
+  }
+
+  hr.solid {
+    border-top: 2px solid #a3a2a2;
+    width: 100%;
+  }

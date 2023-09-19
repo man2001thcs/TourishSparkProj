@@ -1,257 +1,87 @@
-@import url("https://fonts.googleapis.com/css?family=Fjalla+One|Montserrat:300,400,700,800|Open+Sans:300");
+.container-fluid {
+  display: flex;
+  flex-direction: row !important;
+  background-color: white;
 
-*,
-*::before,
-*::after {
-    box-sizing: border-box;
+  flex-wrap: wrap;
+
+  opacity: 0.95;
+  margin-left: 0;
+  margin-right: 0 !important;
+  top: 0;
+
+  align-items: center;
+
+  padding-bottom: 40px;
+
+  padding-top: 40px;
+
+  border: 0.2px solid rgb(184, 183, 183);
+  border-radius: 1%;
 }
 
-.card {
-    padding: 40px 25px 40px;
-    box-shadow: 0 6px 6px rgba(0, 0, 0, 0.1);
-    transition: 200ms;
-    background: #fff;
-    border-radius: 10px;
-    display: block;
-    height: fit-content;
-}
-
-.card .card__title {
+.container-fluid-info {
     display: flex;
-    align-items: center;
-    padding: 30px 40px;
-}
-
-.card .card__title h3 {
-    flex: 0 1 200px;
-    text-align: right;
-    margin: 0;
-    color: #252525;
-    font-family: sans-serif;
-    font-weight: 600;
-    font-size: 20px;
-    text-transform: uppercase;
-}
-
-.card .card__title .icon {
-    flex: 1 0 10px;
-    background: #115dd8;
-    color: #fff;
-    padding: 10px 10px;
-    transition: 200ms;
-}
-
-.card .card__title .icon>a {
-    color: #fff;
-}
-
-.card .card__title .icon:hover {
-    background: #252525;
-}
-
-.card .card__body {
-    padding: 0 40px;
-    display: flex;
-    flex-flow: row no-wrap;
-    margin-bottom: 25px;
-}
-
-.card .card__below {
-    padding: 0 40px;
-    display: flex;
-    margin-bottom: 25px;
-}
-
-.card .card__body>.half {
-    box-sizing: border-box;
-    padding: 0 15px;
-    flex: 1 0 30%;
-}
-
-.card .card__below>.full {
-    box-sizing: border-box;
-    padding: 0 15px;
-}
-
-.card .card__body .featured_text h2 {
-    margin: 0;
-    padding: 0;
-    font-weight: 800;
-    font-family: "Montserrat", sans-serif;
-    font-size: 30px;
-    line-height: 50px;
-    color: #1c3f7c;
-}
-
-.card .card__body .featured_text h3 {
-    margin: 0;
-    padding: 0;
-    font-weight: 600;
-    font-family: "Montserrat", sans-serif;
-    font-size: 20px;
-    line-height: 50px;
-    color: #1c3f7c;
-}
-
-.card .card__body .featured_text span {
-    margin: 0;
-    padding: 0;
-    font-weight: lighter;
-    font-style: italic;
-    font-family: "Montserrat", sans-serif;
-    font-size: 30px;
-    line-height: 50px;
-    color: #1b212d;
-}
-
-.card .card__body .featured_text p {
-    margin: 0;
-    padding: 0;
-}
-
-.card .card__body .featured_text p.sub {
-    font-family: "Montserrat", sans-serif;
-    font-size: 26px;
-    text-transform: uppercase;
-    color: #686e77;
-    font-weight: 300;
-    margin-bottom: 5px;
-}
-
-.card .card__body .featured_text p.type_s {
-    font-family: sans-serif;
-    color: #252525;
-    font-size: 26px;
-}
-
-.card .card__body .image {
-    padding-top: 15px;
-    width: 50%;
-}
-
-.card .card__body .image img {
-    display: block;
-    max-width: 100%;
-    height: auto;
-}
-
-.card .card__body .description {
-    margin-bottom: 25px;
-    width: fit-content;
-}
-
-.card .card__body .description h2 {
-    font-weight: bolder;
-    margin-bottom: 10px;
-}
-
-.card .card__body .description p {
-    margin: 0;
-    font-family: "Open Sans", sans-serif;
-    font-weight: 300;
-    line-height: 27px;
-    width: 100%;
-    font-size: 16px;
-    color: #555;
-}
-
-.card .card__body span.stock {
-    font-family: "Montserrat", sans-serif;
-    font-weight: 600;
-    color: #a1cc16;
-}
-
-.card .card__body .reviews .stars {
-    display: inline-block;
-    list-style: none;
-    padding: 0;
-}
-
-.card .card__body .reviews .stars>li {
-    display: inline-block;
-}
-
-.card .card__body .reviews .stars>li .fa {
-    color: #f7c01b;
-}
-
-.card .card__body .reviews>span {
-    font-family: "Open Sans", sans-serif;
-    font-size: 14px;
-    margin-left: 5px;
-    color: #555;
-}
-
-.card .card__footer {
-    padding: 30px 40px;
-    display: flex;
-    flex-flow: row no-wrap;
-    align-items: center;
-    position: relative;
-}
-
-.card .card__footer::before {
-    content: "";
-    position: absolute;
-    display: block;
+    flex-direction: row !important;
+    background-color: white;
+  
+    flex-wrap: wrap;
+  
+    opacity: 0.95;
+    margin-left: 0;
+    margin-right: 0 !important;
     top: 0;
-    left: 40px;
-    width: calc(100% - 40px);
-    height: 3px;
-    background: #115dd8;
-    background: linear-gradient(to right, #115dd8 0%, #115dd8 20%, #ddd 20%, #ddd 100%);
+  
+    align-items: center;
+  
+    padding: 10px 20px 10px;
+  
+    border: 0.2px solid rgb(184, 183, 183);
+    border-radius: 1%;
+  }
+
+.column {
+  float: left;
+  width: 50%;
+  padding: 10px;
 }
 
-.card .card__footer .recommend {
-    flex: 1 0 10px;
+/* Clear floats after the columns */
+.row:after {
+  content: "";
+  display: table;
+  clear: both;
 }
 
-.card .card__footer .recommend p {
-    margin: 0;
-    font-family: "Montserrat", sans-serif;
-    text-transform: uppercase;
-    font-weight: 600;
-    font-size: 14px;
-    color: #555;
+.product-image {
+  display: block !important;
+  height: fit-content;
+  width: 500px !important;
 }
 
-.card .card__footer .recommend h3 {
-    margin: 0;
-    font-size: 20px;
-    font-family: "Montserrat", sans-serif;
-    font-weight: 600;
-    text-transform: uppercase;
-    color: #115dd8;
+.product-image img {
+  display: block;
+  height: fit-content;
+  width: 500px;
 }
 
-.card .card__footer .action button.active {
-    cursor: pointer;
-    border: 1px solid #115dd8;
-    padding: 14px 30px;
-    border-radius: 200px;
-    color: #fff;
-    background: #115dd8;
-    font-family: "Open Sans", sans-serif;
-    font-size: 16px;
-    transition: 200ms;
+.product-panel {
+  display: block;
+  flex-grow: 1;
 }
 
-.card .card__footer .action button.non_active {
-    cursor: pointer;
-    border: 1px solid #5d7aaa;
-    padding: 14px 30px;
-    border-radius: 200px;
-    color: #fff;
-    background: #5f96ec;
-    font-family: "Open Sans", sans-serif;
-    font-size: 16px;
-    transition: 200ms;
+.example-card p#price {
+  font-weight: bold;
+  color: red !important;
 }
 
-.card .card__footer .action button.active:hover {
-    background: #fff;
-    color: #115dd8;
+.example-card p#price_discount {
+  font-weight: bold;
+  text-decoration: line-through;
+  color: gray !important;
 }
 
-
-/*# sourceMappingURL=index.css.map */
+p.nl2br {
+    padding: 10px;
+    white-space: pre-line;
+  }

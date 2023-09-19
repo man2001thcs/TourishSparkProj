@@ -1,17 +1,24 @@
-import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Injectable } from '@angular/core';
-import { MessageService } from './message.service';
+import { HttpClient, HttpHeaders } from "@angular/common/http";
+import { Injectable } from "@angular/core";
+import { MessageService } from "./message.service";
 
-const TOKEN_KEY = 'auth-token';
-const REFRESHTOKEN_KEY = 'auth-refreshtoken';
-const USER_KEY = 'auth-user';
+const TOKEN_KEY = "auth-token";
+const REFRESHTOKEN_KEY = "auth-refreshtoken";
+const USER_KEY = "auth-user";
+const CART_KEY = "auth-user-cart";
 
 const httpOptions = {
-  headers: new HttpHeaders({ 'Content-Type': 'application/json' })
+  headers: new HttpHeaders({ "Content-Type": "application/json" }),
 };
 
+interface CartItem {
+  id: string;
+  type: number;
+  quantity: number;
+}
+
 @Injectable({
-  providedIn: 'root',
+  providedIn: "root",
 })
 export class TokenStorageService {
   constructor(private http: HttpClient) {}
@@ -46,12 +53,70 @@ export class TokenStorageService {
   public saveUser(user: any): void {
     window.sessionStorage.removeItem(USER_KEY);
     window.sessionStorage.setItem(USER_KEY, JSON.stringify(user));
+
+    window.sessionStorage.setItem(CART_KEY, JSON.stringify([]));
   }
 
   public getUser(): any {
     const user = window.sessionStorage.getItem(USER_KEY);
     if (user) {
       return JSON.parse(user);
+    }
+    return {};
+  }
+
+  public saveCart(singleReceipt: CartItem): void {
+    const cartString = window.sessionStorage.getItem(CART_KEY);
+    window.sessionStorage.removeItem(CART_KEY);
+    let cartArray: Array<CartItem> = [];
+
+    if (cartString) {
+      cartArray = JSON.parse(cartString);
+
+      let isExist = cartArray.findIndex((element: any) => {
+        return element.id === singleReceipt.id;
+      });
+
+      if (isExist > -1) {
+        cartArray[isExist].quantity += singleReceipt.quantity;
+      } else {
+        cartArray.push(singleReceipt);
+      }
+    }
+
+    window.sessionStorage.setItem(CART_KEY, JSON.stringify(cartArray));
+  }
+
+  public removeCart(singleReceipt: CartItem): void {
+    const cartString = window.sessionStorage.getItem(CART_KEY);
+    window.sessionStorage.removeItem(CART_KEY);
+    let cartArray: Array<CartItem> = [];
+
+    if (cartString) {
+      cartArray = JSON.parse(cartString);
+
+      let isExist = cartArray.findIndex((element: any) => {
+        return element.id === singleReceipt.id;
+      });
+
+      if (isExist > -1) {
+        cartArray.splice(isExist, 1);
+      }
+    }
+
+    window.sessionStorage.setItem(CART_KEY, JSON.stringify(cartArray));
+  }
+
+  public removeAllCart(): void {
+    window.sessionStorage.removeItem(CART_KEY);
+
+    window.sessionStorage.setItem(CART_KEY, JSON.stringify([]));
+  }
+
+  public getCart(): any {
+    const cart = window.sessionStorage.getItem(CART_KEY);
+    if (cart) {
+      return JSON.parse(cart);
     }
     return {};
   }
@@ -65,10 +130,14 @@ export class TokenStorageService {
   }
 
   refreshToken(accessToken: string, refreshToken: string) {
-    return this.http.post('/api/User/RenewToken', {
-      accessToken: accessToken,
-      refreshToken: refreshToken
-    }, httpOptions);
+    return this.http.post(
+      "/api/User/RenewToken",
+      {
+        accessToken: accessToken,
+        refreshToken: refreshToken,
+      },
+      httpOptions
+    );
   }
 
   // public roleMatch(allowedRoles): boolean {

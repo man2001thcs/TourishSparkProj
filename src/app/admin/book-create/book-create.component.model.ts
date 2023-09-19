@@ -3,6 +3,10 @@ export interface Book {
   publisherId: string;
   title: string;
   pageNumber: string;
+  bookSize: string;
+  bookWeight: number;
+  coverMaterial: number;
+  publishYear: number;
   description: string;
   createDate?: Date;
   updateDate?: Date;

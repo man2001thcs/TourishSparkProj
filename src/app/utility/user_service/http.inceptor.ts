@@ -121,7 +121,7 @@ export class AuthInterceptor implements HttpInterceptor {
 
               this.messageService.openFailNotifyDialog("Phiên đăng nhập đã hết hiệu lực").subscribe(() => {
                 setTimeout(() => {
-                  this.router.navigate(["/guest/list"]);
+                  this.router.navigate(["/guest/home"]);
                 }, 1000);
               });
 
