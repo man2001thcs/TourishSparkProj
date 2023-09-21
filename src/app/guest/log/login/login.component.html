@@ -1,18 +1,15 @@
-<link
-  rel="stylesheet"
-  href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css"
-/>
-
-<nb-card class="signInForm" size="large">
-  <nb-card-header>
-    <h2 style="color: whitesmoke">Đăng nhập</h2>
-    <h3 class="error-message">{{ errorMessage }}</h3></nb-card-header
-  >
+<nb-card class="signInForm" size="medium" style="width: fit-content;">
+  <nb-card-header style="justify-content: center">
+    <h2 style="color: whitesmoke; font-size: 24px">Đăng nhập</h2>
+    <h3 class="error-message">{{ errorMessage }}</h3>
+  </nb-card-header>
 
   <form (ngSubmit)="formSubmit()" [formGroup]="signInformGroup">
     <nb-card-body>
-      <div class="row" style="margin-bottom: 20px;">
-        <h3 style="color: whitesmoke">Tài khoản</h3>
+      <div class="row" style="margin-bottom: 20px">
+        <h3 style="color: whitesmoke; font-size: 16px; margin-bottom: 0">
+          Tài khoản
+        </h3>
         <input
           nbInput
           fullWidth
@@ -26,7 +23,9 @@
         />
       </div>
       <div class="row">
-        <h3 style="color: whitesmoke">Mật khẩu</h3>
+        <h3 style="color: whitesmoke; font-size: 16px; margin-bottom: 0">
+          Mật khẩu
+        </h3>
         <input
           nbInput
           fullWidth
@@ -43,10 +42,16 @@
     <nb-card-footer>
       <div class="signInAction">
         <button nbButton type="submit" id="sign_in" status="success">
-          <span>Đăng nhập</span>
+          Đăng nhập
         </button>
-        <button type="button" color="accent" id="escape" (click)="onNoClick()">
-          <span>Thoát</span>
+        <button
+          nbButton
+          type="button"
+          color="accent"
+          id="escape"
+          (click)="onNoClick()"
+        >
+          Thoát
         </button>
       </div></nb-card-footer
     >

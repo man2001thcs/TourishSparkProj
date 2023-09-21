@@ -7,8 +7,8 @@
     "start": "ng serve --proxy-config src/app/proxy_config.json",
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
-    "predeploy": "ng build",
-    "deploy": "gh-pages -d build",
+    "predeploy": "ng build --configuration production --base-href https://man2001thcs.github.io/AngularBookStore/",
+    "deploy": "ng build --configuration production --base-href=/AngularBookStore/",
     "test": "ng test"
   },
   "private": true,

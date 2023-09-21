@@ -3,6 +3,7 @@ import {
   ElementRef,
   HostListener,
   OnInit,
+  TemplateRef,
   ViewChild,
 } from "@angular/core";
 import { MatDialog } from "@angular/material/dialog";
@@ -13,6 +14,7 @@ import { NbDialogService } from "@nebular/theme";
 import { Observable, Subscription, debounceTime } from "rxjs";
 import { UserService } from "src/app/utility/user_service/user.service";
 import { Author, Book } from "../book-detail/book-detail.component.model";
+import { FailNotifyDialogComponent } from "src/app/utility/notification_user/fail-notify-dialog.component";
 @Component({
   selector: "app-header",
   templateUrl: "./header.component.html",
@@ -43,7 +45,6 @@ export class HeaderComponent implements OnInit {
   bookList: Book[] = [];
 
   constructor(
-    private dialog: MatDialog,
     private dialogService: NbDialogService,
     private _elementRef: ElementRef,
     private _api: UserService
@@ -98,6 +99,14 @@ export class HeaderComponent implements OnInit {
 
   //   return ref.afterClosed();
   // }
+
+  openCart() {
+    this.dialogService
+      .open(FailNotifyDialogComponent, {
+        context: { title: 'Lưu ý', content: "Vui lòng đăng nhập để vào giỏ hàng"},
+      })
+      .onClose.subscribe((result) => this.openDialog());
+  }
 
   openDialog() {
     this.dialogService

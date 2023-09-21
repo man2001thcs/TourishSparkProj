@@ -14,6 +14,8 @@ import { TokenStorageService } from "./token.service";
 import { UserService } from "./user.service";
 import { MessageService } from "./message.service";
 
+import { environment } from "src/environments/environment";
+
 const TOKEN_HEADER_KEY = "Authorization";
 
 @Injectable({
@@ -145,7 +147,9 @@ export class AuthInterceptor implements HttpInterceptor {
   }
 
   private addTokenHeader(request: HttpRequest<any>, token: string) {
+    request.url
     return request.clone({
+      url: environment.backend.baseURL + request.url,
       headers: request.headers.append(TOKEN_HEADER_KEY, "Bearer " + token),
     });
   }

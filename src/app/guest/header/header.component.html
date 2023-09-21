@@ -68,18 +68,19 @@
     ></i>
   </button>
 
-  <ng-template #userLogRef>
-    <button nbButton (click)="openDialog()">Đăng nhập</button>
-    <button nbButton>Đăng kí</button>
-  </ng-template>
-
   <button nbButton ghost status="primary">
     <i
+      (click)="openCart()"
       class="fa fa-shopping-cart"
       style="font-size: 22px; color: rgb(105, 104, 104)"
       aria-hidden="true"
     ></i>
   </button>
+
+  <ng-template #userLogRef>
+    <button nbButton (click)="openDialog()">Đăng nhập</button>
+    <button nbButton>Đăng kí</button>
+  </ng-template>
 
   <div
     id=".autocomplete-search"

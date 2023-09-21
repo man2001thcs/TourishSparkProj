@@ -8,7 +8,7 @@ import {
 } from "@angular/router";
 import { Observable, Subscription, map } from "rxjs";
 import { ConfirmDialogComponent } from "src/app/utility/confirm-dialog/confirm-dialog.component";
-import { NotifyDialogComponent } from "src/app/utility/notification/notify-dialog.component";
+import { NotifyDialogComponent } from "src/app/utility/notification_admin/notify-dialog.component";
 import { MatDialog } from "@angular/material/dialog";
 import {
   FormBuilder,

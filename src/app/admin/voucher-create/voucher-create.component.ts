@@ -11,7 +11,7 @@ import {
   ConfirmDialogComponent,
   DialogData,
 } from "src/app/utility/confirm-dialog/confirm-dialog.component";
-import { NotifyDialogComponent } from "src/app/utility/notification/notify-dialog.component";
+import { NotifyDialogComponent } from "src/app/utility/notification_admin/notify-dialog.component";
 import { MAT_DIALOG_DATA, MatDialog } from "@angular/material/dialog";
 import {
   FormBuilder,
@@ -33,7 +33,7 @@ import {
   getMessage,
   getSysError,
 } from "./voucher-create.store.selector";
-import { FailNotifyDialogComponent } from "src/app/utility/notification/fail-notify-dialog.component";
+import { FailNotifyDialogComponent } from "src/app/utility/notification_admin/fail-notify-dialog.component";
 import { MessageService } from "src/app/utility/user_service/message.service";
 
 @Component({

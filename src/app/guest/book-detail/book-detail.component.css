@@ -62,7 +62,8 @@
 .product-image img {
   display: block;
   height: fit-content;
-  width: 500px;
+  max-width: 470px;
+  max-height: 470px;
 }
 
 .product-panel {

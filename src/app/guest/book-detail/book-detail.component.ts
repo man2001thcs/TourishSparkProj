@@ -11,7 +11,7 @@ import {
   ConfirmDialogComponent,
   DialogData,
 } from "src/app/utility/confirm-dialog/confirm-dialog.component";
-import { NotifyDialogComponent } from "src/app/utility/notification/notify-dialog.component";
+import { NotifyDialogComponent } from "src/app/utility/notification_admin/notify-dialog.component";
 import { MAT_DIALOG_DATA, MatDialog } from "@angular/material/dialog";
 import {
   FormBuilder,
@@ -23,7 +23,7 @@ import { ActivatedRoute } from "@angular/router";
 
 import {
   AuthorPayload,
-  Book,
+
   BookInfoParam,
   BookParam,
   BookStatusParam,
@@ -34,6 +34,9 @@ import {
   Author,
   VoucherPayload,
 } from "./book-detail.component.model";
+
+import { Book } from "src/app/model/book";
+
 import * as BookActions from "./book-detail.store.action";
 import { State as BookState } from "./book-detail.store.reducer";
 import { Store } from "@ngrx/store";
@@ -46,6 +49,9 @@ import {
 } from "./book-detail.store.selector";
 import { MessageService } from "src/app/utility/user_service/message.service";
 import { FileModel } from "src/app/utility/image_service/imageUpload.component.model";
+import { getCategoryPhase } from "src/app/utility/config/categoryCode";
+import { getCoverMaterialPhase } from "src/app/utility/config/coverMaterialCode";
+import { getLanguagePhase } from "src/app/utility/config/languageCode";
 
 @Component({
   selector: "app-book-detail",
@@ -62,6 +68,11 @@ export class BookDetailComponent implements OnInit, OnDestroy {
     description: "",
     publisherId: "",
     pageNumber: 0,
+    coverMaterial: 0,
+    language: 1,
+    bookSize: "",
+    bookWeight: 0,
+    publishYear: 0,
 
     bookStatus: {
       currentPrice: 0,
@@ -309,6 +320,17 @@ export class BookDetailComponent implements OnInit, OnDestroy {
     );
   }
 
+  getCategoryPhase(key: string){
+    return getCategoryPhase(key);
+  }
+
+  getCoverMaterialPhase(key: number){
+    return getCoverMaterialPhase(key);
+  }
+
+  getLanguagePhase(key: number){
+    return getLanguagePhase(key);
+  }
 
   checkDeactivate(
     currentRoute: ActivatedRouteSnapshot,
