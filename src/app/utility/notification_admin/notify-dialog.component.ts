@@ -8,7 +8,6 @@ export interface DialogData {
 @Component({
   selector: 'app-confirm-dialog',
   templateUrl: './notify-dialog.component.html',
-  styleUrls: ['./notify-dialog.component.css'],
 })
 export class NotifyDialogComponent implements OnInit {
   title = '';

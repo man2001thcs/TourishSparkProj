@@ -10,6 +10,7 @@ export interface DialogData {
 @Component({
   selector: 'app-fail-confirm-dialog',
   templateUrl: './fail-notify-dialog.component.html',
+  styleUrls : ['./fail-notify-dialog.component.css']
 })
 export class FailNotifyDialogComponent {
   title = '';
