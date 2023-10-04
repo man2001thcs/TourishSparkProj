@@ -21,7 +21,7 @@ import {
 } from "@angular/forms";
 import { ActivatedRoute } from "@angular/router";
 import { Book } from "src/app/model/book";
-import { Author } from "src/app/model/author";
+import { Author } from "src/app/model/baseModel";
 import { AdminService } from "../service/admin.service";
 import { CheckDeactivate } from "../interface/admin.check_edit";
 import { Voucher, VoucherParam } from "./voucher-create.component.model";

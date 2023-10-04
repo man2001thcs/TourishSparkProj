@@ -141,8 +141,30 @@ import { NbChatModule } from '@nebular/theme';
 import { MatCardModule } from '@angular/material/card';
 import { ImageListEffects } from 'src/app/utility/image_service/imageUpload.store.effect';
 
+import { PassengerCarCreateComponent } from '../PassengerCar/passenger_car_create/passenger_car-create.component';
+import { PassengerCarDetailComponent } from '../PassengerCar/passenger_car_detail/passenger_car-detail.component';
+import { PassengerCarListComponent } from '../PassengerCar/passenger_car_list/passenger_car-list.component';
+
+import { PassengerCarCreateEffects } from '../PassengerCar/passenger_car_create/passenger_car-create.store.effect';
+import { PassengerCarEffects } from '../PassengerCar/passenger_car_detail/passenger_car-detail.store.effect';
+import { PassengerCarListEffects } from '../PassengerCar/passenger_car_list/passenger_car-list.store.effect';
+
+import { storeKey as PassengerCarCreateStoreKey } from '../PassengerCar/passenger_car_create/passenger_car-create.store.action';
+import { reducer as  PassengerCarCreateReducer } from '../PassengerCar/passenger_car_create/passenger_car-create.store.reducer';
+
+import { storeKey as PassengerCarListStoreKey } from '../PassengerCar/passenger_car_list/passenger_car-list.store.action';
+import { reducer as  PassengerCarListReducer } from '../PassengerCar/passenger_car_list/passenger_car-list.store.reducer';
+
+import { storeKey as PassengerCarDetailStoreKey } from '../PassengerCar/passenger_car_detail/passenger_car-detail.store.action';
+import { reducer as  PassengerCarDetailReducer } from '../PassengerCar/passenger_car_detail/passenger_car-detail.store.reducer';
+
+
 @NgModule({
   declarations: [
+    PassengerCarCreateComponent,
+    PassengerCarDetailComponent,
+    PassengerCarListComponent,
+
     BookListAdminComponent,
     BookDetailAdminComponent,
     BookCreateAdminComponent,
@@ -226,6 +248,10 @@ import { ImageListEffects } from 'src/app/utility/image_service/imageUpload.stor
     StoreModule.forFeature(AuthorAutocompleteStoreKey, AuthorAutocompleteReducer),
     StoreModule.forFeature(CategoryAutocompleteStoreKey, CategoryAutocompleteReducer),
 
+    StoreModule.forFeature(PassengerCarCreateStoreKey, PassengerCarCreateReducer),
+    StoreModule.forFeature(PassengerCarListStoreKey, PassengerCarListReducer),
+    StoreModule.forFeature(PassengerCarDetailStoreKey, PassengerCarDetailReducer),
+
     StoreModule.forFeature(NotificationListStoreKey, NotificationListReducer),
     StoreModule.forFeature(ImageListStoreKey, ImageListReducer),
 
@@ -256,6 +282,10 @@ import { ImageListEffects } from 'src/app/utility/image_service/imageUpload.stor
 
     EffectsModule.forFeature([NotificationListEffects]), 
     EffectsModule.forFeature([ImageListEffects]), 
+
+    EffectsModule.forFeature([PassengerCarCreateEffects]),
+    EffectsModule.forFeature([PassengerCarEffects]),
+    EffectsModule.forFeature([PassengerCarListEffects]),
   ],
   
 })

@@ -4,7 +4,6 @@ import { BrowserModule } from '@angular/platform-browser';
 import { MatCardModule } from '@angular/material/card';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { GuestModule } from './guest/guest.module/guest.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AuthorTagDynamicComponent } from './utility/author-tag-dynamic/author-tag-dynamic.component';
 
@@ -42,6 +41,7 @@ import {
   NbTabsetModule,
   NbTagModule,
 } from "@nebular/theme";
+import { CommonModule } from '@angular/common';
 
 @NgModule({
   declarations: [
@@ -55,6 +55,7 @@ import {
   imports: [
     StoreModule.forRoot({}),
     EffectsModule.forRoot([]),
+    CommonModule,
 
     NbInputModule,
     NbCardModule,

@@ -1,4 +1,4 @@
-import { Response } from "../../model/response";
+import { Response } from "../../../model/response";
 import { Component, Inject, OnDestroy, OnInit } from "@angular/core";
 import {
   ActivatedRouteSnapshot,
@@ -21,32 +21,30 @@ import {
 } from "@angular/forms";
 import { ActivatedRoute } from "@angular/router";
 import { Book } from "src/app/model/book";
-import { Author } from "src/app/model/baseModel";
-import { Voucher } from "src/app/model/voucher";
-import { AdminService } from "../service/admin.service";
-import { CheckDeactivate } from "../interface/admin.check_edit";
-import { Category, CategoryParam } from "./category-create.component.model";
-import * as CategoryActions from "./category-create.store.action";
-import { State as CategoryState } from "./category-create.store.reducer";
+import { AdminService } from "../../service/admin.service";
+import { CheckDeactivate } from "../../interface/admin.check_edit";
+import { PassengerCarParam } from "./passenger_car-create.component.model";
+import * as passengerCarActions from "./passenger_car-create.store.action";
+import { State as passenger_carState } from "./passenger_car-create.store.reducer";
 import { Store } from "@ngrx/store";
-import { createCategory, getMessage, getSysError } from "./category-create.store.selector";
+import {
+  createPassengerCar,
+  getMessage,
+  getSysError,
+} from "./passenger_car-create.store.selector";
 import { FailNotifyDialogComponent } from "src/app/utility/notification_admin/fail-notify-dialog.component";
 import { MessageService } from "src/app/utility/user_service/message.service";
+import { PassengerCar } from "src/app/model/baseModel";
 
 @Component({
   selector: "app-book-create",
-  templateUrl: "./category-create.component.html",
-  styleUrls: ["./category-create.component.css"],
+  templateUrl: "./passenger_car-create.component.html",
+  styleUrls: ["./passenger_car-create.component.css"],
 })
-export class CategoryCreateComponent implements OnInit, OnDestroy {
+export class PassengerCarCreateComponent implements OnInit, OnDestroy {
   isEditing: boolean = true;
 
-  category: Category = {
-    name: "",
-    description: "",
-  };
-
-  categoryParam!: CategoryParam;
+  passengerCarParam!: PassengerCarParam;
 
   this_announce = "";
 
@@ -55,27 +53,27 @@ export class CategoryCreateComponent implements OnInit, OnDestroy {
   errorMessageState!: Observable<any>;
   errorSystemState!: Observable<any>;
 
-  categoryState!: Observable<any>;
-  createCategoryState!: Observable<any>;
+  passengerCarState!: Observable<any>;
+  createPassengerCarState!: Observable<any>;
   subscriptions: Subscription[] = [];
 
   constructor(
     private dialog: MatDialog,
     private fb: FormBuilder,
-    private store: Store<CategoryState>,
+    private store: Store<passenger_carState>,
     private messageService: MessageService,
     private _route: ActivatedRoute,
-    @Inject(MAT_DIALOG_DATA) public data: CategoryParam
+    @Inject(MAT_DIALOG_DATA) public data: PassengerCarParam
   ) {
-    this.createCategoryState = this.store.select(createCategory);
+    this.createPassengerCarState = this.store.select(createPassengerCar);
 
-    this.errorMessageState =this.store.select(getMessage);
-    this.errorSystemState =this.store.select(getSysError);
+    this.errorMessageState = this.store.select(getMessage);
+    this.errorSystemState = this.store.select(getSysError);
   }
 
   ngOnInit(): void {
     this.subscriptions.push(
-      this.createCategoryState.subscribe((state) => {
+      this.createPassengerCarState.subscribe((state) => {
         if (state) {
           this.messageService.openMessageNotifyDialog(state.messageCode);
         }
@@ -84,56 +82,69 @@ export class CategoryCreateComponent implements OnInit, OnDestroy {
 
     this.subscriptions.push(
       this.errorMessageState.subscribe((state) => {
-        if (state) {   
-          this.messageService.openMessageNotifyDialog(state);      
+        if (state) {
+          this.messageService.openMessageNotifyDialog(state);
         }
       })
     );
 
     this.subscriptions.push(
       this.errorSystemState.subscribe((state) => {
-        if (state) {  
-          this.messageService.openSystemFailNotifyDialog(state);  
+        if (state) {
+          this.messageService.openSystemFailNotifyDialog(state);
         }
       })
     );
 
-    this.store.dispatch(CategoryActions.initial());
+    this.store.dispatch(passengerCarActions.initial());
 
     //console.log(this.this_book);
     //Called after the constructor, initializing input properties, and the first call to ngOnChanges.
     //Add 'implements OnInit' to the class.
     this.createformGroup_info = this.fb.group({
       name: [
-        this.category.name ?? "",
+        "",
         Validators.compose([Validators.required, Validators.minLength(3)]),
       ],
-      description: this.category.description,
+      address: [""],
+      phoneNumber: [""],
+      email: [""],
+      description: "",
     });
   }
 
   ngOnDestroy(): void {
     console.log("Destroy");
-    this.store.dispatch(CategoryActions.resetCategory());
+    this.store.dispatch(passengerCarActions.resetPassengerCar());
 
     this.subscriptions.forEach((subscription) => subscription.unsubscribe());
   }
 
   formReset(): void {
     this.createformGroup_info.setValue({
-      name: this.category.name ?? "",
-      description: this.category.description ?? "",
+      branchName: "",
+      hotLineNumber: "",
+      supportEmail: "",
+      headQuarterAddress: "",
+      discountFloat: 0,
+      discountAmount: 0,
+      description: "",
     });
   }
 
   formSubmit_create_info(): void {
-    const payload: Category = {
-      name: this.createformGroup_info.value.name,
+    const payload: PassengerCar = {
+      branchName: this.createformGroup_info.value.branchName,
+      hotLineNumber: this.createformGroup_info.value.hotLineNumber,
+      supportEmail: this.createformGroup_info.value.supportEmail,
+      headQuarterAddress: this.createformGroup_info.value.headQuarterAddress,
+      discountFloat: this.createformGroup_info.value.discountFloat,
+      discountAmount: this.createformGroup_info.value.discountAmount,
       description: this.createformGroup_info.value.description,
     };
 
     this.store.dispatch(
-      CategoryActions.createCategory({
+      passengerCarActions.createPassengerCar({
         payload: payload,
       })
     );

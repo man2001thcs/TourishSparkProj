@@ -1,14 +1,14 @@
 {
   "name": "roxanne",
   "version": "0.0.0",
-  "homepage": "https://man2001thcs.github.io/AngularBookStore/",
+  "homepage": "https://man2001thcs.github.io/TourishManagement/",
   "scripts": {
     "ng": "ng",
     "start": "ng serve --proxy-config src/app/proxy_config.json",
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
-    "predeploy": "ng build --configuration production --base-href https://man2001thcs.github.io/AngularBookStore/",
-    "deploy": "ng build --configuration production --base-href=/AngularBookStore/",
+    "predeploy": "ng build --configuration production --base-href https://man2001thcs.github.io/TourishManagement/",
+    "deploy": "ng build --configuration production --base-href=/TourishManagement/",
     "test": "ng test"
   },
   "private": true,

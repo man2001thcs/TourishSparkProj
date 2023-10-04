@@ -1,0 +1,118 @@
+<div class="container">
+  <div class="outlet">
+    <h2 mat-form-label style="font-weight: heavy">Chỉnh sửa thông tin đối tác xe chở khách</h2>
+    <form [formGroup]="editformGroup_info">
+      <div class="row">
+        <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6 edit-form">
+          <h3 mat-form-label style="font-weight: bold">Thông tin cơ bản</h3>
+
+          <div class="row">
+            <mat-form-field appearance="outline">
+              <mat-label>Tên đối tác</mat-label>
+              <input
+                matInput
+                placeholder="Vd: Bồ Công Anh"
+                formControlName="branchName"
+              />
+            </mat-form-field>
+          </div>
+
+          <div class="row">
+            <mat-form-field appearance="outline">
+              <mat-label>Email liên lạc</mat-label>
+              <input
+                matInput
+                placeholder="Vd: abc@gmail.com"
+                formControlName="supportEmail"
+              />
+            </mat-form-field>
+          </div>
+
+          <div class="row">
+            <mat-form-field appearance="outline">
+              <mat-label>Số điện thoại liên lạc</mat-label>
+              <input
+                matInput
+                placeholder="Vd: 0123456789"
+                formControlName="hotLineNumber"
+              />
+            </mat-form-field>
+          </div>
+        </div>
+
+        <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6 create-form">
+          <div class="row">
+            <mat-form-field appearance="outline">
+              <mat-label>Địa chỉ trụ sở</mat-label>
+              <input
+                matInput
+                placeholder="Vd: 43 Nguyễn Chí Thanh"
+                formControlName="headQuarterAddress"
+              />
+            </mat-form-field>
+          </div>
+
+          <div class="row">
+            <mat-form-field appearance="outline">
+              <mat-label>Giảm giá dịch vụ (Trừ vào giá trị)</mat-label>
+              <input
+                matInput
+                placeholder="Vd: 10000"
+                formControlName="discountAmount"
+              />
+            </mat-form-field>
+          </div>
+
+          <div class="row">
+            <mat-form-field appearance="outline">
+              <mat-label>Giảm giá dịch vụ (Trừ theo %)</mat-label>
+              <input
+                matInput
+                placeholder="Vd: 0.1"
+                formControlName="discountFloat"
+              />
+            </mat-form-field>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-xs-6 col-sm-6 col-md-12 col-lg-12 create-form">
+            <mat-form-field style="width: 90%">
+              <textarea
+                matInput
+                class="form-control"
+                id="description"
+                placeholder="Thông tin đính kèm"
+                formControlName="description"
+                rows="10"
+              ></textarea>
+            </mat-form-field>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-xs-6 col-sm-4 col-md-4 col-lg-2">
+            <button
+              mat-raised-button
+              color="primary"
+              (click)="formSubmit_edit_info()"
+            >
+              Lưu
+            </button>
+          </div>
+
+          <div class="col-xs-6 col-sm-4 col-md-4 col-lg-4">
+            <button
+              mat-raised-button
+              color="warn"
+              type="button"
+              (click)="formReset()"
+            >
+              Khôi phục
+            </button>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
