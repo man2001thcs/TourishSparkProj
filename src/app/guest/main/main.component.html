@@ -1,0 +1,9 @@
+<div id="guest-main" #guestMain>
+  <app-guest-header (checkNavOpen)="checkNavOpen($event)"></app-guest-header>
+
+  <div class="container-fluid" style="width: 100%">
+    <router-outlet></router-outlet>
+  </div>
+
+  <app-footer [isNavOpen]="isNavOpen"></app-footer>
+</div>

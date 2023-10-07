@@ -102,13 +102,12 @@ export class PassengerCarCreateComponent implements OnInit, OnDestroy {
     //Called after the constructor, initializing input properties, and the first call to ngOnChanges.
     //Add 'implements OnInit' to the class.
     this.createformGroup_info = this.fb.group({
-      name: [
-        "",
-        Validators.compose([Validators.required, Validators.minLength(3)]),
-      ],
-      address: [""],
-      phoneNumber: [""],
-      email: [""],
+      branchName: "",
+      hotlineNumber: "",
+      supportEmail: "",
+      headQuarterAddress: "",
+      discountFloat: 0,
+      discountAmount: 0,
       description: "",
     });
   }
@@ -123,7 +122,7 @@ export class PassengerCarCreateComponent implements OnInit, OnDestroy {
   formReset(): void {
     this.createformGroup_info.setValue({
       branchName: "",
-      hotLineNumber: "",
+      hotlineNumber: "",
       supportEmail: "",
       headQuarterAddress: "",
       discountFloat: 0,
@@ -135,7 +134,7 @@ export class PassengerCarCreateComponent implements OnInit, OnDestroy {
   formSubmit_create_info(): void {
     const payload: PassengerCar = {
       branchName: this.createformGroup_info.value.branchName,
-      hotLineNumber: this.createformGroup_info.value.hotLineNumber,
+      hotlineNumber: this.createformGroup_info.value.hotlineNumber,
       supportEmail: this.createformGroup_info.value.supportEmail,
       headQuarterAddress: this.createformGroup_info.value.headQuarterAddress,
       discountFloat: this.createformGroup_info.value.discountFloat,

@@ -1,0 +1,68 @@
+* {
+  box-sizing: border-box;
+}
+.signInForm {
+  background: url(https://media4.giphy.com/media/BHNfhgU63qrks/giphy.gif) center
+    center no-repeat;
+  background-size: 100% 100%;
+  padding: 30px 50px 10px;
+  height: 460px;
+  min-width: 420px !important;
+}
+
+.signInForm input {
+  font-weight: 700 !important;
+  line-height: 1rem !important;
+  padding: 0.9375rem 0.5rem !important;
+}
+
+.mat .signInForm .signInAction {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: "center";
+  left: auto;
+  right: auto;
+}
+
+.signInForm .signInAction button#sign_in {
+  margin-right: 10px;
+}
+
+.input-full-width {
+  width: 100%;
+}
+h3.error-message {
+  font-size: 14px !important;
+  color: whitesmoke;
+  word-wrap: break-word;
+  padding: 0px 12px 0px;
+}
+
+::ng-deep .mat-form-field-outline-start {
+  border-radius: 28px 0 0 28px !important;
+  min-width: 28px !important;
+}
+
+::ng-deep .mat-form-field-outline-end {
+  border-radius: 0 28px 28px 0 !important;
+  min-width: 28px !important;
+}
+
+/* Add padding to move the label and input into the center to prevent overlapping the rounded border */
+::ng-deep .mat-form-field-appearance-outline .mat-form-field-flex {
+  padding: 0 32px !important;
+}
+
+::ng-deep .mat-form-field-label{
+  color:#ffffff !important;
+}
+
+:host ::ng-deep .mat-input-element::placeholder {
+  color: #fff !important;  
+}
+
+::placeholder {
+  color: beige!important;
+  opacity: 1; /* Firefox */
+}

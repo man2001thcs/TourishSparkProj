@@ -1,8 +1,9 @@
+<div id="admin-main" #adminMain>
+  <app-admin-header (checkNavOpen)="checkNavOpen($event)"></app-admin-header>
 
-<app-admin-header></app-admin-header>
-
-<div class="container">
+  <div class="container-fluid" #adminContent>
     <router-outlet></router-outlet>
-</div>
+  </div>
 
-<app-footer></app-footer>
+  <app-footer [isNavOpen]="isNavOpen"></app-footer>
+</div>

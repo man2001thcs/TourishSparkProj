@@ -1,0 +1,13 @@
+.container-fluid {
+  padding-top: 2% !important;
+  padding-bottom: 2% !important;
+  background-color: #FAFAFA;
+  min-height: 550px !important;
+}
+
+#guest-main {
+  transition: 0.5s;
+  opacity: 1;
+  margin-left: 340px;
+
+}

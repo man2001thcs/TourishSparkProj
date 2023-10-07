@@ -51,6 +51,25 @@ export const ERR_MESSAGE_CODE_EN: Map<string, string> = new Map([
   ["C702", "Notification update error"],
   ["C703", "Notification delete error"],
   ["C704", "Notification SQL error"],
+
+  ["C700", "Notification not found"],
+  ["C701", "Notification add error"],
+  ["C702", "Notification update error"],
+  ["C703", "Notification delete error"],
+  ["C704", "Notification SQL error"],
+
+  ["C110", "PassengerCar not found"],
+  ["C111", "PassengerCar add error"],
+  ["C112", "PassengerCar update error"],
+  ["C113", "PassengerCar delete error"],
+  ["C114", "PassengerCar SQL error"],
+
+  ["C120", "Air plane branch not found"],
+  ["C121", "Air plane branch add error"],
+  ["C122", "Air plane branch update error"],
+  ["C123", "Air plane branch delete error"],
+  ["C124", "Air plane branch SQL error"],
+  
 ]);
 
 export const ERR_MESSAGE_CODE_VI: Map<string, string> = new Map([
@@ -106,6 +125,18 @@ export const ERR_MESSAGE_CODE_VI: Map<string, string> = new Map([
     ["C702", "Thông báo lỗi cập nhật"],
     ["C703", "Thông báo xóa thất bại"],
     ["C704", "Thông báo lỗi cơ sở dữ liệu"],
+
+    ["C110", "Đối tác không tồn tại"],
+    ["C111", "Đối tác thêm vào bị lỗi"],
+    ["C112", "Đối tác sửa đang gặp lỗi cập nhật"],
+    ["C113", "Đối tác xóa thất bại"],
+    ["C114", "Đối tác đang gặp lỗi cơ sở dữ liệu"],
+
+    ["C120", "Đối tác không tồn tại"],
+    ["C121", "Đối tác thêm vào bị lỗi"],
+    ["C122", "Đối tác sửa đang gặp lỗi cập nhật"],
+    ["C123", "Đối tác xóa thất bại"],
+    ["C124", "Đối tác đang gặp lỗi cơ sở dữ liệu"],
   ]);
 
 export const SUCCESS_MESSAGE_CODE_EN: Map<string, string> = new Map([
@@ -140,6 +171,14 @@ export const SUCCESS_MESSAGE_CODE_EN: Map<string, string> = new Map([
     ["I701", "Notification add ok"],
     ["I702", "Notification update ok"],
     ["I703", "Notification delete ok"],
+
+    ["I111", "Passenger Car add ok"],
+    ["I112", "Passenger Car update ok"],
+    ["I113", "Passenger Car delete ok"],
+
+    ["I121", "Air plane branch add ok"],
+    ["I122", "Air plane branch update ok"],
+    ["I123", "Air plane branch delete ok"],
     
   ]);
 
@@ -175,4 +214,12 @@ export const SUCCESS_MESSAGE_CODE_EN: Map<string, string> = new Map([
     ["I701", "Thông báo thêm thành công"],
     ["I702", "Thông báo update thành công"],
     ["I703", "Thông báo xóa thành công"],
+
+    ["I111", "Đối tác xe khách thêm thành công"],
+    ["I112", "Đối tác xe khách update thành công"],
+    ["I113", "Đối tác xe khách xóa thành công"],
+
+    ["I121", "Hãng hàng không thêm thành công"],
+    ["I122", "Hãng hàng không update thành công"],
+    ["I123", "Hãng hàng không xóa thành công"],
   ]);

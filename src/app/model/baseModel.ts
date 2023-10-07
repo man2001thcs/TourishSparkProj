@@ -1,7 +1,7 @@
 export interface Restaurant {
-  id: string;
+  id?: string;
   placeBranch: string;
-  hotLineNumber: string;
+  hotlineNumber: string;
   supportEmail: string;
   headQuarterAddress: string;
   discountFloat: number;
@@ -14,9 +14,9 @@ export interface Restaurant {
 
 
 export interface HomeStay {
-  id: string;
+  id?: string;
   placeBranch: string;
-  hotLineNumber: string;
+  hotlineNumber: string;
   supportEmail: string;
   headQuarterAddress: string;
   discountFloat: number;
@@ -28,23 +28,9 @@ export interface HomeStay {
 }
 
 export interface Hotel {
-  id: string;
+  id?: string;
   placeBranch: string;
-  hotLineNumber: string;
-  supportEmail: string;
-  headQuarterAddress: string;
-  discountFloat: number;
-  discountAmount: number;
-  description: string;
-
-  createDate?: Date;
-  updateDate?: Date;
-}
-
-export interface Hotel {
-  id: string;
-  placeBranch: string;
-  hotLineNumber: string;
+  hotlineNumber: string;
   supportEmail: string;
   headQuarterAddress: string;
   discountFloat: number;
@@ -58,7 +44,7 @@ export interface Hotel {
 export interface PassengerCar {
   id?: string;
   branchName: string;
-  hotLineNumber: string;
+  hotlineNumber: string;
   supportEmail: string;
   headQuarterAddress: string;
   discountFloat: number;
@@ -69,10 +55,10 @@ export interface PassengerCar {
   updateDate?: Date;
 }
 
-export interface PlaneAirline {
-  id: string;
+export interface AirPlane {
+  id?: string;
   branchName: string;
-  hotLineNumber: string;
+  hotlineNumber: string;
   supportEmail: string;
   headQuarterAddress: string;
   discountFloat: number;
@@ -84,7 +70,7 @@ export interface PlaneAirline {
 }
 
 export interface EatSchedule {
-  id: string;
+  id?: string;
   tourishPlanId: string;
   placeName: string;
   address: string;
@@ -104,7 +90,7 @@ export interface EatSchedule {
 }
 
 export interface MovingSchedule {
-  id: string;
+  id?: string;
   tourishPlanId: string;
   driverName: string;
   vehiclePlate: string;
@@ -126,7 +112,7 @@ export interface MovingSchedule {
 }
 
 export interface StayingSchedule {
-  id: string;
+  id?: string;
   tourishPlanId: string;
   placeName: string;
   address: string;
@@ -143,4 +129,16 @@ export interface StayingSchedule {
   createDate?: Date;
   updateDate?: Date;
 }
+
+export interface Author {
+  id?: string;
+  name: string;
+  phoneNumber: string;
+  email: string;
+  address: string;
+  description: string;
+  createDate: string;
+  updateDate: string;
+}
+
 

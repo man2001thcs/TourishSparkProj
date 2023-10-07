@@ -15,8 +15,11 @@ import { VoucherListAdminComponent } from '../voucher_list/voucherList_admin.com
 import { AuthorListAdminComponent } from '../author_list/authorList_admin.component';
 import { PublisherListAdminComponent } from '../publisher_list/publisherList_admin.component';
 import { BookCreateAdminComponent } from '../book-create/book-create_admin.component';
-import { NotificationListAdminComponent } from '../notification-list/notificationList.component';
 import { BookListAdminComponent } from '../book-list/bookList_admin.component';
+import { PassengerCarListComponent } from '../PassengerCar/passenger_car_list/passenger_car-list.component';
+import { AirPlaneListComponent } from '../AirPlane/air_plane_list/air_plane-list.component';
+import { HotelListComponent } from '../Hotel/hotel_list/hotel-list.component';
+import { RestaurantListComponent } from '../Restaurant/restaurant_list/restaurant-list.component';
 
 
 const routes: Routes = [
@@ -38,6 +41,27 @@ const routes: Routes = [
         canDeactivate: [canLeaveSiteGuard],
       },
       {
+        path: 'transport/passenger-car/list',
+        component: PassengerCarListComponent,
+      },
+      {
+        path: 'transport/air-plane/list',
+        component: AirPlaneListComponent,
+      },
+      {
+        path: 'resthouse/hotel/list',
+        component: HotelListComponent,
+      },
+      {
+        path: 'resthouse/homeStay/list',
+        component: HotelListComponent,
+      },
+      {
+        path: 'restaurant/list',
+        component: RestaurantListComponent,
+      },
+      
+      {
         path: 'book/list',
         component: BookListAdminComponent,
       },
@@ -56,10 +80,6 @@ const routes: Routes = [
       {
         path: 'publisher/list',
         component: PublisherListAdminComponent,
-      },
-      {
-        path: 'notification/list',
-        component: NotificationListAdminComponent,
       },
     ],
   },

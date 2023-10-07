@@ -47,7 +47,7 @@ export class PassengerCarDetailComponent implements OnInit, OnDestroy {
   passengerCar: PassengerCar = {
     id: "",
     branchName: "",
-    hotLineNumber: "",
+    hotlineNumber: "",
     supportEmail: "",
     headQuarterAddress: "",
     discountFloat: 0,
@@ -95,8 +95,8 @@ export class PassengerCarDetailComponent implements OnInit, OnDestroy {
         this.passengerCar.branchName ?? "",
         Validators.compose([Validators.required]),
       ],
-      hotLineNumber: [
-        this.passengerCar.hotLineNumber ?? "",
+      hotlineNumber: [
+        this.passengerCar.hotlineNumber ?? "",
         Validators.compose([Validators.required, Validators.minLength(8)]),
       ],
       supportEmail: [
@@ -127,8 +127,8 @@ export class PassengerCarDetailComponent implements OnInit, OnDestroy {
           this.editformGroup_info.controls["branchName"].setValue(
             state.branchName
           );
-          this.editformGroup_info.controls["hotLineNumber"].setValue(
-            state.hotLineNumber
+          this.editformGroup_info.controls["hotlineNumber"].setValue(
+            state.hotlineNumber
           );
           this.editformGroup_info.controls["supportEmail"].setValue(
             state.supportEmail
@@ -201,7 +201,7 @@ export class PassengerCarDetailComponent implements OnInit, OnDestroy {
   formReset(): void {
     this.editformGroup_info.setValue({
       branchName: this.passengerCar.branchName ?? "",
-      hotLineNumber: this.passengerCar.hotLineNumber ?? "",
+      hotlineNumber: this.passengerCar.hotlineNumber ?? "",
       supportEmail: this.passengerCar.supportEmail ?? "",
       headQuarterAddress: this.passengerCar.headQuarterAddress ?? "",
       discountFloat: this.passengerCar.discountFloat ?? 0,
@@ -218,7 +218,7 @@ export class PassengerCarDetailComponent implements OnInit, OnDestroy {
     const payload: PassengerCar = {
       id: this.data.id,
       branchName: this.editformGroup_info.value.branchName,
-      hotLineNumber: this.editformGroup_info.value.hotLineNumber,
+      hotlineNumber: this.editformGroup_info.value.hotlineNumber,
       supportEmail: this.editformGroup_info.value.supportEmail,
       headQuarterAddress: this.editformGroup_info.value.headQuarterAddress,
       discountFloat: this.editformGroup_info.value.discountFloat,

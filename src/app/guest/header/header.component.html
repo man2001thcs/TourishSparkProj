@@ -1,0 +1,200 @@
+<link
+  rel="stylesheet"
+  href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
+/>
+
+<div class="container-fluid" #header>
+  <!-- Nav tabs -->
+  <div>
+    <button mat-button ghost (click)="navMenuClick()">
+      <i
+        class="fa fa-bars"
+        style="font-size: 22px; color: rgb(105, 104, 104)"
+        aria-hidden="true"
+      ></i>
+    </button>
+  </div>
+
+  <div>
+    <img
+      src="https://bookstore1storage.blob.core.windows.net/start-container/book_logo.png?sv=2021-10-04&st=2023-09-26T12%3A36%3A33Z&se=2040-01-27T12%3A36%3A00Z&sr=b&sp=r&sig=4WMWtw0igWEoBTLwaZvfyk6grD6JCurSP1z7fdNPJUc%3D"
+      class="img-logo"
+      style="border: 2px solid black; border-radius: 10px"
+    />
+  </div>
+
+  <div style="padding-top: 16px !important">
+    <h3 style="font-size: 35px !important; font-family: Brush Script MT">
+      Roxanne.com
+    </h3>
+  </div>
+
+  <div class="searchInput" style="margin-top: 20px">
+    <mat-form-field appearance="outline" class="full-width-input">
+      <input
+        #searchInput
+        matInput
+        [formControl]="searchControl"
+        type="text"
+        fullwidth
+        name="search"
+        id="search"
+        placeholder="Tìm kiếm sản phẩm"
+      />
+    </mat-form-field>
+  </div>
+
+  <div>
+    <button mat-button status="primary">
+      <i class="fa fa-search" aria-hidden="true" style="font-size: 15px"></i>
+    </button>
+  </div>
+
+  <button mat-button ghost status="primary">
+    <i
+      class="fa fa-bell"
+      aria-hidden="true"
+      style="font-size: 22px; color: rgb(105, 104, 104)"
+    ></i>
+  </button>
+
+  <button mat-button [matMenuTriggerFor]="menu">
+    <i
+      class="fa fa-user"
+      aria-hidden="true"
+      style="font-size: 22px; color: rgb(105, 104, 104)"
+    ></i>
+  </button>
+
+  <mat-menu #menu="matMenu">
+    <button mat-menu-item (click)="openLoginDialog()">Đăng nhập</button>
+    <button mat-menu-item>Đăng kí</button>
+  </mat-menu>
+
+  <div
+    id=".autocomplete-search"
+    #autocompleteSearch
+    class="autocomplete-search"
+    (appOutsideClick)="outsideAutoCompleteSearchClick($event)"
+  >
+    <h6>Sản phẩm tìm kiếm</h6>
+    <div class="searchContent"></div>
+  </div>
+</div>
+
+<div
+  id="mySidenav"
+  #mySidenav
+  class="sidenav"
+  (appOutsideClick)="outsideClick($event)"
+>
+  <h6
+    style="
+      font-size: 24px;
+      margin-bottom: 60px !important;
+      font-weight: bolder;
+      width: 250px;
+    "
+  >
+    Danh mục quản lý
+  </h6>
+  <div class="sideNavContent">
+    <div class="sidenavCategory">
+      <mat-expansion-panel expanded>
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+            <h6
+              style="
+                font-size: 16px;
+                padding-bottom: 0 !important;
+                font-weight: bold;
+                margin-bottom: 0 !important;
+              "
+            >
+              Đối tác DV di chuyển
+            </h6>
+          </mat-panel-title>
+        </mat-expansion-panel-header>
+        <div
+          ngbNav
+          #nav="ngbNav"
+          [(activeId)]="activeItem"
+          class="nav-pills flex-column"
+          orientation="vertical"
+        >
+          <ng-container ngbNavItem="1st">
+            <button ngbNavLink>Xe khách</button>
+          </ng-container>
+
+          <ng-container ngbNavItem="2nd">
+            <button ngbNavLink>Máy bay</button>
+          </ng-container>
+        </div>
+      </mat-expansion-panel>
+    </div>
+
+    <div class="sidenavCategory">
+      <mat-expansion-panel expanded>
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+            <h6
+              style="
+                font-size: 16px;
+                padding-bottom: 0 !important;
+                font-weight: bold;
+                margin-bottom: 0 !important;
+              "
+            >
+              Đối tác DV nơi ở
+            </h6>
+          </mat-panel-title>
+        </mat-expansion-panel-header>
+        <div
+          ngbNav
+          #nav="ngbNav"
+          [(activeId)]="activeItem"
+          class="nav-pills flex-column"
+          orientation="vertical"
+        >
+          <ng-container ngbNavItem="3rd">
+            <button ngbNavLink>Hotel</button>
+          </ng-container>
+
+          <ng-container ngbNavItem="4th">
+            <button ngbNavLink>HomeStay</button>
+          </ng-container>
+        </div>
+      </mat-expansion-panel>
+    </div>
+
+    <div class="sidenavCategory">
+      <mat-expansion-panel expanded>
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+            <h6
+              style="
+                font-size: 16px;
+                padding-bottom: 0 !important;
+                font-weight: bold;
+                margin-bottom: 0 !important;
+              "
+            >
+              Đối tác DV ăn uống
+            </h6>
+          </mat-panel-title>
+        </mat-expansion-panel-header>
+        <div
+          ngbNav
+          #nav="ngbNav"
+          [(activeId)]="activeItem"
+          class="nav-pills flex-column"
+          orientation="vertical"
+        >
+          <ng-container ngbNavItem="5th">
+            <button ngbNavLink>Nhà hàng</button>
+          </ng-container>
+        </div>
+      </mat-expansion-panel>
+    </div>
+  </div>
+</div>

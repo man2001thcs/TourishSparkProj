@@ -47,7 +47,7 @@ export class PassengerCarListComponent
   displayedColumns: string[] = [
     "id",
     "branchName",
-    "hotLineNumber",
+    "hotlineNumber",
     "supportEmail",
     "headQuarterAddress",
     "discountFloat",
@@ -55,7 +55,6 @@ export class PassengerCarListComponent
     "description",
 
     "createDate",
-    "updateDate",
 
     "edit",
     "delete",
@@ -86,6 +85,7 @@ export class PassengerCarListComponent
     this.subscriptions.push(
       this.passengerCarListState.subscribe((state) => {
         if (state) {
+          this.messageService.closeLoadingDialog();
           this.passengerCarList = state.data;
           this.length = state.count;
         }
@@ -121,6 +121,8 @@ export class PassengerCarListComponent
       })
     );
 
+    this.messageService.openLoadingDialog();
+
     this.subscriptions.push(
       this.errorMessageState.subscribe((state) => {
         if (state) {
@@ -153,6 +155,16 @@ export class PassengerCarListComponent
 
     dialogRef.afterClosed().subscribe((result) => {
       console.log(result);
+
+      this.store.dispatch(
+        PassengerCarListActions.getPassengerCarList({
+          payload: {
+            page: this.pageIndex + 1,
+          },
+        })
+      );
+
+      this.messageService.openLoadingDialog();
     });
   }
 
@@ -161,6 +173,16 @@ export class PassengerCarListComponent
 
     dialogRef.afterClosed().subscribe((result) => {
       console.log(result);
+
+      this.store.dispatch(
+        PassengerCarListActions.getPassengerCarList({
+          payload: {
+            page: this.pageIndex + 1,
+          },
+        })
+      );
+
+      this.messageService.openLoadingDialog();
     });
   }
 

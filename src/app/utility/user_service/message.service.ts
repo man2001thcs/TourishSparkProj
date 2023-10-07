@@ -7,11 +7,14 @@ import {
   ERR_MESSAGE_CODE_VI,
   SUCCESS_MESSAGE_CODE_VI,
 } from "../config/messageCode";
+import { LoadingDialogComponent } from "../notification_admin/loading-dialog.component";
 
 @Injectable({
   providedIn: "root",
 })
 export class MessageService {
+
+  currentDialogRef : any;
   constructor(private dialog: MatDialog) {}
 
   openNotifyDialog(this_announce: string) {
@@ -21,6 +24,18 @@ export class MessageService {
       },
     });
     return ref.afterClosed();
+  }
+
+  openLoadingDialog() {
+    this.currentDialogRef = this.dialog.open(LoadingDialogComponent, {
+      data: {
+      },
+    });
+    return this.currentDialogRef.afterClosed();
+  }
+
+  closeLoadingDialog() {
+    this.currentDialogRef.close();
   }
 
   openFailNotifyDialog(this_announce: string) {

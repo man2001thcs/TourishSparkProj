@@ -1,5 +1,17 @@
-.container {
+.container-fluid {
     padding-top: 2% !important;
     padding-bottom: 2% !important;
-    min-height: 60%;
-}
+    background-color: #FAFAFA;
+    min-height: 550px !important;
+    padding-left: 5%;
+    padding-right: 5%;
+    transition: 0.5s;
+    width: 100%;
+  }
+  
+  #admin-main {
+    transition: 0.5s;
+    opacity: 1;
+    margin-left: 340px;  
+  }
+  

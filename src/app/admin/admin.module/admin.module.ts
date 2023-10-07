@@ -78,9 +78,6 @@ import { reducer as PublisherReducer } from '../publisher-detail/publisher-detai
 import { reducer as PublisherListReducer } from '../publisher_list/publisherList_admin.store.reducer';
 import { reducer as PublisherCreateReducer } from '../publisher-create/publisher-create.store.reducer';
 
-import { storeKey as NotificationListStoreKey } from '../notification-list/notificationList.store.action';
-import { reducer as  NotificationListReducer } from '../notification-list/notificationList.store.reducer';
-
 import { storeKey as ImageListStoreKey } from '../../utility/image_service/imageUpload.store.action';
 import { reducer as  ImageListReducer } from '../../utility/image_service/imageUpload.store.reducer';
 
@@ -104,7 +101,6 @@ import { PublisherCreateComponent } from '../publisher-create/publisher-create.c
 import { CategoryMultiselectAutocompleteComponent } from 'src/app/utility/category-multiselect-autocomplete/multiselect-autocomplete.component';
 import { PublisherMultiselectAutocompleteComponent } from 'src/app/utility/publisher-multiselect-autocomplete/multiselect-autocomplete.component';
 
-import { NotificationListAdminComponent } from '../notification-list/notificationList.component';
 // 
 import { CategoryListEffects } from '../category_list/categoryList_admin.store.effect';
 import { CategoryEffects } from '../category-detail/category-detail.store.effect';
@@ -125,18 +121,15 @@ import { PublisherCreateEffects } from '../publisher-create/publisher-create.sto
 import { BookListEffects } from '../book-list/bookList_admin.store.effect';
 import { BookCreateEffects } from '../book-create/book-create.store.effect';
 
-import { NotificationListEffects } from '../notification-list/notificationList.store.effect';
-
 import { VoucherAutoCompleteListEffects } from 'src/app/utility/voucher-multiselect-autocomplete/multiselect-autocomplete.store.effect';
 import { PublisherAutoCompleteListEffects } from 'src/app/utility/publisher-multiselect-autocomplete/multiselect-autocomplete.store.effect';
 import { CategoryAutoCompleteListEffects } from 'src/app/utility/category-multiselect-autocomplete/multiselect-autocomplete.store.effect';
 import { AuthorAutoCompleteListEffects } from 'src/app/utility/author-multiselect-autocomplete/multiselect-autocomplete.store.effect';
 
 import { OptionsScrollDirective } from 'src/app/utility/config/multiselect-scroll.directive';
-import { NgbDropdownModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgbDropdownModule, NgbNavModule } from '@ng-bootstrap/ng-bootstrap';
 import { BookDetailEffects } from '../book-detail/book-detail.store.effect';
 import { FileUploadComponent } from 'src/app/utility/image_service/imageUpload.component';
-import { ChatComponent } from 'src/app/utility/chatUI/chat.component';
 import { NbChatModule } from '@nebular/theme';
 import { MatCardModule } from '@angular/material/card';
 import { ImageListEffects } from 'src/app/utility/image_service/imageUpload.store.effect';
@@ -158,12 +151,99 @@ import { reducer as  PassengerCarListReducer } from '../PassengerCar/passenger_c
 import { storeKey as PassengerCarDetailStoreKey } from '../PassengerCar/passenger_car_detail/passenger_car-detail.store.action';
 import { reducer as  PassengerCarDetailReducer } from '../PassengerCar/passenger_car_detail/passenger_car-detail.store.reducer';
 
+import { AirPlaneCreateComponent } from '../AirPlane/air_plane_create/air_plane-create.component';
+import { AirPlaneDetailComponent } from '../AirPlane/air_plane_detail/air_plane-detail.component';
+import { AirPlaneListComponent } from '../AirPlane/air_plane_list/air_plane-list.component';
+
+import { AirPlaneCreateEffects } from '../AirPlane/air_plane_create/air_plane-create.store.effect';
+import { AirPlaneEffects } from '../AirPlane/air_plane_detail/air_plane-detail.store.effect';
+import { AirPlaneListEffects } from '../AirPlane/air_plane_list/air_plane-list.store.effect';
+
+import { storeKey as AirPlaneCreateStoreKey } from '../AirPlane/air_plane_create/air_plane-create.store.action';
+import { reducer as  AirPlaneCreateReducer } from '../AirPlane/air_plane_create/air_plane-create.store.reducer';
+
+import { storeKey as AirPlaneListStoreKey } from '../AirPlane/air_plane_list/air_plane-list.store.action';
+import { reducer as  AirPlaneListReducer } from '../AirPlane/air_plane_list/air_plane-list.store.reducer';
+
+import { storeKey as AirPlaneDetailStoreKey } from '../AirPlane/air_plane_detail/air_plane-detail.store.action';
+import { reducer as  AirPlaneDetailReducer } from '../AirPlane/air_plane_detail/air_plane-detail.store.reducer';
+
+import { storeKey as HotelCreateStoreKey } from '../Hotel/hotel_create/hotel-create.store.action';
+import { reducer as  HotelCreateReducer } from '../Hotel/hotel_create/hotel-create.store.reducer';
+
+import { storeKey as HotelListStoreKey } from '../Hotel/hotel_list/hotel-list.store.action';
+import { reducer as  HotelListReducer } from '../Hotel/hotel_list/hotel-list.store.reducer';
+
+import { storeKey as HotelDetailStoreKey } from '../Hotel/hotel_detail/hotel-detail.store.action';
+import { reducer as  HotelDetailReducer } from '../Hotel/hotel_detail/hotel-detail.store.reducer';
+
+import { storeKey as HomeStayCreateStoreKey } from '../HomeStay/homeStay_create/homeStay-create.store.action';
+import { reducer as  HomeStayCreateReducer } from '../HomeStay/homeStay_create/homeStay-create.store.reducer';
+
+import { storeKey as HomeStayListStoreKey } from '../HomeStay/homeStay_list/homeStay-list.store.action';
+import { reducer as  HomeStayListReducer } from '../HomeStay/homeStay_list/homeStay-list.store.reducer';
+
+import { storeKey as HomeStayDetailStoreKey } from '../HomeStay/homeStay_detail/homeStay-detail.store.action';
+import { reducer as  HomeStayDetailReducer } from '../HomeStay/homeStay_detail/homeStay-detail.store.reducer';
+
+import { storeKey as RestaurantCreateStoreKey } from '../Restaurant/restaurant_create/restaurant-create.store.action';
+import { reducer as  RestaurantCreateReducer } from '../Restaurant/restaurant_create/restaurant-create.store.reducer';
+
+import { storeKey as RestaurantListStoreKey } from '../Restaurant/restaurant_list/restaurant-list.store.action';
+import { reducer as  RestaurantListReducer } from '../Restaurant/restaurant_list/restaurant-list.store.reducer';
+
+import { storeKey as RestaurantDetailStoreKey } from '../Restaurant/restaurant_detail/restaurant-detail.store.action';
+import { reducer as  RestaurantDetailReducer } from '../Restaurant/restaurant_detail/restaurant-detail.store.reducer';
+
+import { SharedModule } from 'src/app/shared.module';
+import { MatExpansionModule } from '@angular/material/expansion';
+import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
+
+import { HotelCreateEffects } from '../Hotel/hotel_create/hotel-create.store.effect';
+import { HotelEffects } from '../Hotel/hotel_detail/hotel-detail.store.effect';
+import { HotelListEffects } from '../Hotel/hotel_list/hotel-list.store.effect';
+
+import { HomeStayCreateEffects } from '../HomeStay/homeStay_create/homeStay-create.store.effect';
+import { HomeStayEffects } from '../HomeStay/homeStay_detail/homeStay-detail.store.effect';
+import { HomeStayListEffects } from '../HomeStay/homeStay_list/homeStay-list.store.effect';
+
+import { HotelCreateComponent } from '../Hotel/hotel_create/hotel-create.component';
+import { HotelDetailComponent } from '../Hotel/hotel_detail/hotel-detail.component';
+import { HotelListComponent } from '../Hotel/hotel_list/hotel-list.component';
+
+import { HomeStayCreateComponent } from '../HomeStay/homeStay_create/homeStay-create.component';
+import { HomeStayDetailComponent } from '../HomeStay/homeStay_detail/homeStay-detail.component';
+import { HomeStayListComponent } from '../HomeStay/homeStay_list/homeStay-list.component';
+
+import { RestaurantCreateEffects } from '../Restaurant/restaurant_create/restaurant-create.store.effect';
+import { RestaurantEffects } from '../Restaurant/restaurant_detail/restaurant-detail.store.effect';
+import { RestaurantListEffects } from '../Restaurant/restaurant_list/restaurant-list.store.effect';
+
+import { RestaurantCreateComponent } from '../Restaurant/restaurant_create/restaurant-create.component';
+import { RestaurantDetailComponent } from '../Restaurant/restaurant_detail/restaurant-detail.component';
+import { RestaurantListComponent } from '../Restaurant/restaurant_list/restaurant-list.component';
 
 @NgModule({
   declarations: [
     PassengerCarCreateComponent,
     PassengerCarDetailComponent,
     PassengerCarListComponent,
+
+    AirPlaneCreateComponent,
+    AirPlaneDetailComponent,
+    AirPlaneListComponent,
+
+    HotelCreateComponent,
+    HotelDetailComponent,
+    HotelListComponent,
+
+    HomeStayCreateComponent,
+    HomeStayDetailComponent,
+    HomeStayListComponent,
+
+    RestaurantCreateComponent,
+    RestaurantDetailComponent,
+    RestaurantListComponent,
 
     BookListAdminComponent,
     BookDetailAdminComponent,
@@ -187,22 +267,20 @@ import { reducer as  PassengerCarDetailReducer } from '../PassengerCar/passenger
 
     AdminMainComponent,
     HeaderAdminComponent,
-    FooterComponent,
 
     AuthorMultiselectAutocompleteComponent,
     VoucherMultiselectAutocompleteComponent,
     CategoryMultiselectAutocompleteComponent,
     PublisherMultiselectAutocompleteComponent,
 
-    NotificationListAdminComponent,
     FileUploadComponent,
-
-    ChatComponent,
 
     OptionsScrollDirective,
   ],
   imports: [
+   
     CommonModule,
+    SharedModule,
     AdminRouter,
     MatInputModule,
     MatTableModule,
@@ -220,6 +298,10 @@ import { reducer as  PassengerCarDetailReducer } from '../PassengerCar/passenger
     MatButtonModule,
     MatCardModule,
     NgbDropdownModule,
+    MatProgressSpinnerModule,
+    NgbNavModule,
+
+    MatExpansionModule,
 
     NbChatModule,
 
@@ -252,7 +334,22 @@ import { reducer as  PassengerCarDetailReducer } from '../PassengerCar/passenger
     StoreModule.forFeature(PassengerCarListStoreKey, PassengerCarListReducer),
     StoreModule.forFeature(PassengerCarDetailStoreKey, PassengerCarDetailReducer),
 
-    StoreModule.forFeature(NotificationListStoreKey, NotificationListReducer),
+    StoreModule.forFeature(HotelCreateStoreKey, HotelCreateReducer),
+    StoreModule.forFeature(HotelListStoreKey, HotelListReducer),
+    StoreModule.forFeature(HotelDetailStoreKey, HotelDetailReducer),
+
+    StoreModule.forFeature(HomeStayCreateStoreKey, HomeStayCreateReducer),
+    StoreModule.forFeature(HomeStayListStoreKey, HomeStayListReducer),
+    StoreModule.forFeature(HomeStayDetailStoreKey, HomeStayDetailReducer),
+
+    StoreModule.forFeature(AirPlaneCreateStoreKey, AirPlaneCreateReducer),
+    StoreModule.forFeature(AirPlaneListStoreKey, AirPlaneListReducer),
+    StoreModule.forFeature(AirPlaneDetailStoreKey, AirPlaneDetailReducer),
+
+    StoreModule.forFeature(RestaurantCreateStoreKey, RestaurantCreateReducer),
+    StoreModule.forFeature(RestaurantListStoreKey, RestaurantListReducer),
+    StoreModule.forFeature(RestaurantDetailStoreKey, RestaurantDetailReducer),
+
     StoreModule.forFeature(ImageListStoreKey, ImageListReducer),
 
     EffectsModule.forFeature([BookCreateEffects]),
@@ -280,12 +377,27 @@ import { reducer as  PassengerCarDetailReducer } from '../PassengerCar/passenger
     EffectsModule.forFeature([CategoryAutoCompleteListEffects ]),  
     EffectsModule.forFeature([AuthorAutoCompleteListEffects ]),  
 
-    EffectsModule.forFeature([NotificationListEffects]), 
     EffectsModule.forFeature([ImageListEffects]), 
 
     EffectsModule.forFeature([PassengerCarCreateEffects]),
     EffectsModule.forFeature([PassengerCarEffects]),
     EffectsModule.forFeature([PassengerCarListEffects]),
+
+    EffectsModule.forFeature([AirPlaneCreateEffects]),
+    EffectsModule.forFeature([AirPlaneEffects]),
+    EffectsModule.forFeature([AirPlaneListEffects]),
+
+    EffectsModule.forFeature([HotelCreateEffects]),
+    EffectsModule.forFeature([HotelEffects]),
+    EffectsModule.forFeature([HotelListEffects]),
+
+    EffectsModule.forFeature([HomeStayCreateEffects]),
+    EffectsModule.forFeature([HomeStayEffects]),
+    EffectsModule.forFeature([HomeStayListEffects]),
+
+    EffectsModule.forFeature([RestaurantCreateEffects]),
+    EffectsModule.forFeature([RestaurantEffects]),
+    EffectsModule.forFeature([RestaurantListEffects]),
   ],
   
 })

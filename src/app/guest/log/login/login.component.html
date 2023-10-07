@@ -1,0 +1,67 @@
+<div class="signInForm" size="medium" style="width: fit-content">
+  <mat-card-header style="justify-content: center">
+    <h2 style="color: whitesmoke; font-size: 24px">Đăng nhập</h2>
+    <h3 class="error-message">{{ errorMessage }}</h3>
+  </mat-card-header>
+
+  <form (ngSubmit)="formSubmit()" [formGroup]="signInformGroup">
+    <mat-card-content>
+      <div
+        class="row"
+        style="display: flex; flex-direction: column; margin-bottom: 20px"
+      >
+        <h3 style="color: whitesmoke; font-size: 16px; margin-bottom: 0">
+          Tài khoản
+        </h3>
+        <mat-form-field appearance="outline" class="full-width-input">
+          
+          <input
+            matInput
+            status="info"
+            type="text"
+            id="userName"
+            placeholder="Tài khoản"
+            formControlName="userName" 
+            style="color: beige !important;"
+        /></mat-form-field>
+      </div>
+      <div
+        class="row"
+        style="display: flex; flex-direction: column; margin-bottom: 20px"
+      >
+        <h3 style="color: whitesmoke; font-size: 16px; margin-bottom: 0">
+          Mật khẩu
+        </h3>
+        <mat-form-field appearance="outline" class="full-width-input">
+          <input
+            matInput
+            status="info"
+            type="password"
+            id="password"
+            placeholder="Mật khẩu"
+            formControlName="password"
+            style="color: beige !important;"
+          />
+        </mat-form-field>
+
+
+      </div>
+
+      <div class="signInAction">
+        <button mat-button type="submit" id="sign_in" status="success" style="color: white;">
+          Đăng nhập
+        </button>
+        <button
+          mat-button
+          type="button"
+       style="color: white;"
+          id="escape"
+          (click)="onNoClick()"
+        >
+          Thoát
+        </button>
+      </div>
+    
+    </mat-card-content>
+  </form>
+</div>

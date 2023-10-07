@@ -23,12 +23,12 @@ export class CanLoadGuardAdmin {
     if (roles) {
       if (this.tokenService.getUserRole() === roles[0]) return true;
       else {
-        this.router.navigate(['/forbidden']);
+        //this.router.navigate(['/forbidden']);
         return false;
       }
     }
 
-    return true;
+    return false;
     // return this.userService.current_user.id_admin === 1;
   }
 }

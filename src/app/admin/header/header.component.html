@@ -1,144 +1,200 @@
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-<div class="container-fluid">
-  <div class="row justify-content-start align-items-center g-2">
-    <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8">
-      <!-- Nav tabs -->
-      <ul class="nav">
-        <li class="nav-item">
-          <img src="https://bookstore1storage.blob.core.windows.net/start-container/book_logo.png?sv=2021-10-04&st=2023-09-26T12%3A36%3A33Z&se=2040-01-27T12%3A36%3A00Z&sr=b&sp=r&sig=4WMWtw0igWEoBTLwaZvfyk6grD6JCurSP1z7fdNPJUc%3D" class="img-logo" />
-        </li>
-        <li class="nav-item">
-          <div class="form-group">
-            <div
-              class="col-xs-5 col-sm-12 col-md-12 col-lg-12"
-              style="margin-top: 8px"
-            >
-              <form (ngSubmit)="formSubmit()" [formGroup]="searchFormGroup">
-                <div class="form-group">
-                  <div class="row">
-                    <div class="col-xs-5 col-sm-5 col-md-10 col-lg-10">
-                      <input
-                        type="text"
-                        class="form-control"
-                        name="search"
-                        id="search"
-                        aria-describedby="helpId"
-                        placeholder="Tìm kiếm"
-                      />
-                    </div>
+<link
+  rel="stylesheet"
+  href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
+/>
 
-                    <div class="col-xs-5 col-sm-5 col-md-2 col-lg-2">
-                      <button type="button" class="btn btn-primary">
-                        <i class="fa fa-search"></i>
-                      </button>
-                    </div>
-                  </div>
-                </div>
-              </form>
-            </div>
-          </div>
-        </li>
-      </ul>
-
-      <mat-menu #appMenu="matMenu">
-        <ng-template matMenuContent let-name="name">
-          <button mat-menu-item>Settings</button>
-          <button mat-menu-item>Log off {{ name }}</button>
-        </ng-template>
-      </mat-menu>
-    </div>
-    <div class="col">
-      <div class="row" id="log-button-group">
-        <img
-          mat-card-image
-          id="avatar"
-          src="https://bookstore1storage.blob.core.windows.net/1-container/1_29baea6a-d986-4fc2-2e10-08dbb1d9670e.jpg"
-          width="50px"
-          height="50px"
-          [matMenuTriggerFor]="menu"
-        />
-      </div>
-
-      <mat-menu #menu="matMenu">
-        <button mat-menu-item>Thông tin tài khoản</button>
-        <button mat-menu-item (click)="signOut()">Đăng xuất</button>
-      </mat-menu>
-    </div>
+<div class="container-fluid" #header>
+  <!-- Nav tabs -->
+  <div>
+    <button mat-button ghost (click)="navMenuClick()">
+      <i
+        class="fa fa-bars"
+        style="font-size: 22px; color: rgb(105, 104, 104)"
+        aria-hidden="true"
+      ></i>
+    </button>
   </div>
 
-  <div class="row justify-content-start align-items-center g-2">
-    <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8">
-      <!-- Nav tabs -->
-      <ul class="nav">
-        <li class="nav-item">
-          <a class="nav-link active" routerLink="#">Home</a>
-        </li>
+  <div>
+    <img
+      src="https://bookstore1storage.blob.core.windows.net/start-container/book_logo.png?sv=2021-10-04&st=2023-09-26T12%3A36%3A33Z&se=2040-01-27T12%3A36%3A00Z&sr=b&sp=r&sig=4WMWtw0igWEoBTLwaZvfyk6grD6JCurSP1z7fdNPJUc%3D"
+      class="img-logo"
+      style="border: 2px solid black; border-radius: 10px"
+    />
+  </div>
 
-        <li class="nav-item">
-          <div ngbDropdown class="d-inline-block">
-            <button
-              type="button"
-              class="btn btn-outline-primary"
-              id="dropdownBasic1"
-              style="color: azure"
-              ngbDropdownToggle
-            >
-              Book
-            </button>
-            <div ngbDropdownMenu aria-labelledby="dropdownBasic1">
-              <a routerLink="/admin/book/list" mat-menu-item>Book list</a>
-              <a routerLink="/admin/book/create" mat-menu-item>New book</a>
-            </div>
-          </div>
-        </li>
+  <div style="padding-top: 16px !important">
+    <h3 style="font-size: 35px !important; font-family: Brush Script MT">
+      Roxanne.com
+    </h3>
+  </div>
 
-        <li class="nav-item">
-          <a class="nav-link active" routerLink="/admin/author/list"
-            >Author list</a
-          >
-        </li>
-        <li class="nav-item">
-          <a class="nav-link active" routerLink="/admin/publisher/list"
-            >Publisher list</a
-          >
-        </li>
-        <li class="nav-item">
-          <a class="nav-link active" routerLink="/admin/category/list"
-            >Category list</a
-          >
-        </li>
-        <li class="nav-item">
-          <a class="nav-link active" routerLink="/admin/voucher/list"
-            >Voucher list</a
-          >
-        </li>
-        <li class="nav-item">
-          <a class="nav-link active" routerLink="/admin/notification/list"
-            >Notification list</a
-          >
-        </li>
-        <li class="nav-item">
-          <div ngbDropdown class="d-inline-block">
-            <button
-              type="button"
-              class="btn btn-outline-primary"
-              id="dropdownBasic1"
-              style="color: azure"
-              ngbDropdownToggle
+  <div class="searchInput" style="margin-top: 20px">
+    <mat-form-field appearance="outline" class="full-width-input">
+      <input
+        #searchInput
+        matInput
+        [formControl]="searchControl"
+        type="text"
+        fullwidth
+        name="search"
+        id="search"
+        placeholder="Tìm kiếm sản phẩm"
+      />
+    </mat-form-field>
+  </div>
+
+  <div>
+    <button mat-button status="primary">
+      <i class="fa fa-search" aria-hidden="true" style="font-size: 15px"></i>
+    </button>
+  </div>
+
+  <button mat-button ghost status="primary">
+    <i
+      class="fa fa-bell"
+      aria-hidden="true"
+      style="font-size: 22px; color: rgb(105, 104, 104)"
+    ></i>
+  </button>
+
+  <button mat-button [matMenuTriggerFor]="menu">
+    <i
+      class="fa fa-user"
+      aria-hidden="true"
+      style="font-size: 22px; color: rgb(105, 104, 104)"
+    ></i>
+  </button>
+
+  <mat-menu #menu="matMenu">
+    <button mat-menu-item (click)="signOut()">Đăng xuất</button>
+    <button mat-menu-item>Đăng kí</button>
+  </mat-menu>
+
+  <div
+    id=".autocomplete-search"
+    #autocompleteSearch
+    class="autocomplete-search"
+    (appOutsideClick)="outsideAutoCompleteSearchClick($event)"
+  >
+    <h6>Sản phẩm tìm kiếm</h6>
+    <div class="searchContent"></div>
+  </div>
+</div>
+
+<div
+  id="mySidenav"
+  #mySidenav
+  class="sidenav"
+  (appOutsideClick)="outsideClick($event)"
+>
+  <h6
+    style="
+      font-size: 24px;
+      margin-bottom: 60px !important;
+      font-weight: bolder;
+      width: 250px;
+    "
+  >
+    Danh mục quản lý
+  </h6>
+  <div class="sideNavContent">
+    <div class="sidenavCategory">
+      <mat-expansion-panel expanded>
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+            <h6
+              style="
+                font-size: 16px;
+                padding-bottom: 0 !important;
+                font-weight: bold;
+                margin-bottom: 0 !important;
+              "
             >
-              Toggle dropdown
-            </button>
-            <div ngbDropdownMenu aria-labelledby="dropdownBasic1">
-              <a routerLink="/admin/category/list" mat-menu-item
-                >Category list</a
-              >
-              <a routerLink="/admin/category/list" mat-menu-item
-                >New Category</a
-              >
-            </div>
-          </div>
-        </li>      
-      </ul>
+              Đối tác DV di chuyển
+            </h6>
+          </mat-panel-title>
+        </mat-expansion-panel-header>
+        <div
+          ngbNav
+          #nav="ngbNav"
+          [(activeId)]="activeItem"
+          class="nav-pills flex-column"
+          orientation="vertical"
+        >
+          <ng-container ngbNavItem="1st">
+            <button ngbNavLink (click)="navigateUrl('transport/passenger-car/list')">Xe khách</button>
+          </ng-container>
+
+          <ng-container ngbNavItem="2nd">
+            <button ngbNavLink (click)="navigateUrl('transport/air-plane/list')">Máy bay</button>
+          </ng-container>
+        </div>
+      </mat-expansion-panel>
+    </div>
+
+    <div class="sidenavCategory">
+      <mat-expansion-panel expanded>
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+            <h6
+              style="
+                font-size: 16px;
+                padding-bottom: 0 !important;
+                font-weight: bold;
+                margin-bottom: 0 !important;
+              "
+            >
+              Đối tác DV nơi ở
+            </h6>
+          </mat-panel-title>
+        </mat-expansion-panel-header>
+        <div
+          ngbNav
+          #nav="ngbNav"
+          [(activeId)]="activeItem"
+          class="nav-pills flex-column"
+          orientation="vertical"
+        >
+          <ng-container ngbNavItem="3rd">
+            <button ngbNavLink (click)="navigateUrl('resthouse/hotel/list')">Hotel</button>
+          </ng-container>
+
+          <ng-container ngbNavItem="4th">
+            <button ngbNavLink (click)="navigateUrl('resthouse/homeStay/list')">HomeStay</button>
+          </ng-container>
+        </div>
+      </mat-expansion-panel>
+    </div>
+
+    <div class="sidenavCategory">
+      <mat-expansion-panel expanded>
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+            <h6
+              style="
+                font-size: 16px;
+                padding-bottom: 0 !important;
+                font-weight: bold;
+                margin-bottom: 0 !important;
+              "
+            >
+              Đối tác DV ăn uống
+            </h6>
+          </mat-panel-title>
+        </mat-expansion-panel-header>
+        <div
+          ngbNav
+          #nav="ngbNav"
+          [(activeId)]="activeItem"
+          class="nav-pills flex-column"
+          orientation="vertical"
+        >
+          <ng-container ngbNavItem="5th">
+            <button ngbNavLink (click)="navigateUrl('restaurant/list')">Nhà hàng</button>
+          </ng-container>
+        </div>
+      </mat-expansion-panel>
     </div>
   </div>
 </div>
