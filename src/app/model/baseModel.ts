@@ -12,7 +12,6 @@ export interface Restaurant {
   updateDate?: Date;
 }
 
-
 export interface HomeStay {
   id?: string;
   placeBranch: string;
@@ -141,4 +140,25 @@ export interface Author {
   updateDate: string;
 }
 
+export interface TourishPlan {
+  id?: string;
+  tourName: string;
+  startingPoint: string;
+  endPoint: string;
 
+  supportNumber: string;
+  totalTicket: string;
+  remainTicket: string;
+  PlanStatus: number;
+  description: string;
+
+  createDate: string;
+  updateDate: string;
+
+  startDate: string;
+  endDate: string;
+
+  stayingSchedule?: StayingSchedule[];
+  eatSchedule?: EatSchedule[];
+  movingSchedule?: MovingSchedule[];
+}

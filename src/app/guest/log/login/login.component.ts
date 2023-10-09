@@ -90,7 +90,7 @@ export class LoginComponent implements OnInit {
                 if (response.Role === "User") {
                   this.router.navigate(["/user/home"]);
                 } else if (response.Role === "Admin") {
-                  this.router.navigate(["/admin/book/list"]);
+                  this.router.navigate(["/admin/transport/passenger-car/list"]);
                 }
               }
             });

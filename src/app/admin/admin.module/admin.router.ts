@@ -20,6 +20,7 @@ import { PassengerCarListComponent } from '../PassengerCar/passenger_car_list/pa
 import { AirPlaneListComponent } from '../AirPlane/air_plane_list/air_plane-list.component';
 import { HotelListComponent } from '../Hotel/hotel_list/hotel-list.component';
 import { RestaurantListComponent } from '../Restaurant/restaurant_list/restaurant-list.component';
+import { HomeStayListComponent } from '../HomeStay/homeStay_list/homeStay-list.component';
 
 
 const routes: Routes = [
@@ -54,7 +55,7 @@ const routes: Routes = [
       },
       {
         path: 'resthouse/homeStay/list',
-        component: HotelListComponent,
+        component: HomeStayListComponent,
       },
       {
         path: 'restaurant/list',

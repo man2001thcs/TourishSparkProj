@@ -1,0 +1,229 @@
+<div class="container" style="padding: 20px 0 20px">
+  <div
+    class="outlet"
+    style="
+      display: flex;
+      justify-content: center;
+      width: 100%;
+      flex-direction: column !important;
+    "
+  >
+    <div class="row">
+      <h2 mat-form-label style="font-weight: heavy">Thêm thông tin Tour</h2>
+    </div>
+
+    <div
+      class="row"
+      style="
+        display: flex;
+        flex-direction: column !important;
+        flex-wrap: 1;
+        padding-left: 90px !important;
+      "
+    >
+      <form [formGroup]="createformGroup">
+        <div class="row">
+          <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 create-form">
+            <div class="row">
+              <mat-form-field appearance="outline" class="full-width-input">
+                <mat-label>Tên tour</mat-label>
+                <input
+                  matInput
+                  fullwidth
+                  placeholder="Vd: Bồ Công Anh"
+                  formControlName="tourName"
+                />
+                <app-validation
+                  [formGroup]="createformGroup"
+                  [formGroupControlName]="'tourName'"
+                ></app-validation>
+              </mat-form-field>
+            </div>
+
+            <div class="row">
+              <mat-form-field appearance="outline" class="full-width-input">
+                <mat-label>Điểm xuất phát</mat-label>
+                <input
+                  matInput
+                  placeholder="Vd: Hà Nội"
+                  formControlName="startingPoint"
+                />
+                <app-validation
+                  [formGroup]="createformGroup"
+                  [formGroupControlName]="'startingPoint'"
+                ></app-validation>
+              </mat-form-field>
+            </div>
+
+            <div class="row">
+              <mat-form-field appearance="outline" class="full-width-input">
+                <mat-label>Điểm kết thúc</mat-label>
+                <input
+                  matInput
+                  placeholder="Đà Nẵng"
+                  formControlName="endPoint"
+                />
+                <app-validation
+                  [formGroup]="createformGroup"
+                  [formGroupControlName]="'endPoint'"
+                ></app-validation>
+              </mat-form-field>
+            </div>
+          </div>
+
+          <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 create-form">
+            <div class="row">
+              <mat-form-field appearance="outline" class="full-width-input">
+                <mat-label>Số điện thoại hỗ trợ</mat-label>
+                <input
+                  matInput
+                  placeholder="VD: 0354324599"
+                  formControlName="supportNumber"
+                />
+                <app-validation
+                  [formGroup]="createformGroup"
+                  [formGroupControlName]="'supportNumber'"
+                ></app-validation>
+              </mat-form-field>
+            </div>
+
+            <div class="row">
+              <mat-form-field appearance="outline" class="full-width-input">
+                <mat-label>Tổng số vé</mat-label>
+                <input
+                  matInput
+                  placeholder="Vd: 10"
+                  formControlName="totalTicket"
+                />
+                <app-validation
+                  [formGroup]="createformGroup"
+                  [formGroupControlName]="'totalTicket'"
+                ></app-validation>
+              </mat-form-field>
+            </div>
+
+            <div class="row">
+              <mat-form-field appearance="outline" class="full-width-input">
+                <mat-label>Số vé còn lại</mat-label>
+                <input
+                  matInput
+                  placeholder="Vd: 2"
+                  formControlName="remainTicket"
+                />
+                <app-validation
+                  [formGroup]="createformGroup"
+                  [formGroupControlName]="'remainTicket'"
+                ></app-validation>
+              </mat-form-field>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 create-form">
+              <div class="row">
+                <mat-form-field>
+                  <mat-label>Ngày bắt đầu</mat-label>
+                  <input
+                    matInput
+                    [ngxMatDatetimePicker]="picker1"
+                    placeholder="Choose a date"
+                    formControlName="startDate"
+                  />
+                  <mat-datepicker-toggle
+                    matSuffix
+                    [for]="$any(picker1)"
+                  ></mat-datepicker-toggle>
+                  <ngx-mat-datetime-picker
+                    #picker1
+                  >
+                  </ngx-mat-datetime-picker>
+                </mat-form-field>
+              </div>
+            </div>
+
+            <div class="row">
+              <mat-form-field>
+                <mat-label>Ngày kết thúc</mat-label>
+                <input
+                  matInput
+                  [ngxMatDatetimePicker]="picker2"
+                  placeholder="Choose a date"
+                  formControlName="endDate"
+                />
+                <mat-datepicker-toggle
+                  matSuffix
+                  [for]="$any(picker2)"
+                ></mat-datepicker-toggle>
+                <ngx-mat-datetime-picker
+                  #picker2
+                >
+                </ngx-mat-datetime-picker>
+              </mat-form-field>
+            </div>
+          </div>
+          </div>
+
+          <div class="row">
+            <mat-form-field appearance="outline" class="full-width-input">
+              <mat-label>Trạng thái tour</mat-label>
+              <select matNativeControl required>
+                <option value="1">Volvo</option>
+                <option value="2">Saab</option>
+                <option value="3">Mercedes</option>
+                <option value="4">Audi</option>
+              </select>
+            </mat-form-field>
+          </div>
+        </div>
+
+        <div
+          class="row"
+          style="display: flex; flex-direction: column !important; flex-wrap: 1"
+        >
+          <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 create-form">
+            <mat-form-field style="width: 90%">
+              <textarea
+                matInput
+                class="form-control"
+                id="description"
+                placeholder="Thông tin đính kèm"
+                formControlName="description"
+                rows="10"
+              ></textarea>
+              <app-validation
+                [formGroup]="createformGroup"
+                [formGroupControlName]="'description'"
+              ></app-validation>
+            </mat-form-field>
+          </div>
+        </div>
+
+        <div
+          class="row"
+          style="display: flex; flex-direction: row !important; flex-wrap: 1"
+        >
+          <div style="margin-right: 20px">
+            <button
+              mat-raised-button
+              color="primary"
+              (click)="formSubmit_create_info()"
+            >
+              Lưu
+            </button>
+          </div>
+
+          <div>
+            <button
+              mat-raised-button
+              color="warn"
+              type="button"
+              (click)="formReset_create_info()"
+            >
+              Khôi phục
+            </button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

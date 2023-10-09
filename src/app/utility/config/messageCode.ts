@@ -69,6 +69,30 @@ export const ERR_MESSAGE_CODE_EN: Map<string, string> = new Map([
   ["C122", "Air plane branch update error"],
   ["C123", "Air plane branch delete error"],
   ["C124", "Air plane branch SQL error"],
+
+  ["C210", "Hotel branch not found"],
+  ["C211", "Hotel branch add error"],
+  ["C212", "Hotel branch update error"],
+  ["C213", "Hotel branch delete error"],
+  ["C214", "Hotel branch SQL error"],
+
+  ["C220", "HomeStay branch not found"],
+  ["C221", "HomeStay branch add error"],
+  ["C222", "HomeStay branch update error"],
+  ["C223", "HomeStay branch delete error"],
+  ["C224", "HomeStay branch SQL error"],
+
+  ["C310", "Restaurant branch not found"],
+  ["C311", "Restaurant branch add error"],
+  ["C312", "Restaurant branch update error"],
+  ["C313", "Restaurant branch delete error"],
+  ["C314", "Restaurant branch SQL error"],
+
+  ["C510", "Receipt branch not found"],
+  ["C511", "Receipt branch add error"],
+  ["C512", "Receipt branch update error"],
+  ["C513", "Receipt branch delete error"],
+  ["C514", "Receipt branch SQL error"],
   
 ]);
 
@@ -137,6 +161,30 @@ export const ERR_MESSAGE_CODE_VI: Map<string, string> = new Map([
     ["C122", "Đối tác sửa đang gặp lỗi cập nhật"],
     ["C123", "Đối tác xóa thất bại"],
     ["C124", "Đối tác đang gặp lỗi cơ sở dữ liệu"],
+
+    ["C210", "Đối tác không tồn tại"],
+    ["C211", "Đối tác thêm vào bị lỗi"],
+    ["C212", "Đối tác sửa đang gặp lỗi cập nhật"],
+    ["C213", "Đối tác xóa thất bại"],
+    ["C214", "Đối tác đang gặp lỗi cơ sở dữ liệu"],
+
+    ["C220", "Đối tác không tồn tại"],
+    ["C221", "Đối tác thêm vào bị lỗi"],
+    ["C222", "Đối tác sửa đang gặp lỗi cập nhật"],
+    ["C223", "Đối tác xóa thất bại"],
+    ["C224", "Đối tác đang gặp lỗi cơ sở dữ liệu"],
+
+    ["C310", "Đối tác không tồn tại"],
+    ["C311", "Đối tác thêm vào bị lỗi"],
+    ["C312", "Đối tác sửa đang gặp lỗi cập nhật"],
+    ["C313", "Đối tác xóa thất bại"],
+    ["C314", "Đối tác đang gặp lỗi cơ sở dữ liệu"],
+
+    ["C510", "Hóa đơn không tồn tại"],
+    ["C511", "Hóa đơn thêm vào bị lỗi"],
+    ["C512", "Hóa đơn sửa đang gặp lỗi cập nhật"],
+    ["C513", "Hóa đơn xóa thất bại"],
+    ["C514", "Hóa đơn đang gặp lỗi cơ sở dữ liệu"],
   ]);
 
 export const SUCCESS_MESSAGE_CODE_EN: Map<string, string> = new Map([
@@ -179,6 +227,22 @@ export const SUCCESS_MESSAGE_CODE_EN: Map<string, string> = new Map([
     ["I121", "Air plane branch add ok"],
     ["I122", "Air plane branch update ok"],
     ["I123", "Air plane branch delete ok"],
+
+    ["I211", "Hotel branch add ok"],
+    ["I212", "Hotel branch update ok"],
+    ["I213", "Hotel branch delete ok"],
+
+    ["I221", "Home stay branch add ok"],
+    ["I222", "Home stay branch update ok"],
+    ["I223", "Home stay branch delete ok"],
+
+    ["I311", "Restaurant branch add ok"],
+    ["I312", "Restaurant branch update ok"],
+    ["I313", "Restaurant branch delete ok"],
+
+    ["I511", "Receipt branch add ok"],
+    ["I512", "Receipt branch update ok"],
+    ["I513", "Receipt branch delete ok"],
     
   ]);
 
@@ -222,4 +286,20 @@ export const SUCCESS_MESSAGE_CODE_EN: Map<string, string> = new Map([
     ["I121", "Hãng hàng không thêm thành công"],
     ["I122", "Hãng hàng không update thành công"],
     ["I123", "Hãng hàng không xóa thành công"],
+
+    ["I211", "Khách sạn thêm thành công"],
+    ["I212", "Khách sạn không update thành công"],
+    ["I213", "Khách sạn không xóa thành công"],
+
+    ["I221", "Home stay không thêm thành công"],
+    ["I222", "Home stay không update thành công"],
+    ["I223", "Home stay không xóa thành công"],
+
+    ["I311", "Restaurant không thêm thành công"],
+    ["I312", "Restaurant không update thành công"],
+    ["I313", "Restaurant không xóa thành công"],
+
+    ["I511", "Hóa đơn không thêm thành công"],
+    ["I512", "Hóa đơn không update thành công"],
+    ["I513", "Hóa đơn không xóa thành công"],
   ]);

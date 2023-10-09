@@ -222,12 +222,22 @@ import { RestaurantListEffects } from '../Restaurant/restaurant_list/restaurant-
 import { RestaurantCreateComponent } from '../Restaurant/restaurant_create/restaurant-create.component';
 import { RestaurantDetailComponent } from '../Restaurant/restaurant_detail/restaurant-detail.component';
 import { RestaurantListComponent } from '../Restaurant/restaurant_list/restaurant-list.component';
+import { HotelMultiselectAutocompleteComponent } from 'src/app/utility/multiselect/hotel-multiselect-autocomplete/multiselect-autocomplete.component';
+
+import { NgxMatDatetimePickerModule, NgxMatTimepickerModule } from '@angular-material-components/datetime-picker';
+import {MatDatepickerModule} from '@angular/material/datepicker';
+import { TourishPlanCreateAdminComponent } from '../TourishPlan/tourishPlan-create/tourishPlan-create_admin.component';
+import { TourishPlanListAdminComponent } from '../TourishPlan/tourishPlan-list/tourishPlanList_admin.component';
+import { TourishPlanDetailAdminComponent } from '../TourishPlan/tourishPlan-detail/tourishPlan-detail_admin.component';
+import { ValidationComponent } from 'src/app/utility/validation/validation.component';
 
 @NgModule({
   declarations: [
     PassengerCarCreateComponent,
     PassengerCarDetailComponent,
     PassengerCarListComponent,
+
+    ValidationComponent,
 
     AirPlaneCreateComponent,
     AirPlaneDetailComponent,
@@ -244,6 +254,10 @@ import { RestaurantListComponent } from '../Restaurant/restaurant_list/restauran
     RestaurantCreateComponent,
     RestaurantDetailComponent,
     RestaurantListComponent,
+
+    TourishPlanCreateAdminComponent,
+    TourishPlanListAdminComponent,
+    TourishPlanDetailAdminComponent,
 
     BookListAdminComponent,
     BookDetailAdminComponent,
@@ -272,6 +286,7 @@ import { RestaurantListComponent } from '../Restaurant/restaurant_list/restauran
     VoucherMultiselectAutocompleteComponent,
     CategoryMultiselectAutocompleteComponent,
     PublisherMultiselectAutocompleteComponent,
+    HotelMultiselectAutocompleteComponent,
 
     FileUploadComponent,
 
@@ -302,6 +317,9 @@ import { RestaurantListComponent } from '../Restaurant/restaurant_list/restauran
     NgbNavModule,
 
     MatExpansionModule,
+    NgxMatDatetimePickerModule,
+    NgxMatTimepickerModule,
+    MatDatepickerModule,
 
     NbChatModule,
 
