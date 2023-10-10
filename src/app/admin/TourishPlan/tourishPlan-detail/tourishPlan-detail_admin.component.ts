@@ -1,4 +1,4 @@
-import { Response } from "../../model/response";
+import { Response } from "../../../model/response";
 import { Component, Inject, OnDestroy, OnInit } from "@angular/core";
 import {
   ActivatedRouteSnapshot,
@@ -20,8 +20,8 @@ import {
   Validators,
 } from "@angular/forms";
 import { ActivatedRoute } from "@angular/router";
-import { AdminService } from "../service/admin.service";
-import { CheckDeactivate } from "../interface/admin.check_edit";
+import { AdminService } from "../../service/admin.service";
+import { CheckDeactivate } from "../../interface/admin.check_edit";
 import {
   AuthorPayload,
   TourishPlan,
