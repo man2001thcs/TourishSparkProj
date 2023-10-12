@@ -36,7 +36,7 @@ import {
   VoucherPayload,
 } from "./tourishPlan-detail.component.model";
 import * as TourishPlanActions from "./tourishPlan-detail.store.action";
-import { State as TourishPlanState } from "./tourishPlandetail.store.reducer";
+import { State as TourishPlanState } from "./tourishPlan-detail.store.reducer";
 import { Store } from "@ngrx/store";
 import {
   editTourishPlan,

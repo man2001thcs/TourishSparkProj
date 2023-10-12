@@ -1,6 +1,6 @@
 import { createFeatureSelector, createSelector } from '@ngrx/store';
 import { storeKey } from './tourishPlan-detail.store.action';
-import { State } from './tourishPlandetail.store.reducer';
+import { State } from './tourishPlan-detail.store.reducer';
 
 export const tourishPlanFeatureState = createFeatureSelector<State>(storeKey);
 
