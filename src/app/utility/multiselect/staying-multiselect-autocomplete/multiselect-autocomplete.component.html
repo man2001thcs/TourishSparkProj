@@ -1,0 +1,188 @@
+<div [formGroup]="movingFormGroup">
+  <div class="row">
+    <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 create-form">
+      <div class="row">
+        <h2
+          mat-form-label
+          style="font-weight: heavy; font-size: 16px; margin-bottom: 0px"
+        >
+          Thêm thông tin lịnh trình nơi ở
+        </h2>
+      </div>
+
+      <mat-form-field
+        class="example-chip-list"
+        appearance="outline"
+        class="full-width-input"
+      >
+        <mat-label>Danh sách lịch trình nơi ở</mat-label>
+        <mat-chip-grid #chipGrid aria-label="Fruit selection">
+          <mat-chip-row
+            *ngFor="let staying of stayingNameList"
+            (removed)="remove(staying)"
+            style="font-size: 16px"
+          >
+            {{ staying }}
+            <button matChipRemove [attr.aria-label]="'remove ' + staying">
+              <mat-icon>cancel</mat-icon>
+            </button>
+          </mat-chip-row>
+        </mat-chip-grid>
+
+        <input
+          *ngIf="stayingNameList.length < 1"
+          placeholder="New Category..."
+          #stayingInput
+          [formControl]="stayingCtrl"
+          [matChipInputFor]="chipGrid"
+          [matAutocomplete]="auto"
+          [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+          (matChipInputTokenEnd)="add($event)"
+        />
+
+        <mat-autocomplete
+          #auto="matAutocomplete"
+          (optionSelected)="selected($event)"
+          (optionsScroll)="onScroll($event)"
+        >
+          <mat-option
+            *ngFor="let staying of data"
+            [value]="staying"
+            [disabled]="isChecked(staying)"
+          >
+            <div>
+              <div style="font-weight: bold">
+                {{ staying.placeBranch }}
+                <mat-icon>{{ isChecked(staying) && "checked" }}</mat-icon>
+              </div>
+
+              <small>{{ onDisplayAtr(staying) }}</small>
+            </div>
+          </mat-option>
+        </mat-autocomplete>
+      </mat-form-field>
+
+      <div *ngIf="stayingNameList.length >= 1">
+        <div class="row">
+          <h4
+            mat-form-label
+            style="font-weight: bold; text-decoration: underline"
+          >
+            Thêm thông tin nơi ở
+          </h4>
+        </div>
+
+        <div class="row">
+          <mat-form-field appearance="outline" class="full-width-input">
+            <mat-label>Địa chỉ nơi ở</mat-label>
+            <input
+              matInput
+              fullwidth
+              placeholder="Vd: Bồ Công Anh"
+              formControlName="tourName"
+            />
+          </mat-form-field>
+        </div>
+
+        <div class="row">
+          <mat-form-field appearance="outline" class="full-width-input">
+            <mat-label>Số diện thoại hỗ trợ</mat-label>
+            <input
+              matInput
+              fullwidth
+              placeholder="Vd: Bồ Công Anh"
+              formControlName="tourName"
+            />
+          </mat-form-field>
+        </div>
+
+        <div class="row">
+          <mat-form-field appearance="outline" class="full-width-input">
+            <mat-label>Ngày bắt đầu</mat-label>
+            <input
+              matInput
+              [ngxMatDatetimePicker]="stayingPicker"
+              placeholder="Choose a date"
+              formControlName="startDate"
+            />
+            <mat-datepicker-toggle
+              matSuffix
+              [for]="$any(stayingPicker)"
+            ></mat-datepicker-toggle>
+            <ngx-mat-datetime-picker
+              #stayingPicker
+              [showSpinners]="true"
+              [showSeconds]="true"
+              [touchUi]="touchUi"
+              [color]="color"
+              [enableMeridian]="enableMeridian"
+            >
+            </ngx-mat-datetime-picker>
+          </mat-form-field>
+        </div>
+
+        <div class="row">
+          <mat-form-field appearance="outline" class="full-width-input">
+            <mat-label>Ngày kết thúc</mat-label>
+            <input
+              matInput
+              [ngxMatDatetimePicker]="picker"
+              placeholder="Choose a date"
+              formControlName="endDate"
+            />
+            <mat-datepicker-toggle
+              matSuffix
+              [for]="$any(picker)"
+            ></mat-datepicker-toggle>
+            <ngx-mat-datetime-picker
+              #picker
+              [showSpinners]="true"
+              [showSeconds]="true"
+              [touchUi]="touchUi"
+              [color]="color"
+              [enableMeridian]="enableMeridian"
+            >
+            </ngx-mat-datetime-picker>
+          </mat-form-field>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 create-form">
+      <div class="row">
+        <h2
+          mat-form-label
+          style="font-weight: heavy; font-size: 16px; margin-bottom: 0px"
+        >
+          Danh sách lịch trình nơi ở
+        </h2>
+      </div>
+
+      <div style="display: flex; flex-direction: row; align-items: center;">
+        <mat-expansion-panel [expanded]="false" style="width: 65%; margin-right: 10px;">
+          <mat-expansion-panel-header>
+            <mat-panel-title> Lịch trình </mat-panel-title>
+          </mat-expansion-panel-header>
+          <p><span style="font-weight: bold;">Địa chỉ:</span> adasd</p>
+          <p><span style="font-weight: bold;">SĐT hỗ trợ:</span> adasd</p>
+          <p><span style="font-weight: bold;">Ngày bắt đầu:</span> adasd</p>
+          <p><span style="font-weight: bold;">Ngày kết thúc:</span> adasd</p>
+        </mat-expansion-panel>
+        <button mat-raised-button color="primary">Gỡ</button>
+      </div>
+    </div>
+  </div>
+
+  <div
+    class="row"
+    style="display: flex; flex-direction: row !important; flex-wrap: 1"
+  >
+    <div style="margin-right: 20px">
+      <button mat-raised-button color="primary">Thêm</button>
+    </div>
+
+    <div>
+      <button mat-raised-button color="warn" type="button">Khôi phục</button>
+    </div>
+  </div>
+</div>

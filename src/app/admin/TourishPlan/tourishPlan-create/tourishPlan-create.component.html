@@ -6,12 +6,9 @@
       justify-content: center;
       width: 100%;
       flex-direction: column !important;
+      background-color: white;
     "
   >
-    <div class="row">
-      <h2 mat-form-label style="font-weight: heavy">Thêm thông tin Tour</h2>
-    </div>
-
     <div
       class="row"
       style="
@@ -21,10 +18,14 @@
         padding-left: 90px !important;
       "
     >
+      <div class="row">
+        <h2 mat-form-label style="font-weight: heavy">Thêm thông tin Tour</h2>
+      </div>
+
       <form [formGroup]="createformGroup">
         <div class="row">
           <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 create-form">
-            <div class="row">
+            <div class="row" style="margin-bottom: 1rem">
               <mat-form-field appearance="outline" class="full-width-input">
                 <mat-label>Tên tour</mat-label>
                 <input
@@ -33,14 +34,16 @@
                   placeholder="Vd: Bồ Công Anh"
                   formControlName="tourName"
                 />
-                <app-validation
-                  [formGroup]="createformGroup"
-                  [formGroupControlName]="'tourName'"
-                ></app-validation>
               </mat-form-field>
+
+              <app-validation
+                *ngIf="submited"
+                [formGroup]="createformGroup"
+                [formGroupControlName]="'tourName'"
+              ></app-validation>
             </div>
 
-            <div class="row">
+            <div class="row" style="margin-bottom: 1rem">
               <mat-form-field appearance="outline" class="full-width-input">
                 <mat-label>Điểm xuất phát</mat-label>
                 <input
@@ -48,31 +51,33 @@
                   placeholder="Vd: Hà Nội"
                   formControlName="startingPoint"
                 />
-                <app-validation
-                  [formGroup]="createformGroup"
-                  [formGroupControlName]="'startingPoint'"
-                ></app-validation>
               </mat-form-field>
+              <app-validation
+                *ngIf="submited"
+                [formGroup]="createformGroup"
+                [formGroupControlName]="'startingPoint'"
+              ></app-validation>
             </div>
 
-            <div class="row">
+            <div class="row" style="margin-bottom: 1rem">
               <mat-form-field appearance="outline" class="full-width-input">
                 <mat-label>Điểm kết thúc</mat-label>
                 <input
                   matInput
                   placeholder="Đà Nẵng"
-                  formControlName="endPoint"
+                  formControlName="endingPoint"
                 />
-                <app-validation
-                  [formGroup]="createformGroup"
-                  [formGroupControlName]="'endPoint'"
-                ></app-validation>
               </mat-form-field>
+              <app-validation
+                *ngIf="submited"
+                [formGroup]="createformGroup"
+                [formGroupControlName]="'endingPoint'"
+              ></app-validation>
             </div>
           </div>
 
           <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 create-form">
-            <div class="row">
+            <div class="row" style="margin-bottom: 1rem">
               <mat-form-field appearance="outline" class="full-width-input">
                 <mat-label>Số điện thoại hỗ trợ</mat-label>
                 <input
@@ -80,14 +85,15 @@
                   placeholder="VD: 0354324599"
                   formControlName="supportNumber"
                 />
-                <app-validation
-                  [formGroup]="createformGroup"
-                  [formGroupControlName]="'supportNumber'"
-                ></app-validation>
               </mat-form-field>
+              <app-validation
+                *ngIf="submited"
+                [formGroup]="createformGroup"
+                [formGroupControlName]="'supportNumber'"
+              ></app-validation>
             </div>
 
-            <div class="row">
+            <div class="row" style="margin-bottom: 1rem">
               <mat-form-field appearance="outline" class="full-width-input">
                 <mat-label>Tổng số vé</mat-label>
                 <input
@@ -95,14 +101,15 @@
                   placeholder="Vd: 10"
                   formControlName="totalTicket"
                 />
-                <app-validation
-                  [formGroup]="createformGroup"
-                  [formGroupControlName]="'totalTicket'"
-                ></app-validation>
               </mat-form-field>
+              <app-validation
+                *ngIf="submited"
+                [formGroup]="createformGroup"
+                [formGroupControlName]="'totalTicket'"
+              ></app-validation>
             </div>
 
-            <div class="row">
+            <div class="row" style="margin-bottom: 1rem">
               <mat-form-field appearance="outline" class="full-width-input">
                 <mat-label>Số vé còn lại</mat-label>
                 <input
@@ -110,36 +117,39 @@
                   placeholder="Vd: 2"
                   formControlName="remainTicket"
                 />
-                <app-validation
-                  [formGroup]="createformGroup"
-                  [formGroupControlName]="'remainTicket'"
-                ></app-validation>
+              </mat-form-field>
+              <app-validation
+                *ngIf="submited"
+                [formGroup]="createformGroup"
+                [formGroupControlName]="'remainTicket'"
+              ></app-validation>
+            </div>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 create-form">
+            <div class="row" style="margin-bottom: 1rem">
+              <mat-form-field appearance="outline" class="full-width-input">
+                <mat-label>Ngày bắt đầu</mat-label>
+                <input
+                  matInput
+                  [ngxMatDatetimePicker]="picker1"
+                  placeholder="Choose a date"
+                  formControlName="startDate"
+                />
+                <mat-datepicker-toggle
+                  matSuffix
+                  [for]="$any(picker1)"
+                ></mat-datepicker-toggle>
+                <ngx-mat-datetime-picker #picker1> </ngx-mat-datetime-picker>
               </mat-form-field>
             </div>
           </div>
 
-          <div class="row">
-            <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 create-form">
-              <div class="row">
-                <mat-form-field>
-                  <mat-label>Ngày bắt đầu</mat-label>
-                  <input
-                    matInput
-                    [ngxMatDatetimePicker]="picker1"
-                    placeholder="Choose a date"
-                    formControlName="startDate"
-                  />
-                  <mat-datepicker-toggle
-                    matSuffix
-                    [for]="$any(picker1)"
-                  ></mat-datepicker-toggle>
-                  <ngx-mat-datetime-picker #picker1> </ngx-mat-datetime-picker>
-                </mat-form-field>
-              </div>
-            </div>
-
-            <div class="row">
-              <mat-form-field>
+          <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 create-form">
+            <div class="row" style="margin-bottom: 1rem">
+              <mat-form-field appearance="outline" class="full-width-input">
                 <mat-label>Ngày kết thúc</mat-label>
                 <input
                   matInput
@@ -158,15 +168,19 @@
         </div>
 
         <div class="row">
-          <mat-form-field appearance="outline" class="full-width-input">
-            <mat-label>Trạng thái tour</mat-label>
-            <select matNativeControl required>
-              <option value="1">Volvo</option>
-              <option value="2">Saab</option>
-              <option value="3">Mercedes</option>
-              <option value="4">Audi</option>
-            </select>
-          </mat-form-field>
+          <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 create-form">
+            <div class="row" style="margin-bottom: 1rem">
+              <mat-form-field appearance="outline" class="full-width-input">
+                <mat-label>Trạng thái tour</mat-label>
+                <select matNativeControl required>
+                  <option value="1">Volvo</option>
+                  <option value="2">Saab</option>
+                  <option value="3">Mercedes</option>
+                  <option value="4">Audi</option>
+                </select>
+              </mat-form-field>
+            </div>
+          </div>
         </div>
 
         <div
@@ -190,6 +204,37 @@
             </mat-form-field>
           </div>
         </div>
+
+        <div
+          class="row"
+          style="
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border-bottom: 3px solid #696868;
+            margin-top: 30px;
+            margin-bottom: 30px;
+            width: 93%;
+          "
+        ></div>
+
+        <staying-multiselect-autocomplete
+          (result)="selectChangeStaying($event)"
+        >
+        </staying-multiselect-autocomplete>
+
+        <div
+          class="row"
+          style="
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border-bottom: 3px solid #696868;
+            margin-top: 30px;
+            margin-bottom: 30px;
+            width: 93%;
+          "
+        ></div>
 
         <div
           class="row"

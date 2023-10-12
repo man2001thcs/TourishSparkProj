@@ -1,5 +1,5 @@
 import { createReducer, on } from "@ngrx/store";
-import * as HotelListAction from "./multiselect-autocomplete.store.action";
+import * as StayingListAction from "./multiselect-autocomplete.store.action";
 import { IBaseState } from "src/app/model/IBaseModel";
 
 export interface State extends IBaseState {
@@ -20,31 +20,31 @@ export const initialState: State = {
 export const reducer = createReducer(
   initialState,
 
-  on(HotelListAction.initial, (state) => ({
+  on(StayingListAction.initial, (state) => ({
     ...state,
     initialState,
   })),
 
-  on(HotelListAction.getHotelList, (state, { payload }) => ({
+  on(StayingListAction.getStayingList, (state, { payload }) => ({
     ...state,
   })),
 
-  on(HotelListAction.getHotelListSuccess, (state, { response }) => ({
+  on(StayingListAction.getStayingListSuccess, (state, { response }) => ({
     ...state,
     entityList: response,
   })),
 
-  on(HotelListAction.getHotelListFailed, (state, { response }) => ({
+  on(StayingListAction.getStayingListFailed, (state, { response }) => ({
     ...state,
     messageCode: response.messageCode,
   })),
 
-  on(HotelListAction.getHotelListSystemFailed, (state, { error }) => ({
+  on(StayingListAction.getStayingListSystemFailed, (state, { error }) => ({
     ...state,
     error: error,
   })),
 
-  on(HotelListAction.resetHotelList, (state) => ({
+  on(StayingListAction.resetStayingList, (state) => ({
     ...state,
     pageNumber: 0,
     pageOffset: 0,

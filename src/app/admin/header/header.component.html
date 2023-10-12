@@ -68,7 +68,6 @@
 
   <mat-menu #menu="matMenu">
     <button mat-menu-item (click)="signOut()">Đăng xuất</button>
-    <button mat-menu-item>Đăng kí</button>
   </mat-menu>
 
   <div
@@ -99,6 +98,41 @@
     Danh mục quản lý
   </h6>
   <div class="sideNavContent">
+
+    <div class="sidenavCategory">
+      <mat-expansion-panel expanded>
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+            <h6
+              style="
+                font-size: 16px;
+                padding-bottom: 0 !important;
+                font-weight: bold;
+                margin-bottom: 0 !important;
+              "
+            >
+              Kế hoạch du lịch
+            </h6>
+          </mat-panel-title>
+        </mat-expansion-panel-header>
+        <div
+          ngbNav
+          #nav="ngbNav"
+          [(activeId)]="activeItem"
+          class="nav-pills flex-column"
+          orientation="vertical"
+        >
+          <ng-container ngbNavItem="1st">
+            <button ngbNavLink (click)="navigateUrl('tourish-plan/create')">Tạo mới</button>
+          </ng-container>
+
+          <ng-container ngbNavItem="2nd">
+            <button ngbNavLink (click)="navigateUrl('tourish-plan/list')">Danh sách</button>
+          </ng-container>
+        </div>
+      </mat-expansion-panel>
+    </div>
+
     <div class="sidenavCategory">
       <mat-expansion-panel expanded>
         <mat-expansion-panel-header>
@@ -122,11 +156,11 @@
           class="nav-pills flex-column"
           orientation="vertical"
         >
-          <ng-container ngbNavItem="1st">
+          <ng-container ngbNavItem="3rd">
             <button ngbNavLink (click)="navigateUrl('transport/passenger-car/list')">Xe khách</button>
           </ng-container>
 
-          <ng-container ngbNavItem="2nd">
+          <ng-container ngbNavItem="4th">
             <button ngbNavLink (click)="navigateUrl('transport/air-plane/list')">Máy bay</button>
           </ng-container>
         </div>
@@ -156,11 +190,11 @@
           class="nav-pills flex-column"
           orientation="vertical"
         >
-          <ng-container ngbNavItem="3rd">
+          <ng-container ngbNavItem="5th">
             <button ngbNavLink (click)="navigateUrl('resthouse/hotel/list')">Hotel</button>
           </ng-container>
 
-          <ng-container ngbNavItem="4th">
+          <ng-container ngbNavItem="6th">
             <button ngbNavLink (click)="navigateUrl('resthouse/homeStay/list')">HomeStay</button>
           </ng-container>
         </div>
@@ -190,7 +224,7 @@
           class="nav-pills flex-column"
           orientation="vertical"
         >
-          <ng-container ngbNavItem="5th">
+          <ng-container ngbNavItem="7th">
             <button ngbNavLink (click)="navigateUrl('restaurant/list')">Nhà hàng</button>
           </ng-container>
         </div>

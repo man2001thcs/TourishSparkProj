@@ -1,11 +1,14 @@
 <mat-error
   *ngIf="
-  formGroup.controls[formGroupControlName].hasError('email') &&
-    !formGroup.controls[formGroupControlName].hasError('required')
+    formGroup.get(formGroupControlName)?.hasError('email') &&
+    !formGroup.get(formGroupControlName)?.hasError('required')
   "
 >
   Hãy điền dúng email
 </mat-error>
-<mat-error *ngIf="formGroup.controls[formGroupControlName].hasError('required')">
+<mat-error
+  *ngIf="formGroup.get(formGroupControlName)?.hasError('required')"
+  style="font-size: 12px"
+>
   Cần điền <strong>nội dung</strong>
 </mat-error>

@@ -112,13 +112,15 @@ export interface MovingSchedule {
 
 export interface StayingSchedule {
   id?: string;
-  tourishPlanId: string;
+  tourishPlanId?: string;
   placeName: string;
   address: string;
   supportNumber: string;
 
   restHouseType: number;
   restHouseBranchId: string;
+
+  singlePrice?: number;
 
   description: string;
 

@@ -8,45 +8,52 @@ import {
   Output,
   EventEmitter,
 } from "@angular/core";
-import { FormControl, FormGroup, Validators } from "@angular/forms";
+import {
+  FormBuilder,
+  FormControl,
+  FormGroup,
+  Validators,
+} from "@angular/forms";
 import { MatAutocompleteSelectedEvent } from "@angular/material/autocomplete";
 import { MatChipInputEvent } from "@angular/material/chips";
 import { Observable, Subscription, of, timer } from "rxjs";
 import { debounceTime } from "rxjs/operators";
 
-import { State as HotelListState } from "./multiselect-autocomplete.store.reducer";
-import * as HotelListActions from "./multiselect-autocomplete.store.action";
+import { State as StayingListState } from "./multiselect-autocomplete.store.reducer";
+import * as StayingListActions from "./multiselect-autocomplete.store.action";
 import { Store } from "@ngrx/store";
 import {
-  getHotelList,
+  getStayingList,
   getMessage,
   getSysError,
 } from "./multiselect-autocomplete.store.selector";
 import { MessageService } from "../../user_service/message.service";
-import { Hotel } from "src/app/model/baseModel";
-import * as moment from 'moment';
+import { Hotel, StayingSchedule } from "src/app/model/baseModel";
+import * as moment from "moment";
 import { ThemePalette } from "@angular/material/core";
 
 /**
  * @title Chips Autocomplete
  */
 @Component({
-  selector: "entity-multiselect-autocomplete",
+  selector: "staying-multiselect-autocomplete",
   templateUrl: "multiselect-autocomplete.component.html",
   styleUrls: ["multiselect-autocomplete.component.css"],
 })
-export class HotelMultiselectAutocompleteComponent implements OnInit {
+export class StayingMultiselectAutocompleteComponent implements OnInit {
   separatorKeysCodes: number[] = [ENTER, COMMA];
-  entityCtrl = new FormControl("");
-  @ViewChild('picker') picker: any;
-  
+  stayingCtrl = new FormControl("");
+  @ViewChild("picker") stayingPicker: any;
+
   @Output() result = new EventEmitter<{ data: Array<string> }>();
 
-  @Input() data_selected!: Array<Hotel>;
+  @Input() data_selected: Array<Hotel> = [];
   @Input() key: string = "";
 
-  entityIdList: string[] = [];
-  entityNameList: string[] = [];
+  stayingScheduleList: StayingSchedule[] = [];
+
+  stayingIdList: string[] = [];
+  stayingNameList: string[] = [];
 
   data!: Hotel[];
   length: number = 0;
@@ -59,40 +66,40 @@ export class HotelMultiselectAutocompleteComponent implements OnInit {
   searchWord = "";
   newSearch = true;
 
-
-   showSpinners = true;
+  showSpinners = true;
   showSeconds = false;
   touchUi = false;
   enableMeridian = false;
- 
-  color: ThemePalette = 'primary';
+
+  color: ThemePalette = "primary";
 
   public formGroup = new FormGroup({
     date: new FormControl(null, [Validators.required]),
-    date2: new FormControl(null, [Validators.required])
-  })
-  public dateStartControl = new FormControl(new Date());
-  public dateEndControl = new FormControl(new Date());
+    date2: new FormControl(null, [Validators.required]),
+  });
+
+  movingFormGroup!: FormGroup;
 
   subscriptions: Subscription[] = [];
-  entityListState!: Observable<any>;
-  filteredHotels!: Observable<string | null>;
+  stayingListState!: Observable<any>;
+  filteredStayings!: Observable<string | null>;
 
   errorMessageState!: Observable<any>;
   errorSystemState!: Observable<any>;
 
-  @ViewChild("entityInput") entityInput!: ElementRef<HTMLInputElement>;
+  @ViewChild("stayingInput") stayingInput!: ElementRef<HTMLInputElement>;
 
   constructor(
-    private store: Store<HotelListState>,
-    private messageService: MessageService
+    private store: Store<StayingListState>,
+    private messageService: MessageService,
+    private fb: FormBuilder
   ) {
-    this.filteredHotels = this.entityCtrl.valueChanges.pipe(
+    this.filteredStayings = this.stayingCtrl.valueChanges.pipe(
       debounceTime(400)
     );
 
-    this.entityListState = this.store
-      .select(getHotelList)
+    this.stayingListState = this.store
+      .select(getStayingList)
       .pipe(debounceTime(400));
 
     this.errorMessageState = this.store.select(getMessage);
@@ -100,8 +107,27 @@ export class HotelMultiselectAutocompleteComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.movingFormGroup = this.fb.group({
+      placeName: ["", Validators.compose([Validators.required])],
+
+      address: ["", Validators.compose([Validators.required])],
+      supportNumber: ["", Validators.compose([Validators.required])],
+      singlePrice: [0, Validators.compose([Validators.required])],
+
+      restHouseType: 1,
+      restHouseBranchId: ["", Validators.compose([Validators.required])],
+
+      startDate: ["", Validators.compose([Validators.required])],
+      endDate: ["", Validators.compose([Validators.required])],
+
+      description: [
+        "",
+        Validators.compose([Validators.required, Validators.minLength(3)]),
+      ],
+    });
+
     this.subscriptions.push(
-      this.filteredHotels.subscribe((state) => {
+      this.filteredStayings.subscribe((state) => {
         // Reset
         this.pageIndex = 0;
         this.newSearch = true;
@@ -111,7 +137,7 @@ export class HotelMultiselectAutocompleteComponent implements OnInit {
         this.currentTotal = 0;
 
         this.store.dispatch(
-          HotelListActions.getHotelList({
+          StayingListActions.getStayingList({
             payload: {
               search: (state ?? "").toLowerCase(),
               page: 1,
@@ -123,7 +149,7 @@ export class HotelMultiselectAutocompleteComponent implements OnInit {
     );
 
     this.subscriptions.push(
-      this.entityListState.subscribe((state) => {
+      this.stayingListState.subscribe((state) => {
         if (state) {
           if (state.data)
             this.currentTotal = this.currentTotal + state.data.length;
@@ -161,7 +187,7 @@ export class HotelMultiselectAutocompleteComponent implements OnInit {
     );
 
     this.store.dispatch(
-      HotelListActions.getHotelList({
+      StayingListActions.getStayingList({
         payload: {
           search: this.searchWord.toLowerCase(),
           page: this.pageIndex + 1,
@@ -173,7 +199,7 @@ export class HotelMultiselectAutocompleteComponent implements OnInit {
 
   ngOnDestroy(): void {
     console.log("Destroy");
-    this.store.dispatch(HotelListActions.resetHotelList());
+    this.store.dispatch(StayingListActions.resetStayingList());
 
     this.subscriptions.forEach((subscription) => subscription.unsubscribe());
   }
@@ -182,8 +208,8 @@ export class HotelMultiselectAutocompleteComponent implements OnInit {
     if (this.data_selected !== undefined) {
       this.data_selected.forEach((item: any) => {
         if (item !== undefined) {
-          this.entityIdList.push(item.entity.id);
-          this.entityNameList.push(item.entity.name);
+          this.stayingIdList.push(item.staying.id);
+          this.stayingNameList.push(item.staying.placeBranch);
         }
       });
     }
@@ -192,37 +218,73 @@ export class HotelMultiselectAutocompleteComponent implements OnInit {
   add(event: MatChipInputEvent): void {
     const value = (event.value || "").trim();
 
-    // Add our entity
+    // Add our staying
     if (value) {
-      this.entityNameList.push(value);
+      this.stayingNameList.push(value);
     }
 
     // Clear the input value
     event.chipInput!.clear();
 
-    this.entityCtrl.setValue(null);
+    this.stayingCtrl.setValue(null);
   }
 
-  remove(entity: string): void {
-    const index = this.entityNameList.indexOf(entity);
+  remove(staying: string): void {
+    const index = this.stayingNameList.indexOf(staying);
     if (index >= 0) {
-      this.entityNameList.splice(index, 1);
-      this.entityIdList.splice(index, 1);
+      this.stayingNameList.splice(index, 1);
+      this.stayingIdList.splice(index, 1);
     }
     this.emitAdjustedData();
   }
 
   emitAdjustedData = (): void => {
-    this.result.emit({ data: this.entityIdList });
+    this.result.emit({ data: this.stayingIdList });
   };
 
   selected(event: MatAutocompleteSelectedEvent): void {
-    this.entityIdList.push(event.option.value.id);
-    this.entityNameList.push(event.option.value.name);
+    this.stayingIdList.push(event.option.value.id);
+    this.stayingNameList.push(event.option.value.placeBranch);
 
-    this.entityInput.nativeElement.value = "";
-    this.entityCtrl.setValue(null);
+    this.movingFormGroup.controls["id"].setValue(
+      event.option.value.id
+    );
+
+    this.stayingInput.nativeElement.value = "";
+    this.stayingCtrl.setValue(null);
     this.emitAdjustedData();
+  }
+
+  addToSchedule(): void {
+    const schedule: StayingSchedule = {
+      placeName: this.stayingNameList[0],
+      address: this.movingFormGroup.value.address,
+      supportNumber: this.movingFormGroup.value.supportNumber,
+      restHouseBranchId: this.movingFormGroup.value.restHouseBranchId,
+      restHouseType: this.movingFormGroup.value.restHouseType,
+      singlePrice: this.movingFormGroup.value.singlePrice,
+      startDate: this.movingFormGroup.value.startDate,
+      endDate: this.movingFormGroup.value.endDate,
+      description: this.movingFormGroup.value.description,
+    };
+
+    this.stayingScheduleList = [schedule, ...this.stayingScheduleList];
+
+    this.formReset();
+  }
+
+  formReset(): void {
+    this.movingFormGroup.setValue({
+      placeName: "",
+      description: "",
+      address: "",
+      supportNumber: "",
+      restHouseBranchId: "",
+      restHouseType: 1,
+      singlePrice: 0,
+      startDate: "",
+      endDate: "",
+    });
   }
 
   onScroll($event: any) {
@@ -231,7 +293,7 @@ export class HotelMultiselectAutocompleteComponent implements OnInit {
         this.isLoading = true;
         this.pageIndex++;
         this.store.dispatch(
-          HotelListActions.getHotelList({
+          StayingListActions.getStayingList({
             payload: {
               search: this.searchWord.toLowerCase(),
               page: this.pageIndex + 1,
@@ -243,15 +305,15 @@ export class HotelMultiselectAutocompleteComponent implements OnInit {
     }
   }
 
-  onDisplayAtr(entity: Hotel): string {
+  onDisplayAtr(staying: Hotel): string {
     return "";
   }
 
-  isChecked(entity: Hotel): boolean {
-    let entityExist = this.entityIdList.find(
-      (entityId) => entityId === entity.id
+  isChecked(staying: Hotel): boolean {
+    let stayingExist = this.stayingIdList.find(
+      (stayingId) => stayingId === staying.id
     );
-    if (entityExist) return true;
+    if (stayingExist) return true;
     return false;
   }
 

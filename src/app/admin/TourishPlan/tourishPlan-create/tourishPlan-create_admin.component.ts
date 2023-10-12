@@ -47,6 +47,9 @@ export class TourishPlanCreateAdminComponent
   this_announce = "";
 
   createformGroup!: FormGroup;
+  submited= false;
+
+  stayingSchedule: any;
 
   categorySubmitString: string = "";
   voucherSubmitString: string = "";
@@ -201,11 +204,11 @@ export class TourishPlanCreateAdminComponent
     return ref.afterClosed();
   }
 
-  changeCoverMaterial(event: any) {
-    this.createformGroup.controls["coverMaterial"].setValue(event.value);
+  // changeCoverMaterial(event: any) {
+  //   this.createformGroup.controls["coverMaterial"].setValue(event.value);
 
-    console.log(this.createformGroup.value.coverMaterial);
-  }
+  //   console.log(this.createformGroup.value.coverMaterial);
+  // }
 
   checkDeactivate(
     currentRoute: ActivatedRouteSnapshot,
@@ -226,4 +229,11 @@ export class TourishPlanCreateAdminComponent
   //   //console.log(this.author_submit);
   //   this.authorSubmitString = this.author_submit.join(";");
   // };
+
+  selectChangeStaying = (event: any) => {
+    console.log(event.data);
+    this.stayingSchedule = [...event.data];
+    //console.log(this.author_submit);
+    this.authorSubmitString = JSON.stringify(this.stayingSchedule);
+  };
 }

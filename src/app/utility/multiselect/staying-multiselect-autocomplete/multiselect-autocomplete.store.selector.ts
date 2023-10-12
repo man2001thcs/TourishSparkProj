@@ -4,7 +4,7 @@ import { State } from './multiselect-autocomplete.store.reducer';
 
 export const entityListFeatureState = createFeatureSelector<State>(storeKey);
 
-export const getHotelList = createSelector(
+export const getStayingList = createSelector(
   entityListFeatureState,
   (state) => state.entityList
 );
