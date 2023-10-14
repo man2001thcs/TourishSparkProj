@@ -72,6 +72,8 @@ export class LoginComponent implements OnInit {
         if (state) {
           this.loginProfile = state;
           console.log(state);
+
+          this.messageService.closeLoadingDialog();
           const response = JSON.parse(
             window.atob(state.accessToken.split(".")[1])
           );
@@ -151,5 +153,7 @@ export class LoginComponent implements OnInit {
         },
       })
     );
+
+    this.messageService.openLoadingDialog();
   }
 }

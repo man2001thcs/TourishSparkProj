@@ -1,4 +1,4 @@
-<div [formGroup]="stayingFormGroup">
+<div [formGroup]="movingFormGroup">
   <div class="row">
     <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 create-form">
       <div class="row">
@@ -6,20 +6,20 @@
           mat-form-label
           style="font-weight: heavy; font-size: 16px; margin-bottom: 0px"
         >
-          Thêm thông tin lịnh trình ngủ nghỉ
+          Thêm thông tin lịnh trình di chuyển
         </h2>
       </div>
 
       <div class="row">
         <mat-form-field appearance="outline" class="full-width-input">
-          <mat-label>Loại nhà nghỉ</mat-label>
+          <mat-label>Loại phương tiện</mat-label>
           <select
             matNativeControl
             required
             (change)="changeType($event)"
           >
-            <option value="1">Hotel</option>
-            <option value="0">HomeStay</option>
+            <option value="0">Xe khách</option>
+            <option value="1">Máy bay</option>
           </select>
         </mat-form-field>
       </div>
@@ -32,22 +32,22 @@
           <mat-label>Danh sách lịch trình nơi ở</mat-label>
           <mat-chip-grid #chipGrid aria-label="Fruit selection">
             <mat-chip-row
-              *ngFor="let staying of stayingNameList"
-              (removed)="remove(staying)"
+              *ngFor="let moving of movingNameList"
+              (removed)="remove(moving)"
               style="font-size: 16px"
             >
-              {{ staying }}
-              <button matChipRemove [attr.aria-label]="'remove ' + staying">
+              {{ moving }}
+              <button matChipRemove [attr.aria-label]="'remove ' + moving">
                 <mat-icon>cancel</mat-icon>
               </button>
             </mat-chip-row>
           </mat-chip-grid>
 
           <input
-            *ngIf="stayingNameList.length < 1"
+            *ngIf="movingNameList.length < 1"
             placeholder="New Category..."
-            #stayingInput
-            [formControl]="stayingCtrl"
+            #movingInput
+            [formControl]="movingCtrl"
             [matChipInputFor]="chipGrid"
             [matAutocomplete]="auto"
             [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
@@ -60,24 +60,24 @@
             (optionsScroll)="onScroll($event)"
           >
             <mat-option
-              *ngFor="let staying of data"
-              [value]="staying"
-              [disabled]="isChecked(staying)"
+              *ngFor="let moving of data"
+              [value]="moving"
+              [disabled]="isChecked(moving)"
             >
               <div>
                 <div style="font-weight: bold">
-                  {{ staying.placeBranch }}
-                  <mat-icon>{{ isChecked(staying) && "checked" }}</mat-icon>
+                  {{ moving.branchName }}
+                  <mat-icon>{{ isChecked(moving) && "checked" }}</mat-icon>
                 </div>
 
-                <small>{{ onDisplayAtr(staying) }}</small>
+                <small>{{ onDisplayAtr(moving) }}</small>
               </div>
             </mat-option>
           </mat-autocomplete>
         </mat-form-field>
       </div>
 
-      <div *ngIf="stayingNameList.length >= 1">
+      <div *ngIf="movingNameList.length >= 1">
         <div class="row">
           <h4
             mat-form-label
@@ -94,13 +94,13 @@
               matInput
               fullwidth
               placeholder="Vd: Bồ Công Anh"
-              formControlName="address"
+              formControlName="vehiclePlate"
             />
           </mat-form-field>
           <app-validation
             *ngIf="isSubmit"
-            [formGroup]="stayingFormGroup"
-            [formGroupControlName]="'address'"
+            [formGroup]="movingFormGroup"
+            [formGroupControlName]="'vehiclePlate'"
           ></app-validation>
         </div>
 
@@ -111,13 +111,13 @@
               matInput
               fullwidth
               placeholder="Vd: Bồ Công Anh"
-              formControlName="supportNumber"
+              formControlName="phoneNumber"
             />
           </mat-form-field>
           <app-validation
             *ngIf="isSubmit"
-            [formGroup]="stayingFormGroup"
-            [formGroupControlName]="'supportNumber'"
+            [formGroup]="movingFormGroup"
+            [formGroupControlName]="'phoneNumber'"
           ></app-validation>
         </div>
 
@@ -133,7 +133,41 @@
           </mat-form-field>
           <app-validation
             *ngIf="isSubmit"
-            [formGroup]="stayingFormGroup"
+            [formGroup]="movingFormGroup"
+            [formGroupControlName]="'singlePrice'"
+          ></app-validation>
+        </div>
+
+        <div class="row">
+          <mat-form-field appearance="outline" class="full-width-input">
+            <mat-label>Nơi xuất phát</mat-label>
+            <input
+              matInput
+              fullwidth
+              placeholder="Vd: Hà Nội"
+              formControlName="startingPlace"
+            />
+          </mat-form-field>
+          <app-validation
+            *ngIf="isSubmit"
+            [formGroup]="movingFormGroup"
+            [formGroupControlName]="'singlePrice'"
+          ></app-validation>
+        </div>
+
+        <div class="row">
+          <mat-form-field appearance="outline" class="full-width-input">
+            <mat-label>Nơi đến</mat-label>
+            <input
+              matInput
+              fullwidth
+              placeholder="Vd: Đà Nẵng"
+              formControlName="headingPlace"
+            />
+          </mat-form-field>
+          <app-validation
+            *ngIf="isSubmit"
+            [formGroup]="movingFormGroup"
             [formGroupControlName]="'singlePrice'"
           ></app-validation>
         </div>
@@ -143,16 +177,16 @@
             <mat-label>Ngày bắt đầu</mat-label>
             <input
               matInput
-              [ngxMatDatetimePicker]="stayingPicker"
+              [ngxMatDatetimePicker]="movingPicker"
               placeholder="Choose a date"
               formControlName="startDate"
             />
             <mat-datepicker-toggle
               matSuffix
-              [for]="$any(stayingPicker)"
+              [for]="$any(movingPicker)"
             ></mat-datepicker-toggle>
             <ngx-mat-datetime-picker
-              #stayingPicker
+              #movingPicker
               [showSpinners]="true"
               [showSeconds]="true"
               [touchUi]="touchUi"
@@ -163,7 +197,7 @@
           </mat-form-field>
           <app-validation
             *ngIf="isSubmit"
-            [formGroup]="stayingFormGroup"
+            [formGroup]="movingFormGroup"
             [formGroupControlName]="'startDate'"
           ></app-validation>
         </div>
@@ -193,7 +227,7 @@
           </mat-form-field>
           <app-validation
             *ngIf="isSubmit"
-            [formGroup]="stayingFormGroup"
+            [formGroup]="movingFormGroup"
             [formGroupControlName]="'endDate'"
           ></app-validation>
         </div>
@@ -214,7 +248,7 @@
           </mat-form-field>
           <app-validation
             *ngIf="isSubmit"
-            [formGroup]="stayingFormGroup"
+            [formGroup]="movingFormGroup"
             [formGroupControlName]="'description'"
           ></app-validation>
         </div>
@@ -258,7 +292,7 @@
         </h2>
       </div>
 
-      <div class="row" *ngIf="stayingScheduleList.length < 1">
+      <div class="row" *ngIf="movingScheduleList.length < 1">
         <mat-chip color="warn" style="font-size: 16px"
           >Chưa có danh sách</mat-chip
         >
@@ -267,9 +301,9 @@
         #inputMovingSchedule
         let-index="index"
         let-id="id"
-        let-placeName="placeName"
-        let-address="address"
-        let-supportNumber="supportNumber"
+        let-driverName="driverName"
+        let-vehiclePlate="vehiclePlate"
+        let-phoneNumber="phoneNumber"
         let-singlePrice="singlePrice"
         let-startDate="startDate"
         let-endDate="endDate"
@@ -291,12 +325,16 @@
               <mat-panel-title> Lịch trình {{ index + 1 }}</mat-panel-title>
             </mat-expansion-panel-header>
             <p>
-              <span style="font-weight: bold">Địa điểm: </span> {{ placeName }}
+              <span style="font-weight: bold">Tên lái xe: </span>
+              {{ driverName }}
             </p>
-            <p><span style="font-weight: bold">Địa chỉ:</span> {{ address }}</p>
+            <p>
+              <span style="font-weight: bold">Biển số xe:</span>
+              {{ vehiclePlate }}
+            </p>
             <p>
               <span style="font-weight: bold">SĐT hỗ trợ:</span>
-              {{ supportNumber }}
+              {{ phoneNumber }}
             </p>
             <p>
               <span style="font-weight: bold">Giá đơn:</span>
@@ -322,15 +360,15 @@
       </ng-template>
 
       <ng-container
-        *ngFor="let schedule of stayingScheduleList; index as i"
+        *ngFor="let schedule of movingScheduleList; index as i"
         [ngTemplateOutlet]="inputMovingSchedule"
         [ngTemplateOutletContext]="{
           index: i,
           id: schedule.id,
-          placeName: schedule.placeName,
-          address: schedule.address,
+          driverName: schedule.driverName,
+          vehiclePlate: schedule.vehiclePlate,
           singlePrice: schedule.singlePrice,
-          supportNumber: schedule.supportNumber,
+          phoneNumber: schedule.phoneNumber,
           startDate: schedule.startDate,
           endDate: schedule.endDate,
           description: schedule.description

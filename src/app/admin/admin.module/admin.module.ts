@@ -13,8 +13,6 @@ import { MatDialogModule } from "@angular/material/dialog";
 import { HeaderAdminComponent } from "../header/header.admin.component";
 import { MatMenuModule } from "@angular/material/menu";
 import { FooterComponent } from "src/app/utility/footer/footer.component";
-import { AuthorMultiselectAutocompleteComponent } from "src/app/utility/author-multiselect-autocomplete/multiselect-autocomplete.component";
-import { VoucherMultiselectAutocompleteComponent } from "src/app/utility/voucher-multiselect-autocomplete/multiselect-autocomplete.component";
 import { MatAutocompleteModule } from "@angular/material/autocomplete";
 import { MatChipsModule } from "@angular/material/chips";
 import { MatFormFieldModule } from "@angular/material/form-field";
@@ -23,57 +21,36 @@ import { MatButtonModule } from "@angular/material/button";
 import { StoreModule } from "@ngrx/store";
 import { EffectsModule } from "@ngrx/effects";
 
-//
-import { BookListAdminComponent } from "./../book-list/bookList_admin.component";
-import { BookDetailAdminComponent } from "./../book-detail/book-detail_admin.component";
-
-import { storeKey as BookCreateStoreKey } from "../book-create/book-create.store.action";
-import { reducer as BookCreateReducer } from "../book-create/book-create.store.reducer";
-import { storeKey as BookListStoreKey } from "../book-list/bookList_admin.store.action";
-import { reducer as BookListReducer } from "../book-list/bookList_admin.store.reducer";
-import { storeKey as BookDetailStoreKey } from "../book-detail/book-detail.store.action";
-import { reducer as BookDetailReducer } from "../book-detail/book-detail.store.reducer";
-
-import { storeKey as VoucherAutocompleteStoreKey } from "src/app/utility/voucher-multiselect-autocomplete/multiselect-autocomplete.store.action";
-import { storeKey as AuthorAutocompleteStoreKey } from "src/app/utility/author-multiselect-autocomplete/multiselect-autocomplete.store.action";
-import { storeKey as PublisherAutocompleteStoreKey } from "src/app/utility/publisher-multiselect-autocomplete/multiselect-autocomplete.store.action";
-import { storeKey as CategoryAutocompleteStoreKey } from "src/app/utility/category-multiselect-autocomplete/multiselect-autocomplete.store.action";
-
-import { reducer as VoucherAutocompleteReducer } from "src/app/utility/voucher-multiselect-autocomplete/multiselect-autocomplete.store.reducer";
-import { reducer as AuthorAutocompleteReducer } from "src/app/utility/author-multiselect-autocomplete/multiselect-autocomplete.store.reducer";
-import { reducer as PublisherAutocompleteReducer } from "src/app/utility/publisher-multiselect-autocomplete/multiselect-autocomplete.store.reducer";
-import { reducer as CategoryAutocompleteReducer } from "src/app/utility/category-multiselect-autocomplete/multiselect-autocomplete.store.reducer";
-
 import { storeKey as StayingAutocompleteStoreKey } from "src/app/utility/multiselect/staying-multiselect-autocomplete/multiselect-autocomplete.store.action";
 import { reducer as StayingAutocompleteReducer } from "src/app/utility/multiselect/staying-multiselect-autocomplete/multiselect-autocomplete.store.reducer";
+
+import { storeKey as EatingAutocompleteStoreKey } from "src/app/utility/multiselect/eating-multiselect-autocomplete/multiselect-autocomplete.store.action";
+import { reducer as EatingAutocompleteReducer } from "src/app/utility/multiselect/eating-multiselect-autocomplete/multiselect-autocomplete.store.reducer";
+
+import { storeKey as MovingAutocompleteStoreKey } from "src/app/utility/multiselect/moving-multiselect-autocomplete/multiselect-autocomplete.store.action";
+import { reducer as  MovingAutocompleteReducer } from "src/app/utility/multiselect/moving-multiselect-autocomplete/multiselect-autocomplete.store.reducer";
 
 import { storeKey as ImageListStoreKey } from "../../utility/image_service/imageUpload.store.action";
 import { reducer as ImageListReducer } from "../../utility/image_service/imageUpload.store.reducer";
 
-import { BookCreateAdminComponent } from "../book-create/book-create_admin.component";
-
-import { CategoryMultiselectAutocompleteComponent } from "src/app/utility/category-multiselect-autocomplete/multiselect-autocomplete.component";
-import { PublisherMultiselectAutocompleteComponent } from "src/app/utility/publisher-multiselect-autocomplete/multiselect-autocomplete.component";
-
-import { BookListEffects } from "../book-list/bookList_admin.store.effect";
-import { BookCreateEffects } from "../book-create/book-create.store.effect";
-
-import { VoucherAutoCompleteListEffects } from "src/app/utility/voucher-multiselect-autocomplete/multiselect-autocomplete.store.effect";
-import { PublisherAutoCompleteListEffects } from "src/app/utility/publisher-multiselect-autocomplete/multiselect-autocomplete.store.effect";
-import { CategoryAutoCompleteListEffects } from "src/app/utility/category-multiselect-autocomplete/multiselect-autocomplete.store.effect";
-import { AuthorAutoCompleteListEffects } from "src/app/utility/author-multiselect-autocomplete/multiselect-autocomplete.store.effect";
-
 import { OptionsScrollDirective } from "src/app/utility/config/multiselect-scroll.directive";
-import { NgbDropdownModule, NgbNavModule } from "@ng-bootstrap/ng-bootstrap";
-import { BookDetailEffects } from "../book-detail/book-detail.store.effect";
+import { NgbAlertModule, NgbDropdownModule, NgbNavModule } from "@ng-bootstrap/ng-bootstrap";
 import { FileUploadComponent } from "src/app/utility/image_service/imageUpload.component";
-import { NbChatModule } from "@nebular/theme";
+import { NbChatModule, NbThemeModule } from "@nebular/theme";
 import { MatCardModule } from "@angular/material/card";
 import { ImageListEffects } from "src/app/utility/image_service/imageUpload.store.effect";
 
 import { PassengerCarCreateComponent } from "../PassengerCar/passenger_car_create/passenger_car-create.component";
 import { PassengerCarDetailComponent } from "../PassengerCar/passenger_car_detail/passenger_car-detail.component";
 import { PassengerCarListComponent } from "../PassengerCar/passenger_car_list/passenger_car-list.component";
+
+import { HotelCreateComponent } from "../Hotel/hotel_create/hotel-create.component";
+import { HotelDetailComponent } from "../Hotel/hotel_detail/hotel-detail.component";
+import { HotelListComponent } from "../Hotel/hotel_list/hotel-list.component";
+
+import { HomeStayCreateComponent } from "../HomeStay/homeStay_create/homeStay-create.component";
+import { HomeStayDetailComponent } from "../HomeStay/homeStay_detail/homeStay-detail.component";
+import { HomeStayListComponent } from "../HomeStay/homeStay_list/homeStay-list.component";
 
 import { PassengerCarCreateEffects } from "../PassengerCar/passenger_car_create/passenger_car-create.store.effect";
 import { PassengerCarEffects } from "../PassengerCar/passenger_car_detail/passenger_car-detail.store.effect";
@@ -95,6 +72,15 @@ import { AirPlaneListComponent } from "../AirPlane/air_plane_list/air_plane-list
 import { AirPlaneCreateEffects } from "../AirPlane/air_plane_create/air_plane-create.store.effect";
 import { AirPlaneEffects } from "../AirPlane/air_plane_detail/air_plane-detail.store.effect";
 import { AirPlaneListEffects } from "../AirPlane/air_plane_list/air_plane-list.store.effect";
+
+import { storeKey as TourishPlanCreateStoreKey } from "../TourishPlan/tourishPlan-create/tourishPlan-create.store.action";
+import { reducer as TourishPlanCreateReducer } from "../TourishPlan/tourishPlan-create/tourishPlan-create.store.reducer";
+
+import { storeKey as TourishPlanListStoreKey } from "../TourishPlan/tourishPlan-list/tourishPlanList.store.action";
+import { reducer as TourishPlanListReducer } from "../TourishPlan/tourishPlan-list/tourishPlanList.store.reducer";
+
+import { storeKey as TourishPlanDetailStoreKey } from "../TourishPlan/tourishPlan-detail/tourishPlan-detail.store.action";
+import { reducer as TourishPlanDetailReducer } from "../TourishPlan/tourishPlan-detail/tourishPlan-detail.store.reducer";
 
 import { storeKey as AirPlaneCreateStoreKey } from "../AirPlane/air_plane_create/air_plane-create.store.action";
 import { reducer as AirPlaneCreateReducer } from "../AirPlane/air_plane_create/air_plane-create.store.reducer";
@@ -144,22 +130,24 @@ import { HomeStayCreateEffects } from "../HomeStay/homeStay_create/homeStay-crea
 import { HomeStayEffects } from "../HomeStay/homeStay_detail/homeStay-detail.store.effect";
 import { HomeStayListEffects } from "../HomeStay/homeStay_list/homeStay-list.store.effect";
 
-import { HotelCreateComponent } from "../Hotel/hotel_create/hotel-create.component";
-import { HotelDetailComponent } from "../Hotel/hotel_detail/hotel-detail.component";
-import { HotelListComponent } from "../Hotel/hotel_list/hotel-list.component";
-
-import { HomeStayCreateComponent } from "../HomeStay/homeStay_create/homeStay-create.component";
-import { HomeStayDetailComponent } from "../HomeStay/homeStay_detail/homeStay-detail.component";
-import { HomeStayListComponent } from "../HomeStay/homeStay_list/homeStay-list.component";
+import { TourishPlanCreateEffects } from "../TourishPlan/tourishPlan-create/tourishPlan-create.store.effect";
+import { TourishPlanListEffects } from "../TourishPlan/tourishPlan-list/tourishPlanList.store.effect";
 
 import { RestaurantCreateEffects } from "../Restaurant/restaurant_create/restaurant-create.store.effect";
 import { RestaurantEffects } from "../Restaurant/restaurant_detail/restaurant-detail.store.effect";
 import { RestaurantListEffects } from "../Restaurant/restaurant_list/restaurant-list.store.effect";
 
+import { MovingAutoCompleteListEffects } from "src/app/utility/multiselect/moving-multiselect-autocomplete/multiselect-autocomplete.store.effect";
+import { EatingAutoCompleteListEffects } from "src/app/utility/multiselect/eating-multiselect-autocomplete/multiselect-autocomplete.store.effect";
+import { StayingAutoCompleteListEffects } from "src/app/utility/multiselect/staying-multiselect-autocomplete/multiselect-autocomplete.store.effect";
+
 import { RestaurantCreateComponent } from "../Restaurant/restaurant_create/restaurant-create.component";
 import { RestaurantDetailComponent } from "../Restaurant/restaurant_detail/restaurant-detail.component";
 import { RestaurantListComponent } from "../Restaurant/restaurant_list/restaurant-list.component";
+
 import { StayingMultiselectAutocompleteComponent } from "src/app/utility/multiselect/staying-multiselect-autocomplete/multiselect-autocomplete.component";
+import { MovingMultiselectAutocompleteComponent } from "src/app/utility/multiselect/moving-multiselect-autocomplete/multiselect-autocomplete.component";
+import { EatingMultiselectAutocompleteComponent } from "src/app/utility/multiselect/eating-multiselect-autocomplete/multiselect-autocomplete.component";
 
 import {
   NgxMatDatetimePickerModule,
@@ -168,11 +156,16 @@ import {
 import { MatDatepickerModule } from "@angular/material/datepicker";
 
 import { TourishPlanCreateAdminComponent } from "../TourishPlan/tourishPlan-create/tourishPlan-create_admin.component";
-import { TourishPlanListAdminComponent } from "../TourishPlan/tourishPlan-list/tourishPlanList_admin.component";
+import { TourishPlanListAdminComponent } from "../TourishPlan/tourishPlan-list/tourishPlanList.component";
 import { TourishPlanDetailAdminComponent } from "../TourishPlan/tourishPlan-detail/tourishPlan_admin.component";
+
 import { ValidationComponent } from "src/app/utility/validation/validation.component";
 import { NgxMatMomentModule } from "@angular-material-components/moment-adapter";
-import { StayingAutoCompleteListEffects } from "src/app/utility/multiselect/staying-multiselect-autocomplete/multiselect-autocomplete.store.effect";
+
+
+
+
+
 
 @NgModule({
   declarations: [
@@ -202,19 +195,12 @@ import { StayingAutoCompleteListEffects } from "src/app/utility/multiselect/stay
     TourishPlanListAdminComponent,
     TourishPlanDetailAdminComponent,
 
-    BookListAdminComponent,
-    BookDetailAdminComponent,
-    BookCreateAdminComponent,
-
     AdminMainComponent,
     HeaderAdminComponent,
 
-    AuthorMultiselectAutocompleteComponent,
-    VoucherMultiselectAutocompleteComponent,
-    CategoryMultiselectAutocompleteComponent,
-    PublisherMultiselectAutocompleteComponent,
-
     StayingMultiselectAutocompleteComponent,
+    MovingMultiselectAutocompleteComponent,
+    EatingMultiselectAutocompleteComponent,
 
     FileUploadComponent,
 
@@ -243,6 +229,8 @@ import { StayingAutoCompleteListEffects } from "src/app/utility/multiselect/stay
     MatProgressSpinnerModule,
     NgbNavModule,
 
+    NgbAlertModule,
+
     MatExpansionModule,
     NgxMatDatetimePickerModule,
     NgxMatTimepickerModule,
@@ -251,26 +239,10 @@ import { StayingAutoCompleteListEffects } from "src/app/utility/multiselect/stay
 
     NbChatModule,
 
-    StoreModule.forFeature(BookCreateStoreKey, BookCreateReducer),
-    StoreModule.forFeature(BookListStoreKey, BookListReducer),
-    StoreModule.forFeature(BookDetailStoreKey, BookDetailReducer),
-
-    StoreModule.forFeature(
-      VoucherAutocompleteStoreKey,
-      VoucherAutocompleteReducer
-    ),
-    StoreModule.forFeature(
-      PublisherAutocompleteStoreKey,
-      PublisherAutocompleteReducer
-    ),
-    StoreModule.forFeature(
-      AuthorAutocompleteStoreKey,
-      AuthorAutocompleteReducer
-    ),
-    StoreModule.forFeature(
-      CategoryAutocompleteStoreKey,
-      CategoryAutocompleteReducer
-    ),
+    
+    StoreModule.forFeature(TourishPlanCreateStoreKey, TourishPlanCreateReducer),
+    StoreModule.forFeature(TourishPlanListStoreKey, TourishPlanListReducer),
+    StoreModule.forFeature(TourishPlanDetailStoreKey, TourishPlanDetailReducer),
 
     StoreModule.forFeature(
       PassengerCarCreateStoreKey,
@@ -303,20 +275,27 @@ import { StayingAutoCompleteListEffects } from "src/app/utility/multiselect/stay
       StayingAutocompleteReducer
     ),
 
+    StoreModule.forFeature(
+      MovingAutocompleteStoreKey,
+      MovingAutocompleteReducer
+    ),
+
+    StoreModule.forFeature(
+      EatingAutocompleteStoreKey,
+      EatingAutocompleteReducer
+    ),
+
     StoreModule.forFeature(ImageListStoreKey, ImageListReducer),
 
-    EffectsModule.forFeature([BookCreateEffects]),
-    EffectsModule.forFeature([BookListEffects]),
-    EffectsModule.forFeature([BookDetailEffects]),
-
-    EffectsModule.forFeature([VoucherAutoCompleteListEffects]),
-    EffectsModule.forFeature([PublisherAutoCompleteListEffects]),
-    EffectsModule.forFeature([CategoryAutoCompleteListEffects]),
-    EffectsModule.forFeature([AuthorAutoCompleteListEffects]),
-
     EffectsModule.forFeature([StayingAutoCompleteListEffects]),
+    EffectsModule.forFeature([MovingAutoCompleteListEffects]),
+    EffectsModule.forFeature([EatingAutoCompleteListEffects]),
 
     EffectsModule.forFeature([ImageListEffects]),
+
+    EffectsModule.forFeature([TourishPlanCreateEffects]),
+    EffectsModule.forFeature([TourishPlanCreateEffects]),
+    EffectsModule.forFeature([TourishPlanListEffects]),
 
     EffectsModule.forFeature([PassengerCarCreateEffects]),
     EffectsModule.forFeature([PassengerCarEffects]),

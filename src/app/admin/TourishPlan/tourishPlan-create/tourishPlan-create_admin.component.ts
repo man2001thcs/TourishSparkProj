@@ -232,7 +232,7 @@ export class TourishPlanCreateAdminComponent
 
   selectChangeStaying = (event: any) => {
     console.log(event.data);
-    this.stayingSchedule = [...event.data];
+    this.stayingSchedule = event.data;
     //console.log(this.author_submit);
     this.authorSubmitString = JSON.stringify(this.stayingSchedule);
   };

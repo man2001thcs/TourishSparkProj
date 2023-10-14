@@ -1,4 +1,4 @@
-<div [formGroup]="stayingFormGroup">
+<div [formGroup]="eatingFormGroup">
   <div class="row">
     <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 create-form">
       <div class="row">
@@ -6,20 +6,19 @@
           mat-form-label
           style="font-weight: heavy; font-size: 16px; margin-bottom: 0px"
         >
-          Thêm thông tin lịnh trình ngủ nghỉ
+          Thêm thông tin lịnh trình ăn uống
         </h2>
       </div>
 
       <div class="row">
         <mat-form-field appearance="outline" class="full-width-input">
-          <mat-label>Loại nhà nghỉ</mat-label>
+          <mat-label>Loại nơi ở</mat-label>
           <select
             matNativeControl
             required
             (change)="changeType($event)"
           >
-            <option value="1">Hotel</option>
-            <option value="0">HomeStay</option>
+            <option value="1">Nhà hàng</option>
           </select>
         </mat-form-field>
       </div>
@@ -29,25 +28,25 @@
           appearance="outline"
           class="full-width-input"
         >
-          <mat-label>Danh sách lịch trình nơi ở</mat-label>
+          <mat-label>Danh sách lịch trình ăn uống</mat-label>
           <mat-chip-grid #chipGrid aria-label="Fruit selection">
             <mat-chip-row
-              *ngFor="let staying of stayingNameList"
-              (removed)="remove(staying)"
+              *ngFor="let eating of eatingNameList"
+              (removed)="remove(eating)"
               style="font-size: 16px"
             >
-              {{ staying }}
-              <button matChipRemove [attr.aria-label]="'remove ' + staying">
+              {{ eating }}
+              <button matChipRemove [attr.aria-label]="'remove ' + eating">
                 <mat-icon>cancel</mat-icon>
               </button>
             </mat-chip-row>
           </mat-chip-grid>
 
           <input
-            *ngIf="stayingNameList.length < 1"
+            *ngIf="eatingNameList.length < 1"
             placeholder="New Category..."
-            #stayingInput
-            [formControl]="stayingCtrl"
+            #eatingInput
+            [formControl]="eatingCtrl"
             [matChipInputFor]="chipGrid"
             [matAutocomplete]="auto"
             [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
@@ -60,24 +59,24 @@
             (optionsScroll)="onScroll($event)"
           >
             <mat-option
-              *ngFor="let staying of data"
-              [value]="staying"
-              [disabled]="isChecked(staying)"
+              *ngFor="let eating of data"
+              [value]="eating"
+              [disabled]="isChecked(eating)"
             >
               <div>
                 <div style="font-weight: bold">
-                  {{ staying.placeBranch }}
-                  <mat-icon>{{ isChecked(staying) && "checked" }}</mat-icon>
+                  {{ eating.placeBranch }}
+                  <mat-icon>{{ isChecked(eating) && "checked" }}</mat-icon>
                 </div>
 
-                <small>{{ onDisplayAtr(staying) }}</small>
+                <small>{{ onDisplayAtr(eating) }}</small>
               </div>
             </mat-option>
           </mat-autocomplete>
         </mat-form-field>
       </div>
 
-      <div *ngIf="stayingNameList.length >= 1">
+      <div *ngIf="eatingNameList.length >= 1">
         <div class="row">
           <h4
             mat-form-label
@@ -99,7 +98,7 @@
           </mat-form-field>
           <app-validation
             *ngIf="isSubmit"
-            [formGroup]="stayingFormGroup"
+            [formGroup]="eatingFormGroup"
             [formGroupControlName]="'address'"
           ></app-validation>
         </div>
@@ -116,7 +115,7 @@
           </mat-form-field>
           <app-validation
             *ngIf="isSubmit"
-            [formGroup]="stayingFormGroup"
+            [formGroup]="eatingFormGroup"
             [formGroupControlName]="'supportNumber'"
           ></app-validation>
         </div>
@@ -133,7 +132,7 @@
           </mat-form-field>
           <app-validation
             *ngIf="isSubmit"
-            [formGroup]="stayingFormGroup"
+            [formGroup]="eatingFormGroup"
             [formGroupControlName]="'singlePrice'"
           ></app-validation>
         </div>
@@ -143,16 +142,16 @@
             <mat-label>Ngày bắt đầu</mat-label>
             <input
               matInput
-              [ngxMatDatetimePicker]="stayingPicker"
+              [ngxMatDatetimePicker]="eatingPicker"
               placeholder="Choose a date"
               formControlName="startDate"
             />
             <mat-datepicker-toggle
               matSuffix
-              [for]="$any(stayingPicker)"
+              [for]="$any(eatingPicker)"
             ></mat-datepicker-toggle>
             <ngx-mat-datetime-picker
-              #stayingPicker
+              #eatingPicker
               [showSpinners]="true"
               [showSeconds]="true"
               [touchUi]="touchUi"
@@ -163,7 +162,7 @@
           </mat-form-field>
           <app-validation
             *ngIf="isSubmit"
-            [formGroup]="stayingFormGroup"
+            [formGroup]="eatingFormGroup"
             [formGroupControlName]="'startDate'"
           ></app-validation>
         </div>
@@ -193,7 +192,7 @@
           </mat-form-field>
           <app-validation
             *ngIf="isSubmit"
-            [formGroup]="stayingFormGroup"
+            [formGroup]="eatingFormGroup"
             [formGroupControlName]="'endDate'"
           ></app-validation>
         </div>
@@ -210,11 +209,11 @@
               placeholder="Thông tin đính kèm"
               formControlName="description"
               rows="10"
-            ></textarea>
+            ></textarea>           
           </mat-form-field>
           <app-validation
             *ngIf="isSubmit"
-            [formGroup]="stayingFormGroup"
+            [formGroup]="eatingFormGroup"
             [formGroupControlName]="'description'"
           ></app-validation>
         </div>
@@ -258,7 +257,7 @@
         </h2>
       </div>
 
-      <div class="row" *ngIf="stayingScheduleList.length < 1">
+      <div class="row" *ngIf="eatingScheduleList.length < 1">
         <mat-chip color="warn" style="font-size: 16px"
           >Chưa có danh sách</mat-chip
         >
@@ -322,7 +321,7 @@
       </ng-template>
 
       <ng-container
-        *ngFor="let schedule of stayingScheduleList; index as i"
+        *ngFor="let schedule of eatingScheduleList; index as i"
         [ngTemplateOutlet]="inputMovingSchedule"
         [ngTemplateOutletContext]="{
           index: i,

@@ -70,15 +70,14 @@ export interface AirPlane {
 
 export interface EatSchedule {
   id?: string;
-  tourishPlanId: string;
+  tourishPlanId?: string;
   placeName: string;
   address: string;
   supportNumber: string;
 
-  RestaurantId: string;
+  restaurantId: string;
+  singlePrice?: number;
 
-  discountFloat: number;
-  discountAmount: number;
   description: string;
 
   startDate?: Date;
@@ -90,11 +89,13 @@ export interface EatSchedule {
 
 export interface MovingSchedule {
   id?: string;
-  tourishPlanId: string;
+  tourishPlanId?: string;
+
   driverName: string;
   vehiclePlate: string;
   phoneNumber: string;
-
+  
+  singlePrice?: number;
   vehicleType: number;
   transportId: string;
 

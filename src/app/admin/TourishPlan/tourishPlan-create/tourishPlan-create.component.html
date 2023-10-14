@@ -187,22 +187,21 @@
           class="row"
           style="display: flex; flex-direction: column !important; flex-wrap: 1"
         >
-          <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 create-form">
-            <mat-form-field style="width: 90%">
-              <textarea
-                matInput
-                class="form-control"
-                id="description"
-                placeholder="Thông tin đính kèm"
-                formControlName="description"
-                rows="10"
-              ></textarea>
-              <app-validation
-                [formGroup]="createformGroup"
-                [formGroupControlName]="'description'"
-              ></app-validation>
-            </mat-form-field>
-          </div>
+          <mat-form-field style="width: 90%">
+            <textarea
+              matInput
+              class="form-control"
+              id="description"
+              placeholder="Thông tin đính kèm"
+              formControlName="description"
+              rows="10"
+            ></textarea>
+            <app-validation
+              *ngIf="submited"
+              [formGroup]="createformGroup"
+              [formGroupControlName]="'description'"
+            ></app-validation>
+          </mat-form-field>
         </div>
 
         <div
@@ -222,6 +221,38 @@
           (result)="selectChangeStaying($event)"
         >
         </staying-multiselect-autocomplete>
+
+        <div
+          class="row"
+          style="
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border-bottom: 3px solid #696868;
+            margin-top: 30px;
+            margin-bottom: 30px;
+            width: 93%;
+          "
+        ></div>
+
+        <moving-multiselect-autocomplete (result)="selectChangeStaying($event)">
+        </moving-multiselect-autocomplete>
+
+        <div
+          class="row"
+          style="
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border-bottom: 3px solid #696868;
+            margin-top: 30px;
+            margin-bottom: 30px;
+            width: 93%;
+          "
+        ></div>
+        
+        <eating-multiselect-autocomplete (result)="selectChangeStaying($event)">
+        </eating-multiselect-autocomplete>
 
         <div
           class="row"

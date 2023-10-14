@@ -19,16 +19,16 @@ import { MatChipInputEvent } from "@angular/material/chips";
 import { Observable, Subscription, of, timer } from "rxjs";
 import { debounceTime } from "rxjs/operators";
 
-import { State as StayingListState } from "./multiselect-autocomplete.store.reducer";
-import * as StayingListActions from "./multiselect-autocomplete.store.action";
+import { State as EatingListState } from "./multiselect-autocomplete.store.reducer";
+import * as EatingListActions from "./multiselect-autocomplete.store.action";
 import { Store } from "@ngrx/store";
 import {
-  getStayingList,
+  getEatingList,
   getMessage,
   getSysError,
 } from "./multiselect-autocomplete.store.selector";
 import { MessageService } from "../../user_service/message.service";
-import { Hotel, StayingSchedule } from "src/app/model/baseModel";
+import { Restaurant, EatSchedule } from "src/app/model/baseModel";
 
 import moment from "moment";
 import { ThemePalette } from "@angular/material/core";
@@ -37,26 +37,26 @@ import { ThemePalette } from "@angular/material/core";
  * @title Chips Autocomplete
  */
 @Component({
-  selector: "staying-multiselect-autocomplete",
+  selector: "eating-multiselect-autocomplete",
   templateUrl: "multiselect-autocomplete.component.html",
   styleUrls: ["multiselect-autocomplete.component.css"],
 })
-export class StayingMultiselectAutocompleteComponent implements OnInit {
+export class EatingMultiselectAutocompleteComponent implements OnInit {
   separatorKeysCodes: number[] = [ENTER, COMMA];
-  stayingCtrl = new FormControl("");
-  @ViewChild("picker") stayingPicker: any;
+  eatingCtrl = new FormControl("");
+  @ViewChild("picker") eatingPicker: any;
 
-  @Output() result = new EventEmitter<{ data: Array<StayingSchedule> }>();
+  @Output() result = new EventEmitter<{ data: Array<EatSchedule> }>();
 
-  @Input() data_selected: Array<Hotel> = [];
+  @Input() data_selected: Array<Restaurant> = [];
   @Input() key: string = "";
 
-  stayingScheduleList: StayingSchedule[] = [];
+  eatingScheduleList: EatSchedule[] = [];
 
-  stayingIdList: string[] = [];
-  stayingNameList: string[] = [];
+  eatingIdList: string[] = [];
+  eatingNameList: string[] = [];
 
-  data!: Hotel[];
+  data!: Restaurant[];
   length: number = 0;
   pageIndex = 0;
   canLoadMore = true;
@@ -72,7 +72,7 @@ export class StayingMultiselectAutocompleteComponent implements OnInit {
   touchUi = false;
   enableMeridian = false;
 
-  stayingType = "Hotel";
+  eatingType = "Restaurant";
 
   color: ThemePalette = "primary";
 
@@ -81,31 +81,30 @@ export class StayingMultiselectAutocompleteComponent implements OnInit {
     date2: new FormControl(null, [Validators.required]),
   });
 
-  stayingFormGroup!: FormGroup;
+  eatingFormGroup!: FormGroup;
 
   isSubmit = false;
-  disableType = false;
 
   subscriptions: Subscription[] = [];
-  stayingListState!: Observable<any>;
-  filteredStayings!: Observable<string | null>;
+  eatingListState!: Observable<any>;
+  filteredEatings!: Observable<string | null>;
 
   errorMessageState!: Observable<any>;
   errorSystemState!: Observable<any>;
 
-  @ViewChild("stayingInput") stayingInput!: ElementRef<HTMLInputElement>;
+  @ViewChild("eatingInput") eatingInput!: ElementRef<HTMLInputElement>;
 
   constructor(
-    private store: Store<StayingListState>,
+    private store: Store<EatingListState>,
     private messageService: MessageService,
     private fb: FormBuilder
   ) {
-    this.filteredStayings = this.stayingCtrl.valueChanges.pipe(
+    this.filteredEatings = this.eatingCtrl.valueChanges.pipe(
       debounceTime(400)
     );
 
-    this.stayingListState = this.store
-      .select(getStayingList)
+    this.eatingListState = this.store
+      .select(getEatingList)
       .pipe(debounceTime(400));
 
     this.errorMessageState = this.store.select(getMessage);
@@ -113,15 +112,15 @@ export class StayingMultiselectAutocompleteComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.stayingFormGroup = this.fb.group({
+    this.eatingFormGroup = this.fb.group({
       placeName: ["", Validators.compose([Validators.required])],
 
       address: ["", Validators.compose([Validators.required])],
       supportNumber: ["", Validators.compose([Validators.required])],
       singlePrice: [0, Validators.compose([Validators.required])],
 
-      restHouseType: ["", Validators.compose([Validators.required])],
-      restHouseBranchId: ["", Validators.compose([Validators.required])],
+      restHouseType: 1,
+      restaurantId: ["", Validators.compose([Validators.required])],
 
       startDate: ["", Validators.compose([Validators.required])],
       endDate: ["", Validators.compose([Validators.required])],
@@ -133,7 +132,7 @@ export class StayingMultiselectAutocompleteComponent implements OnInit {
     });
 
     this.subscriptions.push(
-      this.filteredStayings.subscribe((state) => {
+      this.filteredEatings.subscribe((state) => {
         // Reset
         this.pageIndex = 0;
         this.newSearch = true;
@@ -143,12 +142,12 @@ export class StayingMultiselectAutocompleteComponent implements OnInit {
         this.currentTotal = 0;
 
         this.store.dispatch(
-          StayingListActions.getStayingList({
+          EatingListActions.getEatingList({
             payload: {
               search: (state ?? "").toLowerCase(),
               page: 1,
               pageSize: 6,
-              stayingType: this.stayingType,
+              eatingType: this.eatingType,
             },
           })
         );
@@ -156,7 +155,7 @@ export class StayingMultiselectAutocompleteComponent implements OnInit {
     );
 
     this.subscriptions.push(
-      this.stayingListState.subscribe((state) => {
+      this.eatingListState.subscribe((state) => {
         if (state) {
           if (state.data)
             this.currentTotal = this.currentTotal + state.data.length;
@@ -194,12 +193,12 @@ export class StayingMultiselectAutocompleteComponent implements OnInit {
     );
 
     this.store.dispatch(
-      StayingListActions.getStayingList({
+      EatingListActions.getEatingList({
         payload: {
           search: this.searchWord.toLowerCase(),
           page: this.pageIndex + 1,
           pageSize: 6,
-          stayingType: this.stayingType,
+          eatingType: this.eatingType,
         },
       })
     );
@@ -207,7 +206,7 @@ export class StayingMultiselectAutocompleteComponent implements OnInit {
 
   ngOnDestroy(): void {
     console.log("Destroy");
-    this.store.dispatch(StayingListActions.resetStayingList());
+    this.store.dispatch(EatingListActions.resetEatingList());
 
     this.subscriptions.forEach((subscription) => subscription.unsubscribe());
   }
@@ -216,8 +215,8 @@ export class StayingMultiselectAutocompleteComponent implements OnInit {
     if (this.data_selected !== undefined) {
       this.data_selected.forEach((item: any) => {
         if (item !== undefined) {
-          this.stayingIdList.push(item.staying.id);
-          this.stayingNameList.push(item.staying.placeBranch);
+          this.eatingIdList.push(item.eating.id);
+          this.eatingNameList.push(item.eating.placeBranch);
         }
       });
     }
@@ -227,30 +226,18 @@ export class StayingMultiselectAutocompleteComponent implements OnInit {
     console.log($event.target.value);
 
     if (parseInt($event.target.value) === 1) {
-      this.stayingType = "Hotel";
-    } else if (parseInt($event.target.value) === 0) {
-      this.stayingType = "HomeStay";
+      this.eatingType = "Restaurant";
     }
-
-    this.stayingFormGroup.controls["restHouseType"].setValue(
-      parseInt($event.target.value)
-    );
-
-    this.stayingIdList = [];
-    this.stayingNameList = [];
-    this.stayingFormGroup.controls["placeName"].setValue(
-      ""
-    );
 
     this.newSearch = true;
 
     this.store.dispatch(
-      StayingListActions.getStayingList({
+      EatingListActions.getEatingList({
         payload: {
           search: this.searchWord.toLowerCase(),
           page: this.pageIndex + 1,
           pageSize: 6,
-          stayingType: this.stayingType,
+          eatingType: this.eatingType,
         },
       })
     );
@@ -259,74 +246,70 @@ export class StayingMultiselectAutocompleteComponent implements OnInit {
   add(event: MatChipInputEvent): void {
     const value = (event.value || "").trim();
 
-    // Add our staying
+    // Add our eating
     if (value) {
-      this.stayingNameList.push(value);
+      this.eatingNameList.push(value);
     }
 
     // Clear the input value
     event.chipInput!.clear();
 
-    this.stayingCtrl.setValue(null);
+    this.eatingCtrl.setValue(null);
   }
 
-  remove(staying: string): void {
-    const index = this.stayingNameList.indexOf(staying);
+  remove(eating: string): void {
+    const index = this.eatingNameList.indexOf(eating);
     if (index >= 0) {
-      this.stayingNameList.splice(index, 1);
-      this.stayingIdList.splice(index, 1);
+      this.eatingNameList.splice(index, 1);
+      this.eatingIdList.splice(index, 1);
     }
-
     this.emitAdjustedData();
   }
 
   emitAdjustedData = (): void => {
-    this.result.emit({ data: this.stayingScheduleList });
+    this.result.emit({ data: this.eatingScheduleList });
   };
 
   selected(event: MatAutocompleteSelectedEvent): void {
-    this.stayingIdList.push(event.option.value.id);
-    this.stayingNameList.push(event.option.value.placeBranch);
+    this.eatingIdList.push(event.option.value.id);
+    this.eatingNameList.push(event.option.value.placeBranch);
 
-    this.stayingFormGroup.controls["restHouseBranchId"].setValue(
-      event.option.value.id
-    );
-
-    this.stayingFormGroup.controls["placeName"].setValue(
+    this.eatingFormGroup.controls["restaurantId"].setValue(event.option.value.id);
+    
+    this.eatingFormGroup.controls["placeName"].setValue(
       event.option.value.placeBranch
     );
-    this.stayingFormGroup.controls["address"].setValue(
+    this.eatingFormGroup.controls["address"].setValue(
       event.option.value.headQuarterAddress
     );
-    this.stayingFormGroup.controls["supportNumber"].setValue(
+    this.eatingFormGroup.controls["supportNumber"].setValue(
       event.option.value.hotlineNumber
     );
 
-    this.stayingInput.nativeElement.value = "";
-    this.stayingCtrl.setValue(null);
+    this.eatingInput.nativeElement.value = "";
+    this.eatingCtrl.setValue(null);
   }
 
   addToSchedule(): void {
     this.isSubmit = true;
-    console.log(this.stayingFormGroup.value);
-    console.log(this.stayingFormGroup.valid);
-    if (this.stayingFormGroup.valid && this.stayingFormGroup.dirty) {
-      const schedule: StayingSchedule = {
-        placeName: this.stayingFormGroup.value.placeName,
-        address: this.stayingFormGroup.value.address,
-        supportNumber: this.stayingFormGroup.value.supportNumber,
-        restHouseBranchId: this.stayingFormGroup.value.restHouseBranchId,
-        restHouseType: this.stayingFormGroup.value.restHouseType,
-        singlePrice: this.stayingFormGroup.value.singlePrice,
-        startDate: this.stayingFormGroup.value.startDate,
-        endDate: this.stayingFormGroup.value.endDate,
-        description: this.stayingFormGroup.value.description,
+    console.log(this.eatingFormGroup.value);
+    console.log(this.eatingFormGroup.valid);
+    if (this.eatingFormGroup.valid && this.eatingFormGroup.dirty) {
+      const schedule: EatSchedule = {
+        placeName: this.eatingFormGroup.value.placeName,
+        address: this.eatingFormGroup.value.address,
+        supportNumber: this.eatingFormGroup.value.supportNumber,
+        restaurantId: this.eatingFormGroup.value.restaurantId,
+        singlePrice: this.eatingFormGroup.value.singlePrice,
+        startDate: this.eatingFormGroup.value.startDate,
+        endDate: this.eatingFormGroup.value.endDate,
+        description: this.eatingFormGroup.value.description,
       };
 
-      this.stayingScheduleList = [schedule, ...this.stayingScheduleList];
+      this.eatingScheduleList = [schedule, ...this.eatingScheduleList];
 
-      this.stayingScheduleList.sort(
-        (a: StayingSchedule, b: StayingSchedule) => {
+      this.eatingScheduleList.sort(
+        (a: EatSchedule, b: EatSchedule) => {
           return moment(a.startDate).valueOf() - moment(b.startDate).valueOf();
         }
       );
@@ -337,21 +320,21 @@ export class StayingMultiselectAutocompleteComponent implements OnInit {
   }
 
   removeSchedule(id: string): void {
-    var index = this.stayingScheduleList.findIndex(
+    var index = this.eatingScheduleList.findIndex(
       (entity) => entity.id === id
     );
-    if (index > -1) this.stayingScheduleList.splice(index, 1);
+    if (index > -1) this.eatingScheduleList.splice(index, 1);
 
     this.emitAdjustedData();
   }
 
   formReset(): void {
-    this.stayingFormGroup.reset({
+    this.eatingFormGroup.reset({
       placeName: "",
       description: "",
       address: "",
       supportNumber: "",
-      restHouseBranchId: "",
+      restaurantId: "",
       restHouseType: 1,
       singlePrice: 0,
       startDate: "",
@@ -367,7 +350,7 @@ export class StayingMultiselectAutocompleteComponent implements OnInit {
         this.isLoading = true;
         this.pageIndex++;
         this.store.dispatch(
-          StayingListActions.getStayingList({
+          EatingListActions.getEatingList({
             payload: {
               search: this.searchWord.toLowerCase(),
               page: this.pageIndex + 1,
@@ -379,15 +362,15 @@ export class StayingMultiselectAutocompleteComponent implements OnInit {
     }
   }
 
-  onDisplayAtr(staying: Hotel): string {
+  onDisplayAtr(eating: Restaurant): string {
     return "";
   }
 
-  isChecked(staying: Hotel): boolean {
-    let stayingExist = this.stayingScheduleList.find(
-      (stayingSchedule) => stayingSchedule.restHouseBranchId === staying.id
+  isChecked(eating: Restaurant): boolean {
+    let eatingExist = this.eatingScheduleList.find(
+      eatingSchedule => eatingSchedule.restaurantId === eating.id
     );
-    if (stayingExist) return true;
+    if (eatingExist) return true;
     return false;
   }
 

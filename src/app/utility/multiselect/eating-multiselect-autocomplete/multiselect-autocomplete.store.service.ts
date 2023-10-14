@@ -5,10 +5,10 @@ import { Observable } from "rxjs";
 @Injectable({
   providedIn: "root",
 })
-export class MultiSelectStayingListStoreService {
+export class MultiSelectEatingListStoreService {
   constructor(private http: HttpClient) {}
 
-  getStayingList(payload: any): Observable<any> {
-    return this.http.get("/api/Get" + payload.stayingType, {params: payload});
+  getEatingList(payload: any): Observable<any> {
+    return this.http.get("/api/Get" + payload.eatingType, {params: payload});
   }
 }

@@ -19,16 +19,16 @@ import { MatChipInputEvent } from "@angular/material/chips";
 import { Observable, Subscription, of, timer } from "rxjs";
 import { debounceTime } from "rxjs/operators";
 
-import { State as StayingListState } from "./multiselect-autocomplete.store.reducer";
-import * as StayingListActions from "./multiselect-autocomplete.store.action";
+import { State as MovingListState } from "./multiselect-autocomplete.store.reducer";
+import * as MovingListActions from "./multiselect-autocomplete.store.action";
 import { Store } from "@ngrx/store";
 import {
-  getStayingList,
+  getMovingList,
   getMessage,
   getSysError,
 } from "./multiselect-autocomplete.store.selector";
 import { MessageService } from "../../user_service/message.service";
-import { Hotel, StayingSchedule } from "src/app/model/baseModel";
+import { PassengerCar, MovingSchedule } from "src/app/model/baseModel";
 
 import moment from "moment";
 import { ThemePalette } from "@angular/material/core";
@@ -37,26 +37,26 @@ import { ThemePalette } from "@angular/material/core";
  * @title Chips Autocomplete
  */
 @Component({
-  selector: "staying-multiselect-autocomplete",
+  selector: "moving-multiselect-autocomplete",
   templateUrl: "multiselect-autocomplete.component.html",
   styleUrls: ["multiselect-autocomplete.component.css"],
 })
-export class StayingMultiselectAutocompleteComponent implements OnInit {
+export class MovingMultiselectAutocompleteComponent implements OnInit {
   separatorKeysCodes: number[] = [ENTER, COMMA];
-  stayingCtrl = new FormControl("");
-  @ViewChild("picker") stayingPicker: any;
+  movingCtrl = new FormControl("");
+  @ViewChild("picker") movingPicker: any;
 
-  @Output() result = new EventEmitter<{ data: Array<StayingSchedule> }>();
+  @Output() result = new EventEmitter<{ data: Array<MovingSchedule> }>();
 
-  @Input() data_selected: Array<Hotel> = [];
+  @Input() data_selected: Array<PassengerCar> = [];
   @Input() key: string = "";
 
-  stayingScheduleList: StayingSchedule[] = [];
+  movingScheduleList: MovingSchedule[] = [];
 
-  stayingIdList: string[] = [];
-  stayingNameList: string[] = [];
+  movingIdList: string[] = [];
+  movingNameList: string[] = [];
 
-  data!: Hotel[];
+  data!: PassengerCar[];
   length: number = 0;
   pageIndex = 0;
   canLoadMore = true;
@@ -72,7 +72,7 @@ export class StayingMultiselectAutocompleteComponent implements OnInit {
   touchUi = false;
   enableMeridian = false;
 
-  stayingType = "Hotel";
+  movingType = "PassengerCar";
 
   color: ThemePalette = "primary";
 
@@ -81,31 +81,28 @@ export class StayingMultiselectAutocompleteComponent implements OnInit {
     date2: new FormControl(null, [Validators.required]),
   });
 
-  stayingFormGroup!: FormGroup;
+  movingFormGroup!: FormGroup;
 
   isSubmit = false;
-  disableType = false;
 
   subscriptions: Subscription[] = [];
-  stayingListState!: Observable<any>;
-  filteredStayings!: Observable<string | null>;
+  movingListState!: Observable<any>;
+  filteredMovings!: Observable<string | null>;
 
   errorMessageState!: Observable<any>;
   errorSystemState!: Observable<any>;
 
-  @ViewChild("stayingInput") stayingInput!: ElementRef<HTMLInputElement>;
+  @ViewChild("movingInput") movingInput!: ElementRef<HTMLInputElement>;
 
   constructor(
-    private store: Store<StayingListState>,
+    private store: Store<MovingListState>,
     private messageService: MessageService,
     private fb: FormBuilder
   ) {
-    this.filteredStayings = this.stayingCtrl.valueChanges.pipe(
-      debounceTime(400)
-    );
+    this.filteredMovings = this.movingCtrl.valueChanges.pipe(debounceTime(400));
 
-    this.stayingListState = this.store
-      .select(getStayingList)
+    this.movingListState = this.store
+      .select(getMovingList)
       .pipe(debounceTime(400));
 
     this.errorMessageState = this.store.select(getMessage);
@@ -113,15 +110,18 @@ export class StayingMultiselectAutocompleteComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.stayingFormGroup = this.fb.group({
-      placeName: ["", Validators.compose([Validators.required])],
+    this.movingFormGroup = this.fb.group({
+      driverName: ["", Validators.compose([Validators.required])],
 
-      address: ["", Validators.compose([Validators.required])],
-      supportNumber: ["", Validators.compose([Validators.required])],
+      vehiclePlate: ["", Validators.compose([Validators.required])],
+      phoneNumber: ["", Validators.compose([Validators.required])],
       singlePrice: [0, Validators.compose([Validators.required])],
 
-      restHouseType: ["", Validators.compose([Validators.required])],
-      restHouseBranchId: ["", Validators.compose([Validators.required])],
+      vehicleType: 1,
+      transportId: ["", Validators.compose([Validators.required])],
+
+      startingPlace: ["", Validators.compose([Validators.required])],
+      headingPlace: ["", Validators.compose([Validators.required])],
 
       startDate: ["", Validators.compose([Validators.required])],
       endDate: ["", Validators.compose([Validators.required])],
@@ -133,7 +133,7 @@ export class StayingMultiselectAutocompleteComponent implements OnInit {
     });
 
     this.subscriptions.push(
-      this.filteredStayings.subscribe((state) => {
+      this.filteredMovings.subscribe((state) => {
         // Reset
         this.pageIndex = 0;
         this.newSearch = true;
@@ -143,12 +143,12 @@ export class StayingMultiselectAutocompleteComponent implements OnInit {
         this.currentTotal = 0;
 
         this.store.dispatch(
-          StayingListActions.getStayingList({
+          MovingListActions.getMovingList({
             payload: {
               search: (state ?? "").toLowerCase(),
               page: 1,
               pageSize: 6,
-              stayingType: this.stayingType,
+              movingType: this.movingType,
             },
           })
         );
@@ -156,7 +156,7 @@ export class StayingMultiselectAutocompleteComponent implements OnInit {
     );
 
     this.subscriptions.push(
-      this.stayingListState.subscribe((state) => {
+      this.movingListState.subscribe((state) => {
         if (state) {
           if (state.data)
             this.currentTotal = this.currentTotal + state.data.length;
@@ -194,12 +194,12 @@ export class StayingMultiselectAutocompleteComponent implements OnInit {
     );
 
     this.store.dispatch(
-      StayingListActions.getStayingList({
+      MovingListActions.getMovingList({
         payload: {
           search: this.searchWord.toLowerCase(),
           page: this.pageIndex + 1,
           pageSize: 6,
-          stayingType: this.stayingType,
+          movingType: this.movingType,
         },
       })
     );
@@ -207,7 +207,7 @@ export class StayingMultiselectAutocompleteComponent implements OnInit {
 
   ngOnDestroy(): void {
     console.log("Destroy");
-    this.store.dispatch(StayingListActions.resetStayingList());
+    this.store.dispatch(MovingListActions.resetMovingList());
 
     this.subscriptions.forEach((subscription) => subscription.unsubscribe());
   }
@@ -216,8 +216,8 @@ export class StayingMultiselectAutocompleteComponent implements OnInit {
     if (this.data_selected !== undefined) {
       this.data_selected.forEach((item: any) => {
         if (item !== undefined) {
-          this.stayingIdList.push(item.staying.id);
-          this.stayingNameList.push(item.staying.placeBranch);
+          this.movingIdList.push(item.moving.id);
+          this.movingNameList.push(item.moving.branchName);
         }
       });
     }
@@ -227,30 +227,30 @@ export class StayingMultiselectAutocompleteComponent implements OnInit {
     console.log($event.target.value);
 
     if (parseInt($event.target.value) === 1) {
-      this.stayingType = "Hotel";
+      this.movingType = "AirPlane";
     } else if (parseInt($event.target.value) === 0) {
-      this.stayingType = "HomeStay";
+      this.movingType = "PassengerCar";
     }
 
-    this.stayingFormGroup.controls["restHouseType"].setValue(
+    this.movingFormGroup.controls["vehicleType"].setValue(
       parseInt($event.target.value)
     );
 
-    this.stayingIdList = [];
-    this.stayingNameList = [];
-    this.stayingFormGroup.controls["placeName"].setValue(
+    this.movingIdList = [];
+    this.movingNameList = [];
+    this.movingFormGroup.controls["branchName"].setValue(
       ""
     );
 
     this.newSearch = true;
 
     this.store.dispatch(
-      StayingListActions.getStayingList({
+      MovingListActions.getMovingList({
         payload: {
           search: this.searchWord.toLowerCase(),
           page: this.pageIndex + 1,
           pageSize: 6,
-          stayingType: this.stayingType,
+          movingType: this.movingType,
         },
       })
     );
@@ -259,77 +259,79 @@ export class StayingMultiselectAutocompleteComponent implements OnInit {
   add(event: MatChipInputEvent): void {
     const value = (event.value || "").trim();
 
-    // Add our staying
+    // Add our moving
     if (value) {
-      this.stayingNameList.push(value);
+      this.movingNameList.push(value);
     }
 
     // Clear the input value
     event.chipInput!.clear();
 
-    this.stayingCtrl.setValue(null);
+    this.movingCtrl.setValue(null);
   }
 
-  remove(staying: string): void {
-    const index = this.stayingNameList.indexOf(staying);
+  remove(moving: string): void {
+    const index = this.movingNameList.indexOf(moving);
     if (index >= 0) {
-      this.stayingNameList.splice(index, 1);
-      this.stayingIdList.splice(index, 1);
+      this.movingNameList.splice(index, 1);
+      this.movingIdList.splice(index, 1);
     }
-
     this.emitAdjustedData();
   }
 
   emitAdjustedData = (): void => {
-    this.result.emit({ data: this.stayingScheduleList });
+    this.result.emit({ data: this.movingScheduleList });
   };
 
   selected(event: MatAutocompleteSelectedEvent): void {
-    this.stayingIdList.push(event.option.value.id);
-    this.stayingNameList.push(event.option.value.placeBranch);
+    this.movingIdList.push(event.option.value.id);
+    this.movingNameList.push(event.option.value.branchName);
 
-    this.stayingFormGroup.controls["restHouseBranchId"].setValue(
+    this.movingFormGroup.controls["transportId"].setValue(
       event.option.value.id
     );
 
-    this.stayingFormGroup.controls["placeName"].setValue(
-      event.option.value.placeBranch
+    this.movingFormGroup.controls["driverName"].setValue(
+      event.option.value.branchName
     );
-    this.stayingFormGroup.controls["address"].setValue(
+    this.movingFormGroup.controls["vehiclePlate"].setValue(
       event.option.value.headQuarterAddress
     );
-    this.stayingFormGroup.controls["supportNumber"].setValue(
+    this.movingFormGroup.controls["phoneNumber"].setValue(
       event.option.value.hotlineNumber
     );
 
-    this.stayingInput.nativeElement.value = "";
-    this.stayingCtrl.setValue(null);
+    this.movingInput.nativeElement.value = "";
+    this.movingCtrl.setValue(null);
   }
 
   addToSchedule(): void {
     this.isSubmit = true;
-    console.log(this.stayingFormGroup.value);
-    console.log(this.stayingFormGroup.valid);
-    if (this.stayingFormGroup.valid && this.stayingFormGroup.dirty) {
-      const schedule: StayingSchedule = {
-        placeName: this.stayingFormGroup.value.placeName,
-        address: this.stayingFormGroup.value.address,
-        supportNumber: this.stayingFormGroup.value.supportNumber,
-        restHouseBranchId: this.stayingFormGroup.value.restHouseBranchId,
-        restHouseType: this.stayingFormGroup.value.restHouseType,
-        singlePrice: this.stayingFormGroup.value.singlePrice,
-        startDate: this.stayingFormGroup.value.startDate,
-        endDate: this.stayingFormGroup.value.endDate,
-        description: this.stayingFormGroup.value.description,
+    console.log(this.movingFormGroup.value);
+    console.log(this.movingFormGroup.valid);
+    if (this.movingFormGroup.valid && this.movingFormGroup.dirty) {
+      const schedule: MovingSchedule = {
+        driverName: this.movingFormGroup.value.driverName,
+        vehiclePlate: this.movingFormGroup.value.vehiclePlate,
+        phoneNumber: this.movingFormGroup.value.phoneNumber,
+
+        vehicleType: this.movingFormGroup.value.vehicleType,
+        transportId: this.movingFormGroup.value.transportId,
+        singlePrice: this.movingFormGroup.value.singlePrice,
+
+        startingPlace: this.movingFormGroup.value.startingPlace,
+        headingPlace: this.movingFormGroup.value.headingPlace,
+
+        startDate: this.movingFormGroup.value.startDate,
+        endDate: this.movingFormGroup.value.endDate,
+        description: this.movingFormGroup.value.description,
       };
 
-      this.stayingScheduleList = [schedule, ...this.stayingScheduleList];
+      this.movingScheduleList = [schedule, ...this.movingScheduleList];
 
-      this.stayingScheduleList.sort(
-        (a: StayingSchedule, b: StayingSchedule) => {
-          return moment(a.startDate).valueOf() - moment(b.startDate).valueOf();
-        }
-      );
+      this.movingScheduleList.sort((a: MovingSchedule, b: MovingSchedule) => {
+        return moment(a.startDate).valueOf() - moment(b.startDate).valueOf();
+      });
 
       this.emitAdjustedData();
       this.formReset();
@@ -337,22 +339,20 @@ export class StayingMultiselectAutocompleteComponent implements OnInit {
   }
 
   removeSchedule(id: string): void {
-    var index = this.stayingScheduleList.findIndex(
-      (entity) => entity.id === id
-    );
-    if (index > -1) this.stayingScheduleList.splice(index, 1);
+    var index = this.movingScheduleList.findIndex((entity) => entity.id === id);
+    if (index > -1) this.movingScheduleList.splice(index, 1);
 
     this.emitAdjustedData();
   }
 
   formReset(): void {
-    this.stayingFormGroup.reset({
-      placeName: "",
+    this.movingFormGroup.reset({
+      driverName: "",
       description: "",
-      address: "",
-      supportNumber: "",
-      restHouseBranchId: "",
-      restHouseType: 1,
+      vehiclePlate: "",
+      phoneNumber: "",
+      transportId: "",
+      vehicleType: 1,
       singlePrice: 0,
       startDate: "",
       endDate: "",
@@ -367,7 +367,7 @@ export class StayingMultiselectAutocompleteComponent implements OnInit {
         this.isLoading = true;
         this.pageIndex++;
         this.store.dispatch(
-          StayingListActions.getStayingList({
+          MovingListActions.getMovingList({
             payload: {
               search: this.searchWord.toLowerCase(),
               page: this.pageIndex + 1,
@@ -379,15 +379,15 @@ export class StayingMultiselectAutocompleteComponent implements OnInit {
     }
   }
 
-  onDisplayAtr(staying: Hotel): string {
+  onDisplayAtr(moving: PassengerCar): string {
     return "";
   }
 
-  isChecked(staying: Hotel): boolean {
-    let stayingExist = this.stayingScheduleList.find(
-      (stayingSchedule) => stayingSchedule.restHouseBranchId === staying.id
+  isChecked(moving: PassengerCar): boolean {
+    let movingExist = this.movingScheduleList.find(
+      (movingSchedule) => movingSchedule.transportId === moving.id
     );
-    if (stayingExist) return true;
+    if (movingExist) return true;
     return false;
   }
 

@@ -20,11 +20,9 @@ export class FooterComponent {
 
   ngAfterViewChecked(): void {
     if (this.isNavOpen) {
-      console.log("abc");
       if (this.footerElem.nativeElement !== undefined)
         this.footerElem.nativeElement.style["padding"] = "45px 6% 20px";
     } else {
-      console.log("abcd");
       if (this.footerElem.nativeElement !== undefined)
         this.footerElem.nativeElement.style["padding"] = "45px 16% 20px";
     }

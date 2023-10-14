@@ -101,11 +101,7 @@
           </ng-container>
 
           <h3 mat-form-label style="font-weight: bold">Nhà xuất bản</h3>
-          <publisher-multiselect-autocomplete
-            [data_selected]="publisher_list"
-            (result)="selectChange_publisher($event)"
-          >
-          </publisher-multiselect-autocomplete>
+         
         </div>
 
         <div class="input-group">
@@ -272,11 +268,8 @@
 
       <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6" style="margin-top: 10px">
         <h3 mat-form-label style="font-weight: bold">Tác giả</h3>
-        <author-multiselect-autocomplete
-          [data_selected]="author_list"
-          (result)="selectChange_author($event)"
-        >
-        </author-multiselect-autocomplete>
+      
+  
         <div class="row" style="margin-bottom: 20px">
           <div class="col-xs-6 col-sm-4 col-md-4 col-lg-2">
             <button
@@ -300,11 +293,7 @@
         </div>
 
         <h3 mat-form-label style="font-weight: bold">Thể loại</h3>
-        <category-multiselect-autocomplete
-          [data_selected]="category_list"
-          (result)="selectChange_category($event)"
-        >
-        </category-multiselect-autocomplete>
+       
         <div class="row" style="margin-bottom: 20px">
           <div class="col-xs-6 col-sm-4 col-md-4 col-lg-2">
             <button
@@ -340,11 +329,8 @@
       </div>
       <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
         <h3 mat-form-label style="font-weight: bold">Voucher</h3>
-        <voucher-multiselect-autocomplete
-          [data_selected]="voucher_list"
-          (result)="selectChange_voucher($event)"
-        >
-        </voucher-multiselect-autocomplete>
+      
+ 
         <mat-error *ngIf="isSubmitting && voucherSubmitString === ''"
           >Vui lòng nhập nội dung
         </mat-error>
