@@ -161,6 +161,7 @@ import { TourishPlanDetailAdminComponent } from "../TourishPlan/tourishPlan-deta
 
 import { ValidationComponent } from "src/app/utility/validation/validation.component";
 import { NgxMatMomentModule } from "@angular-material-components/moment-adapter";
+import { TourishPlanDetailEffects } from "../TourishPlan/tourishPlan-detail/tourishPlan-detail.store.effect";
 
 
 
@@ -294,7 +295,7 @@ import { NgxMatMomentModule } from "@angular-material-components/moment-adapter"
     EffectsModule.forFeature([ImageListEffects]),
 
     EffectsModule.forFeature([TourishPlanCreateEffects]),
-    EffectsModule.forFeature([TourishPlanCreateEffects]),
+    EffectsModule.forFeature([TourishPlanDetailEffects]),
     EffectsModule.forFeature([TourishPlanListEffects]),
 
     EffectsModule.forFeature([PassengerCarCreateEffects]),

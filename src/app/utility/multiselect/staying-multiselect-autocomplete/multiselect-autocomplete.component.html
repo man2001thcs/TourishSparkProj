@@ -13,11 +13,7 @@
       <div class="row">
         <mat-form-field appearance="outline" class="full-width-input">
           <mat-label>Loại nhà nghỉ</mat-label>
-          <select
-            matNativeControl
-            required
-            (change)="changeType($event)"
-          >
+          <select matNativeControl required (change)="changeType($event)">
             <option value="1">Hotel</option>
             <option value="0">HomeStay</option>
           </select>
@@ -258,7 +254,10 @@
         </h2>
       </div>
 
-      <div class="row" *ngIf="stayingScheduleList.length < 1">
+      <div
+        class="row"
+        *ngIf="stayingScheduleList.length < 1 && data_selected.length < 1"
+      >
         <mat-chip color="warn" style="font-size: 16px"
           >Chưa có danh sách</mat-chip
         >
@@ -320,6 +319,83 @@
           </button>
         </div>
       </ng-template>
+
+      <ng-template
+        #existMovingSchedule
+        let-index="index"
+        let-id="id"
+        let-placeName="placeName"
+        let-address="address"
+        let-supportNumber="supportNumber"
+        let-singlePrice="singlePrice"
+        let-startDate="startDate"
+        let-endDate="endDate"
+        let-description="description"
+      >
+        <div
+          style="
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            margin-bottom: 10px;
+          "
+        >
+          <mat-expansion-panel
+            [expanded]="false"
+            style="width: 65%; margin-right: 10px"
+          >
+            <mat-expansion-panel-header>
+              <mat-panel-title style="color: green;">
+                Lịch trình {{ index + 1 }} <i class="fa fa-check" style="margin-left: 5px;" aria-hidden="true"></i
+              ></mat-panel-title>
+            </mat-expansion-panel-header>
+            <p>
+              <span style="font-weight: bold">Địa điểm: </span> {{ placeName }}
+            </p>
+            <p><span style="font-weight: bold">Địa chỉ:</span> {{ address }}</p>
+            <p>
+              <span style="font-weight: bold">SĐT hỗ trợ:</span>
+              {{ supportNumber }}
+            </p>
+            <p>
+              <span style="font-weight: bold">Giá đơn:</span>
+              {{ singlePrice }}
+            </p>
+            <p>
+              <span style="font-weight: bold">Ngày bắt đầu:</span>
+              {{ startDate }}
+            </p>
+            <p>
+              <span style="font-weight: bold">Ngày kết thúc:</span>
+              {{ endDate }}
+            </p>
+          </mat-expansion-panel>
+          <button
+            mat-raised-button
+            color="primary"
+            (click)="removeSchedule(id)"
+          >
+            Gỡ
+          </button>
+        </div>
+      </ng-template>
+
+      <ng-container
+        *ngFor="let schedule of data_selected; index as i"
+        [ngTemplateOutlet]="existMovingSchedule"
+        [ngTemplateOutletContext]="{
+          index: i,
+          id: schedule.id,
+          placeName: schedule.placeName,
+          address: schedule.address,
+          singlePrice: schedule.singlePrice,
+          supportNumber: schedule.supportNumber,
+          startDate: schedule.startDate,
+          endDate: schedule.endDate,
+          description: schedule.description
+        }"
+      >
+      </ng-container>
 
       <ng-container
         *ngFor="let schedule of stayingScheduleList; index as i"

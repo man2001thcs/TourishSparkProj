@@ -22,19 +22,7 @@ import {
 import { ActivatedRoute } from "@angular/router";
 import { AdminService } from "../../service/admin.service";
 import { CheckDeactivate } from "../../interface/admin.check_edit";
-import {
-  AuthorPayload,
-  TourishPlan,
-  TourishPlanInfoParam,
-  TourishPlanParam,
-  TourishPlanStatusParam,
-  Category,
-  CategoryPayload,
-  Publisher,
-  Voucher,
-  Author,
-  VoucherPayload,
-} from "./tourishPlan-detail.component.model";
+
 import * as TourishPlanActions from "./tourishPlan-detail.store.action";
 import { State as TourishPlanState } from "./tourishPlan-detail.store.reducer";
 import { Store } from "@ngrx/store";
@@ -45,6 +33,8 @@ import {
   getSysError,
 } from "./tourishPlan-detail.store.selector";
 import { MessageService } from "src/app/utility/user_service/message.service";
+import { EatSchedule, TourishPlan } from "src/app/model/baseModel";
+import { TourishPlanParam } from "./tourishPlan-detail.component.model";
 
 @Component({
   selector: "app-tourishPlan-detail",
@@ -55,43 +45,31 @@ export class TourishPlanDetailAdminComponent implements OnInit, OnDestroy {
   tourishPlanId: string = "";
   isEditing: boolean = true;
   isSubmitting = false;
+
   tourishPlan: TourishPlan = {
     id: "",
-    title: "",
+    tourName: "",
+
+    startingPoint: "",
+    endPoint: "",
+
+    supportNumber: "",
+    planStatus: 0,
+    startDate: "",
+    endDate: "",
+
+    totalTicket: 0,
+    remainTicket: 0,
     description: "",
-    publisherId: "",
-    pageNumber: 0,
 
-    tourishPlanSize: "",
-    tourishPlanWeight: 0,
-    coverMaterial: 0,
-    publishYear: 2000,
-
-    tourishPlanStatus: {
-      currentPrice: 0,
-      totalSoldNumber: 0,
-      soldNumberInMonth: 0,
-      remainNumber: 0,
-    },
+    stayingSchedules: [],
+    eatSchedules: [],
+    movingSchedules: [],
   };
+
+  submited = false;
+
   tourishPlanParam!: TourishPlanParam;
-
-  categorySubmitString: string = "";
-  voucherSubmitString: string = "";
-  publisherSubmitString: string = "";
-  authorSubmitString: string = "";
-
-  author_list: Author[] = [];
-  author_submit!: any;
-
-  publisher_list: Publisher[] = [];
-  publisher_submit!: any;
-
-  category_list: Category[] = [];
-  category_submit!: any;
-
-  voucher_list: Voucher[] = [];
-  voucher_submit!: any;
 
   this_announce = "";
   firstTime = false;
@@ -123,125 +101,72 @@ export class TourishPlanDetailAdminComponent implements OnInit, OnDestroy {
 
     this.editformGroup_info = this.fb.group({
       id: [this.tourishPlanId, Validators.compose([Validators.required])],
-      title: [
-        this.tourishPlan.title ?? "",
-        Validators.compose([
-          Validators.required,
-          Validators.minLength(3),
-          Validators.pattern(/^[a-z]{6,32}$/i),
-        ]),
-      ],
-      pageNumber: [
-        this.tourishPlan.pageNumber ?? 0,
-        Validators.compose([Validators.required]),
+      tourName: [
+        "",
+        Validators.compose([Validators.required, Validators.minLength(3)]),
       ],
 
-      tourishPlanSize: [
-        this.tourishPlan.tourishPlanSize ?? 0,
-        Validators.compose([Validators.required]),
+      startingPoint: ["", Validators.compose([Validators.required])],
+      endingPoint: ["", Validators.compose([Validators.required])],
+      supportNumber: ["", Validators.compose([Validators.required])],
+      planStatus: [0, Validators.compose([Validators.required])],
+      startDate: ["", Validators.compose([Validators.required])],
+      endDate: ["", Validators.compose([Validators.required])],
+
+      totalTicket: ["", Validators.compose([Validators.required])],
+      remainTicket: ["", Validators.compose([Validators.required])],
+      description: [
+        "",
+        Validators.compose([Validators.required, Validators.minLength(3)]),
       ],
 
-      coverMaterial: [
-        this.tourishPlan.coverMaterial ?? 0,
-        Validators.compose([Validators.required]),
-      ],
-
-      publishYear: [
-        this.tourishPlan.publishYear ?? 0,
-        Validators.compose([Validators.required]),
-      ],
-
-      tourishPlanWeight: [
-        this.tourishPlan.tourishPlanWeight ?? 0,
-        Validators.compose([Validators.required]),
-      ],
-
-      description: this.tourishPlan.description,
-    });
-
-    this.editformGroup_status = this.fb.group({
-      productId: [this.tourishPlanId, Validators.compose([Validators.required])],
-
-      currentPrice: [
-        this.tourishPlan.tourishPlanStatus.currentPrice ?? 0,
-        Validators.compose([Validators.required]),
-      ],
-      totalSoldNumber: [
-        this.tourishPlan.tourishPlanStatus.totalSoldNumber ?? 0,
-        Validators.compose([Validators.required]),
-      ],
-      remainNumber: [
-        this.tourishPlan.tourishPlanStatus.remainNumber ?? 0,
-        Validators.compose([Validators.required]),
-      ],
-      soldNumberInMonth: [
-        this.tourishPlan.tourishPlanStatus.soldNumberInMonth ?? 0,
-        Validators.compose([Validators.required]),
-      ],
-    });
-
-    this.editformGroup_status = this.fb.group({
-      productId: [this.tourishPlanId, Validators.compose([Validators.required])],
-
-      currentPrice: [
-        this.tourishPlan.tourishPlanStatus.currentPrice ?? 0,
-        Validators.compose([Validators.required]),
-      ],
-      totalSoldNumber: [
-        this.tourishPlan.tourishPlanStatus.totalSoldNumber ?? 0,
-        Validators.compose([Validators.required]),
-      ],
-      remainNumber: [
-        this.tourishPlan.tourishPlanStatus.remainNumber ?? 0,
-        Validators.compose([Validators.required]),
-      ],
-      soldNumberInMonth: [
-        this.tourishPlan.tourishPlanStatus.soldNumberInMonth ?? 0,
-        Validators.compose([Validators.required]),
-      ],
+      movingScheduleString: ["", Validators.compose([Validators.required])],
+      eatingScheduleString: ["", Validators.compose([Validators.required])],
+      stayingScheduleString: ["", Validators.compose([Validators.required])],
     });
 
     this.subscriptions.push(
       this.tourishPlanState.subscribe((state) => {
         if (state) {
           this.tourishPlan = state;
-          this.editformGroup_info.controls["title"].setValue(state.title);
-          this.editformGroup_info.controls["pageNumber"].setValue(
-            state.pageNumber
+          this.editformGroup_info.controls["tourName"].setValue(state.tourName);
+
+          this.editformGroup_info.controls["startingPoint"].setValue(
+            state.startingPoint
+          );
+
+          this.editformGroup_info.controls["endingPoint"].setValue(state.endPoint);
+
+          this.editformGroup_info.controls["supportNumber"].setValue(
+            state.supportNumber
+          );
+
+          this.editformGroup_info.controls["totalTicket"].setValue(
+            state.totalTicket
+          );
+          this.editformGroup_info.controls["remainTicket"].setValue(
+            state.remainTicket
+          );
+
+          this.editformGroup_info.controls["planStatus"].setValue(
+            state.planStatus
           );
           this.editformGroup_info.controls["description"].setValue(
             state.description
           );
-          this.editformGroup_info.controls["tourishPlanSize"].setValue(state.tourishPlanSize);
-          this.editformGroup_info.controls["tourishPlanWeight"].setValue(
-            state.tourishPlanWeight
-          );
-          
-          this.editformGroup_info.controls["coverMaterial"].setValue(
-            state.coverMaterial
+          this.editformGroup_info.controls["startDate"].setValue(
+            state.startDate
           );
 
-          this.editformGroup_info.controls["publishYear"].setValue(
-            state.publishYear
+          this.editformGroup_info.controls["endDate"].setValue(
+            state.endDate
           );
 
-          this.editformGroup_status.controls["remainNumber"].setValue(
-            state.tourishPlanStatus.remainNumber
-          );
-          this.editformGroup_status.controls["currentPrice"].setValue(
-            state.tourishPlanStatus.currentPrice
-          );
-          this.editformGroup_status.controls["soldNumberInMonth"].setValue(
-            state.tourishPlanStatus.soldNumberInMonth
-          );
-          this.editformGroup_status.controls["totalSoldNumber"].setValue(
-            state.tourishPlanStatus.totalSoldNumber
-          );
+          this.editformGroup_info.controls["planStatus"].setValue(
+            state.planStatus
+          );       
 
-          this.author_list = state.tourishPlanAuthors ?? [];
-          this.voucher_list = state.tourishPlanVouchers ?? [];
-          this.publisher_list = [state.publisher] ?? [];
-          this.category_list = state.tourishPlanCategories ?? [];
+          this.messageService.closeLoadingDialog();
 
           console.log(this.tourishPlan);
         }
@@ -280,6 +205,8 @@ export class TourishPlanDetailAdminComponent implements OnInit, OnDestroy {
       })
     );
 
+    this.messageService.openLoadingDialog();
+
     this.store.dispatch(TourishPlanActions.initial());
 
     //console.log(this.this_tourishPlan);
@@ -294,154 +221,63 @@ export class TourishPlanDetailAdminComponent implements OnInit, OnDestroy {
     this.subscriptions.forEach((subscription) => subscription.unsubscribe());
   }
 
-  formSubmitInfoReset(): void {
+  formSubmit_create_info(): void {
+    this.submited = true;
+    if (this.editformGroup_info.valid) {
+      this.store.dispatch(
+        TourishPlanActions.editTourishPlan({
+          payload: {
+            id: this.tourishPlanId,
+            tourName: this.editformGroup_info.value.tourName,
+
+            startingPoint: this.editformGroup_info.value.startingPoint,
+            endPoint: this.editformGroup_info.value.endingPoint,
+
+            supportNumber: this.editformGroup_info.value.supportNumber,
+            planStatus: this.editformGroup_info.value.planStatus,
+            startDate: this.editformGroup_info.value.startDate,
+            endDate: this.editformGroup_info.value.endDate,
+
+            totalTicket: this.editformGroup_info.value.totalTicket,
+            remainTicket: this.editformGroup_info.value.remainTicket,
+            description: this.editformGroup_info.value.description,
+
+            movingScheduleString:
+              this.editformGroup_info.value.movingScheduleString,
+            EatingScheduleString:
+              this.editformGroup_info.value.eatingScheduleString,
+            stayingScheduleString:
+              this.editformGroup_info.value.stayingScheduleString,
+          },
+        })
+      );
+    }
+
+    console.log(this.editformGroup_info.value);
+  }
+
+  formReset_create_info(): void {
+    this.isSubmitting = true;
     this.editformGroup_info.setValue({
-      title: this.tourishPlan.title,
-      pageNumber: this.tourishPlan.pageNumber,
+      tourName: this.tourishPlan.tourName,
+
+      startingPoint: this.tourishPlan.startingPoint,
+      endingPoint: this.tourishPlan.endPoint,
+
+      supportNumber: this.tourishPlan.supportNumber,
+      planStatus: this.tourishPlan.planStatus,
+      startDate: this.tourishPlan.startDate,
+      endDate: this.tourishPlan.endDate,
+
+      totalTicket: this.tourishPlan.totalTicket,
+      remainTicket: this.tourishPlan.remainTicket,
       description: this.tourishPlan.description,
-      PublisherId: this.tourishPlan.publisherId,
 
-      tourishPlanSize: this.tourishPlan.tourishPlanSize,
-      tourishPlanWeight: this.tourishPlan.tourishPlanWeight,
-      coverMaterial: this.tourishPlan.coverMaterial,
-      publishYear: this.tourishPlan.publishYear,
+      movingScheduleString: JSON.stringify(this.tourishPlan.movingSchedules),
+      EatingScheduleString: JSON.stringify(this.tourishPlan.eatSchedules),
+      stayingScheduleString: JSON.stringify(this.tourishPlan.stayingSchedules),
     });
   }
-
-  formSubmitStatusReset(): void {
-    this.editformGroup_info.setValue({
-      soldNumberInMonth: this.tourishPlan.tourishPlanStatus.soldNumberInMonth,
-      totalSoldNumber: this.tourishPlan.tourishPlanStatus.totalSoldNumber,
-      remainNumber: this.tourishPlan.tourishPlanStatus.remainNumber,
-      currentPrice: this.tourishPlan.tourishPlanStatus.currentPrice,
-    });
-  }
-
-  formSubmit_edit_info(): void {
-    const payload: TourishPlanInfoParam = {
-      id: this.tourishPlanId,
-      title: this.editformGroup_info.value.title,
-      description: this.editformGroup_info.value.description,
-      pageNumber: this.editformGroup_info.value.pageNumber,
-      publisherId: this.publisherSubmitString,
-
-      tourishPlanSize: this.editformGroup_info.value.tourishPlanSize,
-      tourishPlanWeight: this.editformGroup_info.value.tourishPlanWeight,
-      coverMaterial: this.editformGroup_info.value.coverMaterial,
-      publishYear: this.editformGroup_info.value.publishYear,
-    };
-
-    this.store.dispatch(
-      TourishPlanActions.editTourishPlan({
-        payload: payload,
-      })
-    );
-  }
-
-  formSubmit_edit_status(): void {
-    const payload: TourishPlanStatusParam = {
-      id: this.tourishPlanId,
-      tourishPlanStatus: {
-        soldNumberInMonth: this.editformGroup_status.value.soldNumberInMonth,
-        totalSoldNumber: this.editformGroup_status.value.totalSoldNumber,
-        remainNumber: this.editformGroup_status.value.remainNumber,
-        currentPrice: this.editformGroup_status.value.currentPrice,
-      },
-    };
-
-    this.store.dispatch(
-      TourishPlanActions.editTourishPlan({
-        payload: payload,
-      })
-    );
-  }
-
-  changeCoverMaterial(event: any) {
-    this.editformGroup_info.controls["coverMaterial"].setValue(event.value);
-
-    console.log(this.editformGroup_info.value.coverMaterial);
-  }
-
-  formSubmit_edit_voucher(): void {
-    const payload: VoucherPayload = {
-      id: this.tourishPlanId,
-      voucherRelationString: this.voucherSubmitString,
-    };
-
-    this.store.dispatch(
-      TourishPlanActions.editTourishPlan({
-        payload: payload,
-      })
-    );
-  }
-
-  formSubmit_edit_author(): void {
-    const payload: AuthorPayload = {
-      id: this.tourishPlanId,
-      authorRelationString: this.authorSubmitString,
-    };
-
-    this.store.dispatch(
-      TourishPlanActions.editTourishPlan({
-        payload: payload,
-      })
-    );
-  }
-
-  formSubmit_edit_category(): void {
-    const payload: CategoryPayload = {
-      id: this.tourishPlanId,
-      categoryRelationString: this.categorySubmitString,
-    };
-
-    this.store.dispatch(
-      TourishPlanActions.editTourishPlan({
-        payload: payload,
-      })
-    );
-  }
-
-  formSubmitCategoryReset(): void {
-    this.category_list = this.tourishPlan.tourishPlanCategories ?? [];
-  }
-
-  formSubmitVoucherReset(): void {
-    this.voucher_list = this.tourishPlan.tourishPlanVouchers ?? [];
-  }
-
-  formSubmitAuthorReset(): void {
-    this.author_list = this.tourishPlan.tourishPlanAuthors ?? [];
-  }
-
-  selectChange_author = (event: any) => {
-    console.log(event.data);
-    this.author_submit = [...event.data];
-    //console.log(this.author_submit);
-    this.authorSubmitString = this.author_submit.join(";");
-
-    console.log(this.authorSubmitString);
-  };
-
-  selectChange_publisher = (event: any) => {
-    console.log(event.data);
-    this.publisher_submit = [...event.data];
-    //console.log(this.author_submit);
-    this.publisherSubmitString = this.publisher_submit[0];
-  };
-
-  selectChange_category = (event: any) => {
-    console.log(event.data);
-    this.category_submit = [...event.data];
-    //console.log(this.author_submit);
-    this.categorySubmitString = this.category_submit.join(";");
-  };
-
-  selectChange_voucher = (event: any) => {
-    console.log(event.data);
-    this.voucher_submit = [...event.data];
-    //console.log(this.author_submit);
-    this.voucherSubmitString = this.voucher_submit.join(";");
-  };
 
   openDialog() {
     const ref = this.dialog.open(ConfirmDialogComponent, {
@@ -472,4 +308,25 @@ export class TourishPlanDetailAdminComponent implements OnInit, OnDestroy {
       this.openDialog()
     );
   }
+
+  selectChangeStaying = (event: any) => {
+    console.log(event.data);
+    this.editformGroup_info.controls["stayingScheduleString"].setValue(
+      JSON.stringify(event.data)
+    );
+  };
+
+  selectChangeEating = (event: any) => {
+    console.log(event.data);
+    this.editformGroup_info.controls["eatingScheduleString"].setValue(
+      JSON.stringify(event.data)
+    );
+  };
+
+  selectChangeMoving = (event: any) => {
+    console.log(event.data);
+    this.editformGroup_info.controls["movingScheduleString"].setValue(
+      JSON.stringify(event.data)
+    );
+  };
 }

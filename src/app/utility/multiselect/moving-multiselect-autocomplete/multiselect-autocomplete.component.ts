@@ -48,7 +48,7 @@ export class MovingMultiselectAutocompleteComponent implements OnInit {
 
   @Output() result = new EventEmitter<{ data: Array<MovingSchedule> }>();
 
-  @Input() data_selected: Array<PassengerCar> = [];
+  @Input() data_selected: Array<MovingSchedule> = [];
   @Input() key: string = "";
 
   movingScheduleList: MovingSchedule[] = [];
@@ -111,23 +111,43 @@ export class MovingMultiselectAutocompleteComponent implements OnInit {
 
   ngOnInit(): void {
     this.movingFormGroup = this.fb.group({
-      driverName: ["", Validators.compose([Validators.required])],
+      // driverName: ["", Validators.compose([Validators.required])],
 
-      vehiclePlate: ["", Validators.compose([Validators.required])],
-      phoneNumber: ["", Validators.compose([Validators.required])],
-      singlePrice: [0, Validators.compose([Validators.required])],
+      // vehiclePlate: ["", Validators.compose([Validators.required])],
+      // phoneNumber: ["", Validators.compose([Validators.required])],
+      // singlePrice: [0, Validators.compose([Validators.required])],
+
+      // vehicleType: 1,
+      // transportId: ["", Validators.compose([Validators.required])],
+
+      // startingPlace: ["", Validators.compose([Validators.required])],
+      // headingPlace: ["", Validators.compose([Validators.required])],
+
+      // startDate: ["", Validators.compose([Validators.required])],
+      // endDate: ["", Validators.compose([Validators.required])],
+
+      // description: [
+      //   "",
+      //   Validators.compose([Validators.required, Validators.minLength(3)]),
+      // ],
+
+      driverName: ["Doãn Chí Bình", Validators.compose([Validators.required])],
+
+      vehiclePlate: ["9874-Y502", Validators.compose([Validators.required])],
+      phoneNumber: ["035423567", Validators.compose([Validators.required])],
+      singlePrice: [80000, Validators.compose([Validators.required])],
 
       vehicleType: 1,
       transportId: ["", Validators.compose([Validators.required])],
 
-      startingPlace: ["", Validators.compose([Validators.required])],
-      headingPlace: ["", Validators.compose([Validators.required])],
+      startingPlace: ["Hà Nội", Validators.compose([Validators.required])],
+      headingPlace: ["Đà Nẵng", Validators.compose([Validators.required])],
 
       startDate: ["", Validators.compose([Validators.required])],
       endDate: ["", Validators.compose([Validators.required])],
 
       description: [
-        "",
+        "Không có",
         Validators.compose([Validators.required, Validators.minLength(3)]),
       ],
     });
@@ -238,9 +258,7 @@ export class MovingMultiselectAutocompleteComponent implements OnInit {
 
     this.movingIdList = [];
     this.movingNameList = [];
-    this.movingFormGroup.controls["branchName"].setValue(
-      ""
-    );
+    this.movingFormGroup.controls["branchName"].setValue("");
 
     this.newSearch = true;
 
@@ -276,11 +294,13 @@ export class MovingMultiselectAutocompleteComponent implements OnInit {
       this.movingNameList.splice(index, 1);
       this.movingIdList.splice(index, 1);
     }
+
     this.emitAdjustedData();
   }
 
   emitAdjustedData = (): void => {
-    this.result.emit({ data: this.movingScheduleList });
+    var returnList = this.data_selected.concat(this.movingScheduleList);
+    this.result.emit({ data: returnList });
   };
 
   selected(event: MatAutocompleteSelectedEvent): void {
@@ -291,12 +311,6 @@ export class MovingMultiselectAutocompleteComponent implements OnInit {
       event.option.value.id
     );
 
-    this.movingFormGroup.controls["driverName"].setValue(
-      event.option.value.branchName
-    );
-    this.movingFormGroup.controls["vehiclePlate"].setValue(
-      event.option.value.headQuarterAddress
-    );
     this.movingFormGroup.controls["phoneNumber"].setValue(
       event.option.value.hotlineNumber
     );
@@ -342,6 +356,8 @@ export class MovingMultiselectAutocompleteComponent implements OnInit {
     var index = this.movingScheduleList.findIndex((entity) => entity.id === id);
     if (index > -1) this.movingScheduleList.splice(index, 1);
 
+    var existIndex = this.data_selected.findIndex((entity) => entity.id === id);
+    if (existIndex > -1) this.data_selected.splice(existIndex, 1);
     this.emitAdjustedData();
   }
 

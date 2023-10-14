@@ -1,362 +1,307 @@
-<div class="container">
-  <div class="outlet">
-    <h2 mat-form-label style="font-weight: heavy">Tạo sách</h2>
-    <div class="row edit-form">
-      <h3 mat-form-label style="font-weight: bold">Thông tin cơ bản</h3>
-    </div>
-    <div [formGroup]="editformGroup_info">
+<div class="container" style="padding: 20px 0 20px">
+  <div
+    class="outlet"
+    style="
+      display: flex;
+      justify-content: center;
+      width: 100%;
+      flex-direction: column !important;
+      background-color: white;
+    "
+  >
+    <div
+      class="row"
+      style="
+        display: flex;
+        flex-direction: column !important;
+        flex-wrap: 1;
+        padding-left: 90px !important;
+      "
+    >
       <div class="row">
-        <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6 edit-form">
-          <ng-template
-            #inputFormTourishPlan1
-            let-label="label"
-            let-id="id"
-            let-form_control_name="form_control_name"
-            let-type="type"
-            let-form_group="form_group"
-          >
-            <div class="input-group">
-              <h3 mat-form-label style="font-weight: bold">{{ label }}</h3>
-              <mat-form-field class="full-width-input">
-                <input
-                  matInput
-                  type="{{ type }}"
-                  id="{{ id }}"
-                  placeholder="Vui lòng nhập nội dung"
-                  formControlName="{{ form_control_name }}"
-                  style="width: 100%"
-                />
-              </mat-form-field>
-              <mat-error
-                *ngIf="
-                  isSubmitting &&
-                  editformGroup_info.get(form_control_name)!.errors &&
-                  editformGroup_info.get(form_control_name)!.errors!['required']
-                "
-              >
-                Vui lòng nhập nội dung
-              </mat-error>
-            </div>
-          </ng-template>
-
-          <ng-container
-            [ngTemplateOutlet]="inputFormTourishPlan1"
-            [ngTemplateOutletContext]="{
-              label: 'Title',
-              id: 'title',
-              form_control_name: 'title',
-              type: 'text',
-              form_group: 'editformGroup_info'
-            }"
-          >
-          </ng-container>
-          <ng-container
-            [ngTemplateOutlet]="inputFormTourishPlan1"
-            [ngTemplateOutletContext]="{
-              label: 'Page number',
-              id: 'page_number',
-              form_control_name: 'pageNumber',
-              type: 'text',
-              form_group: 'editformGroup_info'
-            }"
-          >
-          </ng-container>
-
-          <ng-container
-            [ngTemplateOutlet]="inputFormTourishPlan1"
-            [ngTemplateOutletContext]="{
-              label: 'TourishPlan size',
-              id: 'tourishPlan_size',
-              form_control_name: 'tourishPlanSize',
-              type: 'text',
-              form_group: 'editformGroup_info'
-            }"
-          >
-          </ng-container>
-
-          <ng-container
-            [ngTemplateOutlet]="inputFormTourishPlan1"
-            [ngTemplateOutletContext]="{
-              label: 'TourishPlan weight',
-              id: 'tourishPlan_weight',
-              form_control_name: 'tourishPlanWeight',
-              type: 'text',
-              form_group: 'editformGroup_info'
-            }"
-          >
-          </ng-container>
-        </div>
-
-        <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6 edit-form">
-          <ng-container
-            [ngTemplateOutlet]="inputFormTourishPlan1"
-            [ngTemplateOutletContext]="{
-              label: 'Publish year',
-              id: 'publish_year',
-              form_control_name: 'publishYear',
-              type: 'text',
-              form_group: 'editformGroup_info'
-            }"
-          >
-          </ng-container>
-
-          <h3 mat-form-label style="font-weight: bold">Nhà xuất bản</h3>
-         
-        </div>
-
-        <div class="input-group">
-          <mat-label>Cover material</mat-label>
-          <mat-radio-group
-            aria-label="Cover material"
-            (change)="changeCoverMaterial($event)"
-          >
-            <mat-radio-button value="0" [checked]="editformGroup_info.value.coverMaterial === 0">Hard</mat-radio-button>
-            <mat-radio-button value="1" [checked]="editformGroup_info.value.coverMaterial === 1">Soft</mat-radio-button>
-          </mat-radio-group>
-        </div>
+        <h2 mat-form-label style="font-weight: heavy">Thêm thông tin Tour</h2>
       </div>
 
-      <div class="row">
-        <div class="input-group">
+      <form [formGroup]="editformGroup_info">
+        <div class="row">
+          <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 create-form">
+            <div class="row" style="margin-bottom: 1rem">
+              <mat-form-field appearance="outline" class="full-width-input">
+                <mat-label>Tên tour</mat-label>
+                <input
+                  matInput
+                  fullwidth
+                  placeholder="Vd: Bồ Công Anh"
+                  formControlName="tourName"
+                />
+              </mat-form-field>
+
+              <app-validation
+                *ngIf="submited"
+                [formGroup]="editformGroup_info"
+                [formGroupControlName]="'tourName'"
+              ></app-validation>
+            </div>
+
+            <div class="row" style="margin-bottom: 1rem">
+              <mat-form-field appearance="outline" class="full-width-input">
+                <mat-label>Điểm xuất phát</mat-label>
+                <input
+                  matInput
+                  placeholder="Vd: Hà Nội"
+                  formControlName="startingPoint"
+                />
+              </mat-form-field>
+              <app-validation
+                *ngIf="submited"
+                [formGroup]="editformGroup_info"
+                [formGroupControlName]="'startingPoint'"
+              ></app-validation>
+            </div>
+
+            <div class="row" style="margin-bottom: 1rem">
+              <mat-form-field appearance="outline" class="full-width-input">
+                <mat-label>Điểm kết thúc</mat-label>
+                <input
+                  matInput
+                  placeholder="Đà Nẵng"
+                  formControlName="endingPoint"
+                />
+              </mat-form-field>
+              <app-validation
+                *ngIf="submited"
+                [formGroup]="editformGroup_info"
+                [formGroupControlName]="'endingPoint'"
+              ></app-validation>
+            </div>
+          </div>
+
+          <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 create-form">
+            <div class="row" style="margin-bottom: 1rem">
+              <mat-form-field appearance="outline" class="full-width-input">
+                <mat-label>Số điện thoại hỗ trợ</mat-label>
+                <input
+                  matInput
+                  placeholder="VD: 0354324599"
+                  formControlName="supportNumber"
+                />
+              </mat-form-field>
+              <app-validation
+                *ngIf="submited"
+                [formGroup]="editformGroup_info"
+                [formGroupControlName]="'supportNumber'"
+              ></app-validation>
+            </div>
+
+            <div class="row" style="margin-bottom: 1rem">
+              <mat-form-field appearance="outline" class="full-width-input">
+                <mat-label>Tổng số vé</mat-label>
+                <input
+                  matInput
+                  placeholder="Vd: 10"
+                  formControlName="totalTicket"
+                />
+              </mat-form-field>
+              <app-validation
+                *ngIf="submited"
+                [formGroup]="editformGroup_info"
+                [formGroupControlName]="'totalTicket'"
+              ></app-validation>
+            </div>
+
+            <div class="row" style="margin-bottom: 1rem">
+              <mat-form-field appearance="outline" class="full-width-input">
+                <mat-label>Số vé còn lại</mat-label>
+                <input
+                  matInput
+                  placeholder="Vd: 2"
+                  formControlName="remainTicket"
+                />
+              </mat-form-field>
+              <app-validation
+                *ngIf="submited"
+                [formGroup]="editformGroup_info"
+                [formGroupControlName]="'remainTicket'"
+              ></app-validation>
+            </div>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 create-form">
+            <div class="row" style="margin-bottom: 1rem">
+              <mat-form-field appearance="outline" class="full-width-input">
+                <mat-label>Ngày bắt đầu</mat-label>
+                <input
+                  matInput
+                  [ngxMatDatetimePicker]="picker1"
+                  placeholder="Choose a date"
+                  formControlName="startDate"
+                />
+                <mat-datepicker-toggle
+                  matSuffix
+                  [for]="$any(picker1)"
+                ></mat-datepicker-toggle>
+                <ngx-mat-datetime-picker #picker1> </ngx-mat-datetime-picker>
+              </mat-form-field>
+            </div>
+          </div>
+
+          <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 create-form">
+            <div class="row" style="margin-bottom: 1rem">
+              <mat-form-field appearance="outline" class="full-width-input">
+                <mat-label>Ngày kết thúc</mat-label>
+                <input
+                  matInput
+                  [ngxMatDatetimePicker]="picker2"
+                  placeholder="Choose a date"
+                  formControlName="endDate"
+                />
+                <mat-datepicker-toggle
+                  matSuffix
+                  [for]="$any(picker2)"
+                ></mat-datepicker-toggle>
+                <ngx-mat-datetime-picker #picker2> </ngx-mat-datetime-picker>
+              </mat-form-field>
+            </div>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 create-form">
+            <div class="row" style="margin-bottom: 1rem">
+              <mat-form-field appearance="outline" class="full-width-input">
+                <mat-label>Trạng thái tour</mat-label>
+                <select matNativeControl required>
+                  <option value="0">Chờ</option>
+                  <option value="1">Thông tin đã xác định</option>
+                  <option value="2">Đã thanh toán toàn bộ</option>
+                  <option value="3">Đang diễn ra</option>
+                  <option value="4">Hoàn thành</option>
+                  <option value="5">Hủy bỏ</option>
+                </select>
+              </mat-form-field>
+            </div>
+          </div>
+        </div>
+
+        <div
+          class="row"
+          style="display: flex; flex-direction: column !important; flex-wrap: 1"
+        >
           <mat-form-field style="width: 90%">
             <textarea
               matInput
               class="form-control"
               id="description"
-              placeholder="Nội dung"
+              placeholder="Thông tin đính kèm"
               formControlName="description"
               rows="10"
             ></textarea>
+            <app-validation
+              *ngIf="submited"
+              [formGroup]="editformGroup_info"
+              [formGroupControlName]="'description'"
+            ></app-validation>
           </mat-form-field>
-          <mat-error
-            *ngIf="
-              isSubmitting &&
-              editformGroup_info.get('description')!.errors &&
-              editformGroup_info.get('description')!.errors!['required']
-            "
-            >Vui lòng nhập nội dung
-          </mat-error>
         </div>
-      </div>
 
-      <div class="row" style="margin-bottom: 20px">
-        <div class="col-xs-3 col-sm-3 col-md-4 col-lg-1">
-          <button
-            mat-raised-button
-            color="primary"
-            (click)="formSubmit_edit_info()"
-          >
-            Lưu
-          </button>
-        </div>
-        <div class="col-xs-3 col-sm-3 col-md-4 col-lg-2">
-          <button
-            mat-raised-button
-            color="warn"
-            type="button"
-            (click)="formSubmitInfoReset()"
-          >
-            Khôi phục
-          </button>
-        </div>
-      </div>
-    </div>
+        <div
+          class="row"
+          style="
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border-bottom: 3px solid #696868;
+            margin-top: 30px;
+            margin-bottom: 30px;
+            width: 93%;
+          "
+        ></div>
 
-    <div class="row">
-      <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6 edit-form">
-        <div [formGroup]="editformGroup_status">
-          <ng-template
-            #inputFormTourishPlan2
-            let-label="label"
-            let-id="id"
-            let-form_control_name="form_control_name"
-            let-type="type"
-          >
-            <div class="input-group">
-              <mat-form-field class="full-width-input">
-                <h3 mat-form-label style="font-weight: bold">{{ label }}</h3>
-                <input
-                  matInput
-                  type="{{ type }}"
-                  id="{{ id }}"
-                  placeholder="Vui lòng nhập nội dung"
-                  formControlName="{{ form_control_name }}"
-                  style="width: 100%"
-                />
-              </mat-form-field>
-              <mat-error
-                *ngIf="
-                  isSubmitting &&
-                  editformGroup_status.get(form_control_name)!.errors &&
-                  editformGroup_status.get(form_control_name)!.errors![
-                    'required'
-                  ]
-                "
-              >
-                Vui lòng nhập nội dung
-              </mat-error>
-            </div>
-          </ng-template>
+        <staying-multiselect-autocomplete
+          [data_selected]="tourishPlan.stayingSchedules ?? []"
+          (result)="selectChangeStaying($event)"
+        >
+        </staying-multiselect-autocomplete>
 
-          <h3 mat-form-label style="font-weight: bold">
-            Thông tin giá và số lượng
-          </h3>
-          <ng-container
-            [ngTemplateOutlet]="inputFormTourishPlan2"
-            [ngTemplateOutletContext]="{
-              label: 'Current price',
-              id: 'currentPrice',
-              form_control_name: 'currentPrice',
-              type: 'number'
-            }"
-          >
-          </ng-container>
-          <ng-container
-            [ngTemplateOutlet]="inputFormTourishPlan2"
-            [ngTemplateOutletContext]="{
-              label: 'Total sold number',
-              id: 'totalSoldNumber',
-              form_control_name: 'totalSoldNumber',
-              type: 'number'
-            }"
-          >
-          </ng-container>
-          <ng-container
-            [ngTemplateOutlet]="inputFormTourishPlan2"
-            [ngTemplateOutletContext]="{
-              label: 'Sold number in month',
-              id: 'soldNumberInMonth',
-              form_control_name: 'soldNumberInMonth',
-              type: 'number'
-            }"
-          >
-          </ng-container>
-          <ng-container
-            [ngTemplateOutlet]="inputFormTourishPlan2"
-            [ngTemplateOutletContext]="{
-              label: 'Remain number',
-              id: 'remainNumber',
-              form_control_name: 'remainNumber',
-              type: 'number'
-            }"
-          >
-          </ng-container>
+        <div
+          class="row"
+          style="
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border-bottom: 3px solid #696868;
+            margin-top: 30px;
+            margin-bottom: 30px;
+            width: 93%;
+          "
+        ></div>
 
-          <div class="row">
-            <div class="col-xs-4 col-sm-4 col-md-4 col-lg-2">
-              <button
-                mat-raised-button
-                color="primary"
-                (click)="formSubmit_edit_status()"
-              >
-                Lưu
-              </button>
-            </div>
-            <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
-              <button
-                mat-raised-button
-                color="warn"
-                type="button"
-                (click)="formSubmitStatusReset()"
-              >
-                Khôi phục
-              </button>
-            </div>
-          </div>
-        </div>
-      </div>
+        <moving-multiselect-autocomplete
+          [data_selected]="tourishPlan.movingSchedules ?? []"
+          (result)="selectChangeMoving($event)"
+        >
+        </moving-multiselect-autocomplete>
 
-      <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6" style="margin-top: 10px">
-        <h3 mat-form-label style="font-weight: bold">Tác giả</h3>
-      
-  
-        <div class="row" style="margin-bottom: 20px">
-          <div class="col-xs-6 col-sm-4 col-md-4 col-lg-2">
+        <div
+          class="row"
+          style="
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border-bottom: 3px solid #696868;
+            margin-top: 30px;
+            margin-bottom: 30px;
+            width: 93%;
+          "
+        ></div>
+
+        <eating-multiselect-autocomplete
+          [data_selected]="tourishPlan.eatSchedules ?? []"
+          (result)="selectChangeEating($event)"
+        >
+        </eating-multiselect-autocomplete>
+
+        <div
+          class="row"
+          style="
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border-bottom: 3px solid #696868;
+            margin-top: 30px;
+            margin-bottom: 30px;
+            width: 93%;
+          "
+        ></div>
+
+        <div
+          class="row"
+          style="display: flex; flex-direction: row !important; flex-wrap: 1"
+        >
+          <div style="margin-right: 20px">
             <button
               mat-raised-button
               color="primary"
-              (click)="formSubmit_edit_author()"
+              (click)="formSubmit_create_info()"
             >
               Lưu
             </button>
           </div>
-          <div class="col-xs-6 col-sm-4 col-md-4 col-lg-4">
+
+          <div>
             <button
               mat-raised-button
               color="warn"
               type="button"
-              (click)="formSubmitAuthorReset()"
+              (click)="formReset_create_info()"
             >
               Khôi phục
             </button>
           </div>
         </div>
-
-        <h3 mat-form-label style="font-weight: bold">Thể loại</h3>
-       
-        <div class="row" style="margin-bottom: 20px">
-          <div class="col-xs-6 col-sm-4 col-md-4 col-lg-2">
-            <button
-              mat-raised-button
-              color="primary"
-              (click)="formSubmit_edit_category()"
-            >
-              Lưu
-            </button>
-          </div>
-          <div class="col-xs-6 col-sm-4 col-md-4 col-lg-4">
-            <button
-              mat-raised-button
-              color="warn"
-              type="button"
-              (click)="formSubmitCategoryReset()"
-            >
-              Khôi phục
-            </button>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <div class="row">
-      <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
-        <h3 mat-form-label style="font-weight: bold">Image</h3>
-        <file-upload
-          [productId]="tourishPlanId"
-          [productType]="1"
-          (onUploadFinished)="uploadFinished($event)"
-        ></file-upload>
-      </div>
-      <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
-        <h3 mat-form-label style="font-weight: bold">Voucher</h3>
-      
- 
-        <mat-error *ngIf="isSubmitting && voucherSubmitString === ''"
-          >Vui lòng nhập nội dung
-        </mat-error>
-
-        <div class="row" style="margin-bottom: 20px">
-          <div class="col-xs-6 col-sm-4 col-md-4 col-lg-2">
-            <button
-              mat-raised-button
-              color="primary"
-              (click)="formSubmit_edit_voucher()"
-            >
-              Lưu
-            </button>
-          </div>
-          <div class="col-xs-6 col-sm-4 col-md-4 col-lg-4">
-            <button
-              mat-raised-button
-              color="warn"
-              type="button"
-              (click)="formSubmitVoucherReset()"
-            >
-              Khôi phục
-            </button>
-          </div>
-        </div>
-      </div>
+      </form>
     </div>
   </div>
 </div>

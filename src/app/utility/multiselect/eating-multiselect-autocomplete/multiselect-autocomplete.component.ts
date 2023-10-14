@@ -48,7 +48,7 @@ export class EatingMultiselectAutocompleteComponent implements OnInit {
 
   @Output() result = new EventEmitter<{ data: Array<EatSchedule> }>();
 
-  @Input() data_selected: Array<Restaurant> = [];
+  @Input() data_selected: Array<EatSchedule> = [];
   @Input() key: string = "";
 
   eatingScheduleList: EatSchedule[] = [];
@@ -99,9 +99,7 @@ export class EatingMultiselectAutocompleteComponent implements OnInit {
     private messageService: MessageService,
     private fb: FormBuilder
   ) {
-    this.filteredEatings = this.eatingCtrl.valueChanges.pipe(
-      debounceTime(400)
-    );
+    this.filteredEatings = this.eatingCtrl.valueChanges.pipe(debounceTime(400));
 
     this.eatingListState = this.store
       .select(getEatingList)
@@ -119,7 +117,7 @@ export class EatingMultiselectAutocompleteComponent implements OnInit {
       supportNumber: ["", Validators.compose([Validators.required])],
       singlePrice: [0, Validators.compose([Validators.required])],
 
-      restHouseType: 1,
+      restaurantType: 1,
       restaurantId: ["", Validators.compose([Validators.required])],
 
       startDate: ["", Validators.compose([Validators.required])],
@@ -274,8 +272,10 @@ export class EatingMultiselectAutocompleteComponent implements OnInit {
     this.eatingIdList.push(event.option.value.id);
     this.eatingNameList.push(event.option.value.placeBranch);
 
-    this.eatingFormGroup.controls["restaurantId"].setValue(event.option.value.id);
-    
+    this.eatingFormGroup.controls["restaurantId"].setValue(
+      event.option.value.id
+    );
+
     this.eatingFormGroup.controls["placeName"].setValue(
       event.option.value.placeBranch
     );
@@ -308,11 +308,9 @@ export class EatingMultiselectAutocompleteComponent implements OnInit {
 
       this.eatingScheduleList = [schedule, ...this.eatingScheduleList];
 
-      this.eatingScheduleList.sort(
-        (a: EatSchedule, b: EatSchedule) => {
-          return moment(a.startDate).valueOf() - moment(b.startDate).valueOf();
-        }
-      );
+      this.eatingScheduleList.sort((a: EatSchedule, b: EatSchedule) => {
+        return moment(a.startDate).valueOf() - moment(b.startDate).valueOf();
+      });
 
       this.emitAdjustedData();
       this.formReset();
@@ -320,10 +318,11 @@ export class EatingMultiselectAutocompleteComponent implements OnInit {
   }
 
   removeSchedule(id: string): void {
-    var index = this.eatingScheduleList.findIndex(
-      (entity) => entity.id === id
-    );
+    var index = this.eatingScheduleList.findIndex((entity) => entity.id === id);
     if (index > -1) this.eatingScheduleList.splice(index, 1);
+
+    var existIndex = this.data_selected.findIndex((entity) => entity.id === id);
+    if (existIndex > -1) this.data_selected.splice(existIndex, 1);
 
     this.emitAdjustedData();
   }
@@ -335,7 +334,7 @@ export class EatingMultiselectAutocompleteComponent implements OnInit {
       address: "",
       supportNumber: "",
       restaurantId: "",
-      restHouseType: 1,
+      restaurantType: 1,
       singlePrice: 0,
       startDate: "",
       endDate: "",
@@ -368,7 +367,7 @@ export class EatingMultiselectAutocompleteComponent implements OnInit {
 
   isChecked(eating: Restaurant): boolean {
     let eatingExist = this.eatingScheduleList.find(
-      eatingSchedule => eatingSchedule.restaurantId === eating.id
+      (eatingSchedule) => eatingSchedule.restaurantId === eating.id
     );
     if (eatingExist) return true;
     return false;

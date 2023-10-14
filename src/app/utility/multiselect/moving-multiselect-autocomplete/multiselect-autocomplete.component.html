@@ -13,11 +13,7 @@
       <div class="row">
         <mat-form-field appearance="outline" class="full-width-input">
           <mat-label>Loại phương tiện</mat-label>
-          <select
-            matNativeControl
-            required
-            (change)="changeType($event)"
-          >
+          <select matNativeControl required (change)="changeType($event)">
             <option value="0">Xe khách</option>
             <option value="1">Máy bay</option>
           </select>
@@ -89,11 +85,28 @@
 
         <div class="row">
           <mat-form-field appearance="outline" class="full-width-input">
-            <mat-label>Địa chỉ nơi ở</mat-label>
+            <mat-label>Tên lái xe</mat-label>
             <input
               matInput
               fullwidth
               placeholder="Vd: Bồ Công Anh"
+              formControlName="driverName"
+            />
+          </mat-form-field>
+          <app-validation
+            *ngIf="isSubmit"
+            [formGroup]="movingFormGroup"
+            [formGroupControlName]="'driverName'"
+          ></app-validation>
+        </div>
+
+        <div class="row">
+          <mat-form-field appearance="outline" class="full-width-input">
+            <mat-label>Biển số xe</mat-label>
+            <input
+              matInput
+              fullwidth
+              placeholder="Vd: (98Y50452)"
               formControlName="vehiclePlate"
             />
           </mat-form-field>
@@ -110,7 +123,7 @@
             <input
               matInput
               fullwidth
-              placeholder="Vd: Bồ Công Anh"
+              placeholder="Vd: 012312342"
               formControlName="phoneNumber"
             />
           </mat-form-field>
@@ -292,7 +305,10 @@
         </h2>
       </div>
 
-      <div class="row" *ngIf="movingScheduleList.length < 1">
+      <div
+        class="row"
+        *ngIf="movingScheduleList.length < 1 && data_selected.length < 1"
+      >
         <mat-chip color="warn" style="font-size: 16px"
           >Chưa có danh sách</mat-chip
         >
@@ -358,6 +374,87 @@
           </button>
         </div>
       </ng-template>
+
+      <ng-template
+        #existMovingSchedule
+        let-index="index"
+        let-id="id"
+        let-driverName="driverName"
+        let-vehiclePlate="vehiclePlate"
+        let-phoneNumber="phoneNumber"
+        let-singlePrice="singlePrice"
+        let-startDate="startDate"
+        let-endDate="endDate"
+        let-description="description"
+      >
+        <div
+          style="
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            margin-bottom: 10px;
+          "
+        >
+          <mat-expansion-panel
+            [expanded]="false"
+            style="width: 65%; margin-right: 10px"
+          >
+            <mat-expansion-panel-header>
+              <mat-panel-title style="color: green;">
+                Lịch trình {{ index + 1 }} <i class="fa fa-check" style="margin-left: 5px;" aria-hidden="true"></i
+              ></mat-panel-title>
+            </mat-expansion-panel-header>
+            <p>
+              <span style="font-weight: bold">Tên lái xe: </span>
+              {{ driverName }}
+            </p>
+            <p>
+              <span style="font-weight: bold">Biển số xe:</span>
+              {{ vehiclePlate }}
+            </p>
+            <p>
+              <span style="font-weight: bold">SĐT hỗ trợ:</span>
+              {{ phoneNumber }}
+            </p>
+            <p>
+              <span style="font-weight: bold">Giá đơn:</span>
+              {{ singlePrice }}
+            </p>
+            <p>
+              <span style="font-weight: bold">Ngày bắt đầu:</span>
+              {{ startDate }}
+            </p>
+            <p>
+              <span style="font-weight: bold">Ngày kết thúc:</span>
+              {{ endDate }}
+            </p>
+          </mat-expansion-panel>
+          <button
+            mat-raised-button
+            color="primary"
+            (click)="removeSchedule(id)"
+          >
+            Gỡ
+          </button>
+        </div>
+      </ng-template>
+
+      <ng-container
+        *ngFor="let schedule of data_selected; index as i"
+        [ngTemplateOutlet]="existMovingSchedule"
+        [ngTemplateOutletContext]="{
+          index: i,
+          id: schedule.id,
+          driverName: schedule.driverName,
+          vehiclePlate: schedule.vehiclePlate,
+          singlePrice: schedule.singlePrice,
+          phoneNumber: schedule.phoneNumber,
+          startDate: schedule.startDate,
+          endDate: schedule.endDate,
+          description: schedule.description
+        }"
+      >
+      </ng-container>
 
       <ng-container
         *ngFor="let schedule of movingScheduleList; index as i"

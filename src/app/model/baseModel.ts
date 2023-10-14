@@ -150,18 +150,18 @@ export interface TourishPlan {
   endPoint: string;
 
   supportNumber: string;
-  totalTicket: string;
-  remainTicket: string;
-  PlanStatus: number;
+  totalTicket: number;
+  remainTicket: number;
+  planStatus: number;
   description: string;
 
-  createDate: string;
-  updateDate: string;
+  createDate?: string;
+  updateDate?: string;
 
   startDate: string;
   endDate: string;
 
-  stayingSchedule?: StayingSchedule[];
-  eatSchedule?: EatSchedule[];
-  movingSchedule?: MovingSchedule[];
+  stayingSchedules?: StayingSchedule[];
+  eatSchedules?: EatSchedule[];
+  movingSchedules?: MovingSchedule[];
 }

@@ -48,7 +48,7 @@ export class StayingMultiselectAutocompleteComponent implements OnInit {
 
   @Output() result = new EventEmitter<{ data: Array<StayingSchedule> }>();
 
-  @Input() data_selected: Array<Hotel> = [];
+  @Input() data_selected: Array<StayingSchedule> = [];
   @Input() key: string = "";
 
   stayingScheduleList: StayingSchedule[] = [];
@@ -120,7 +120,7 @@ export class StayingMultiselectAutocompleteComponent implements OnInit {
       supportNumber: ["", Validators.compose([Validators.required])],
       singlePrice: [0, Validators.compose([Validators.required])],
 
-      restHouseType: ["", Validators.compose([Validators.required])],
+      restHouseType: [1 , Validators.compose([Validators.required])],
       restHouseBranchId: ["", Validators.compose([Validators.required])],
 
       startDate: ["", Validators.compose([Validators.required])],
@@ -281,7 +281,8 @@ export class StayingMultiselectAutocompleteComponent implements OnInit {
   }
 
   emitAdjustedData = (): void => {
-    this.result.emit({ data: this.stayingScheduleList });
+    var returnList = this.data_selected.concat(this.stayingScheduleList);
+    this.result.emit({ data: returnList });
   };
 
   selected(event: MatAutocompleteSelectedEvent): void {
@@ -340,7 +341,10 @@ export class StayingMultiselectAutocompleteComponent implements OnInit {
     var index = this.stayingScheduleList.findIndex(
       (entity) => entity.id === id
     );
+
     if (index > -1) this.stayingScheduleList.splice(index, 1);
+    var existIndex = this.data_selected.findIndex((entity) => entity.id === id);
+    if (existIndex > -1) this.data_selected.splice(existIndex, 1);
 
     this.emitAdjustedData();
   }

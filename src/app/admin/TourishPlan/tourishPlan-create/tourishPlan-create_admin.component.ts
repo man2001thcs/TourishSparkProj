@@ -47,14 +47,13 @@ export class TourishPlanCreateAdminComponent
   this_announce = "";
 
   createformGroup!: FormGroup;
-  submited= false;
+  submited = false;
 
   stayingSchedule: any;
 
-  categorySubmitString: string = "";
-  voucherSubmitString: string = "";
-  publisherSubmitString: string = "";
-  authorSubmitString: string = "";
+  movingScheduleString: string = "";
+  eatingScheduleString: string = "";
+  stayingScheduleString: string = "";
 
   errorMessageState!: Observable<any>;
   errorSystemState!: Observable<any>;
@@ -83,24 +82,47 @@ export class TourishPlanCreateAdminComponent
 
   ngOnInit(): void {
     this.createformGroup = this.fb.group({
+      // tourName: [
+      //   "",
+      //   Validators.compose([Validators.required, Validators.minLength(3)]),
+      // ],
+
+      // startingPoint: ["", Validators.compose([Validators.required])],
+      // endingPoint: ["", Validators.compose([Validators.required])],
+      // supportNumber: ["", Validators.compose([Validators.required])],
+      // planStatus: [0, Validators.compose([Validators.required])],
+      // startDate: ["", Validators.compose([Validators.required])],
+      // endDate: ["", Validators.compose([Validators.required])],
+
+      // totalTicket: ["", Validators.compose([Validators.required])],
+      // remainTicket: ["", Validators.compose([Validators.required])],
+      // description: [
+      //   "",
+      //   Validators.compose([Validators.required, Validators.minLength(3)]),
+      // ],
+
       tourName: [
-        "",
+        "Hà Nội - Đà Nẵng 4 ngày 3 đêm",
         Validators.compose([Validators.required, Validators.minLength(3)]),
       ],
 
-      startingPoint: ["", Validators.compose([Validators.required])],
-      endingPoint: ["", Validators.compose([Validators.required])],
-      supportNumber: ["", Validators.compose([Validators.required])],
+      startingPoint: ["Hà Nội", Validators.compose([Validators.required])],
+      endingPoint: ["Đà Nẵng", Validators.compose([Validators.required])],
+      supportNumber: ["043532432", Validators.compose([Validators.required])],
       planStatus: [0, Validators.compose([Validators.required])],
       startDate: ["", Validators.compose([Validators.required])],
       endDate: ["", Validators.compose([Validators.required])],
 
-      totalTicket: ["", Validators.compose([Validators.required])],
-      remainTicket: ["", Validators.compose([Validators.required])],
+      totalTicket: [7, Validators.compose([Validators.required])],
+      remainTicket: [2, Validators.compose([Validators.required])],
       description: [
-        "",
+        "Không có",
         Validators.compose([Validators.required, Validators.minLength(3)]),
       ],
+
+      movingScheduleString: ["", Validators.compose([Validators.required])],
+      eatingScheduleString: ["", Validators.compose([Validators.required])],
+      stayingScheduleString: ["", Validators.compose([Validators.required])],
     });
 
     this.subscriptions.push(
@@ -136,29 +158,35 @@ export class TourishPlanCreateAdminComponent
   }
 
   formSubmit_create_info(): void {
-    this.store.dispatch(
-      TourishPlanActions.createTourishPlan({
-        payload: {
-          tourName: this.createformGroup.value.tourName,
+    this.submited = true;
+    if (this.createformGroup.valid) {
+      this.store.dispatch(
+        TourishPlanActions.createTourishPlan({
+          payload: {
+            tourName: this.createformGroup.value.tourName,
 
-          startingPoint: this.createformGroup.value.startingPoint,
-          endingPoint: this.createformGroup.value.endingPoint,
+            startingPoint: this.createformGroup.value.startingPoint,
+            endPoint: this.createformGroup.value.endingPoint,
 
-          supportNumber: this.createformGroup.value.supportNumber,
-          planStatus: this.createformGroup.value.planStatus,
-          startDate: this.createformGroup.value.startDate,
-          endDate: this.createformGroup.value.endDate,
+            supportNumber: this.createformGroup.value.supportNumber,
+            planStatus: this.createformGroup.value.planStatus,
+            startDate: this.createformGroup.value.startDate,
+            endDate: this.createformGroup.value.endDate,
 
-          totalTicket: this.createformGroup.value.totalTicket,
-          remainTicket: this.createformGroup.value.remainTicket,
-          description: this.createformGroup.value.description,
+            totalTicket: this.createformGroup.value.totalTicket,
+            remainTicket: this.createformGroup.value.remainTicket,
+            description: this.createformGroup.value.description,
 
-          categoryRelationString: this.categorySubmitString,
-          authorRelationString: this.authorSubmitString,
-          voucherRelationString: this.voucherSubmitString,
-        },
-      })
-    );
+            movingScheduleString:
+              this.createformGroup.value.movingScheduleString,
+            EatingScheduleString:
+              this.createformGroup.value.eatingScheduleString,
+            stayingScheduleString:
+              this.createformGroup.value.stayingScheduleString,
+          },
+        })
+      );
+    }
 
     console.log(this.createformGroup.value);
   }
@@ -178,11 +206,11 @@ export class TourishPlanCreateAdminComponent
 
       totalTicket: 0,
       remainTicket: 0,
-      description: '',
+      description: "",
 
-      categoryRelationString: "",
-      authorRelationString: "",
-      voucherRelationString: "",
+      movingScheduleString: "",
+      EatingScheduleString: "",
+      stayingScheduleString: "",
     });
   }
 
@@ -232,8 +260,25 @@ export class TourishPlanCreateAdminComponent
 
   selectChangeStaying = (event: any) => {
     console.log(event.data);
-    this.stayingSchedule = event.data;
-    //console.log(this.author_submit);
-    this.authorSubmitString = JSON.stringify(this.stayingSchedule);
+    this.stayingScheduleString = JSON.stringify(event.data);
+    this.createformGroup.controls["stayingScheduleString"].setValue(
+      this.stayingScheduleString
+    );
+  };
+
+  selectChangeEating = (event: any) => {
+    console.log(event.data);
+    this.eatingScheduleString = JSON.stringify(event.data);
+    this.createformGroup.controls["eatingScheduleString"].setValue(
+      this.eatingScheduleString
+    );
+  };
+
+  selectChangeMoving = (event: any) => {
+    console.log(event.data);
+    this.movingScheduleString = JSON.stringify(event.data);
+    this.createformGroup.controls["movingScheduleString"].setValue(
+      this.movingScheduleString
+    );
   };
 }

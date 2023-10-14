@@ -74,6 +74,7 @@ export class LoginComponent implements OnInit {
           console.log(state);
 
           this.messageService.closeLoadingDialog();
+          
           const response = JSON.parse(
             window.atob(state.accessToken.split(".")[1])
           );

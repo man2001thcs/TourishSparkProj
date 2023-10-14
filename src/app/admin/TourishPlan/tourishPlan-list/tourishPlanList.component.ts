@@ -45,10 +45,18 @@ export class TourishPlanListAdminComponent
 
   displayedColumns: string[] = [
     "id",
-    "title",
-    "pageNumber",
-    "description",
+    "tourName",
+
+    "startingPoint",
+    "endPoint",
+
+    "supportNumber",
+    "totalTicket",
+    "remainTicket",
+
     "createDate",
+    "startDate",
+    "endDate",
     "edit",
     "delete",
   ];
@@ -192,7 +200,7 @@ export class TourishPlanListAdminComponent
   }
 
   onClickEdit(id: string) {
-    this.router.navigate(["admin/tourishPlan/detail/" + id + "/edit"]);
+    this.router.navigate(["admin/tourish-plan/detail/" + id + "/edit"]);
   }
 
   announceSortChange(sortState: Sort) {
