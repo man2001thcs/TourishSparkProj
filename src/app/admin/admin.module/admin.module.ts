@@ -28,13 +28,20 @@ import { storeKey as EatingAutocompleteStoreKey } from "src/app/utility/multisel
 import { reducer as EatingAutocompleteReducer } from "src/app/utility/multiselect/eating-multiselect-autocomplete/multiselect-autocomplete.store.reducer";
 
 import { storeKey as MovingAutocompleteStoreKey } from "src/app/utility/multiselect/moving-multiselect-autocomplete/multiselect-autocomplete.store.action";
-import { reducer as  MovingAutocompleteReducer } from "src/app/utility/multiselect/moving-multiselect-autocomplete/multiselect-autocomplete.store.reducer";
+import { reducer as MovingAutocompleteReducer } from "src/app/utility/multiselect/moving-multiselect-autocomplete/multiselect-autocomplete.store.reducer";
+
+import { storeKey as TourishPlanAutocompleteStoreKey } from "src/app/utility/multiselect/tourishPlan-multiselect-autocomplete/multiselect-autocomplete.store.action";
+import { reducer as TourishPlanAutocompleteReducer } from "src/app/utility/multiselect/tourishPlan-multiselect-autocomplete/multiselect-autocomplete.store.reducer";
 
 import { storeKey as ImageListStoreKey } from "../../utility/image_service/imageUpload.store.action";
 import { reducer as ImageListReducer } from "../../utility/image_service/imageUpload.store.reducer";
 
 import { OptionsScrollDirective } from "src/app/utility/config/multiselect-scroll.directive";
-import { NgbAlertModule, NgbDropdownModule, NgbNavModule } from "@ng-bootstrap/ng-bootstrap";
+import {
+  NgbAlertModule,
+  NgbDropdownModule,
+  NgbNavModule,
+} from "@ng-bootstrap/ng-bootstrap";
 import { FileUploadComponent } from "src/app/utility/image_service/imageUpload.component";
 import { NbChatModule, NbThemeModule } from "@nebular/theme";
 import { MatCardModule } from "@angular/material/card";
@@ -118,6 +125,15 @@ import { reducer as RestaurantListReducer } from "../Restaurant/restaurant_list/
 import { storeKey as RestaurantDetailStoreKey } from "../Restaurant/restaurant_detail/restaurant-detail.store.action";
 import { reducer as RestaurantDetailReducer } from "../Restaurant/restaurant_detail/restaurant-detail.store.reducer";
 
+import { storeKey as ReceiptCreateStoreKey } from "../Receipt/receipt_create/receipt-create.store.action";
+import { reducer as ReceiptCreateReducer } from "../Receipt/receipt_create/receipt-create.store.reducer";
+
+import { storeKey as ReceiptListStoreKey } from "../Receipt/receipt_list/receipt-list.store.action";
+import { reducer as ReceiptListReducer } from "../Receipt/receipt_list/receipt-list.store.reducer";
+
+import { storeKey as ReceiptDetailStoreKey } from "../Receipt/receipt_detail/receipt-detail.store.action";
+import { reducer as ReceiptDetailReducer } from "../Receipt/receipt_detail/receipt-detail.store.reducer";
+
 import { SharedModule } from "src/app/shared.module";
 import { MatExpansionModule } from "@angular/material/expansion";
 import { MatProgressSpinnerModule } from "@angular/material/progress-spinner";
@@ -161,12 +177,18 @@ import { TourishPlanDetailAdminComponent } from "../TourishPlan/tourishPlan-deta
 
 import { ValidationComponent } from "src/app/utility/validation/validation.component";
 import { NgxMatMomentModule } from "@angular-material-components/moment-adapter";
+
 import { TourishPlanDetailEffects } from "../TourishPlan/tourishPlan-detail/tourishPlan-detail.store.effect";
+import { TourishPlanAutoCompleteListEffects } from "src/app/utility/multiselect/tourishPlan-multiselect-autocomplete/multiselect-autocomplete.store.effect";
+import { TourishPlanMultiselectAutocompleteComponent } from "src/app/utility/multiselect/tourishPlan-multiselect-autocomplete/multiselect-autocomplete.component";
 
+import { ReceiptCreateComponent } from "../Receipt/receipt_create/receipt-create.component";
+import { ReceiptListComponent } from "../Receipt/receipt_list/receipt-list.component";
+import { ReceiptDetailComponent } from "../Receipt/receipt_detail/receipt-detail.component";
 
-
-
-
+import { ReceiptCreateEffects } from "../Receipt/receipt_create/receipt-create.store.effect";
+import { ReceiptEffects } from "../Receipt/receipt_detail/receipt-detail.store.effect";
+import { ReceiptListEffects } from "../Receipt/receipt_list/receipt-list.store.effect";
 
 @NgModule({
   declarations: [
@@ -196,12 +218,17 @@ import { TourishPlanDetailEffects } from "../TourishPlan/tourishPlan-detail/tour
     TourishPlanListAdminComponent,
     TourishPlanDetailAdminComponent,
 
+    ReceiptCreateComponent,
+    ReceiptListComponent,
+    ReceiptDetailComponent,
+
     AdminMainComponent,
     HeaderAdminComponent,
 
     StayingMultiselectAutocompleteComponent,
     MovingMultiselectAutocompleteComponent,
     EatingMultiselectAutocompleteComponent,
+    TourishPlanMultiselectAutocompleteComponent,
 
     FileUploadComponent,
 
@@ -240,7 +267,6 @@ import { TourishPlanDetailEffects } from "../TourishPlan/tourishPlan-detail/tour
 
     NbChatModule,
 
-    
     StoreModule.forFeature(TourishPlanCreateStoreKey, TourishPlanCreateReducer),
     StoreModule.forFeature(TourishPlanListStoreKey, TourishPlanListReducer),
     StoreModule.forFeature(TourishPlanDetailStoreKey, TourishPlanDetailReducer),
@@ -271,6 +297,10 @@ import { TourishPlanDetailEffects } from "../TourishPlan/tourishPlan-detail/tour
     StoreModule.forFeature(RestaurantListStoreKey, RestaurantListReducer),
     StoreModule.forFeature(RestaurantDetailStoreKey, RestaurantDetailReducer),
 
+    StoreModule.forFeature(ReceiptCreateStoreKey, ReceiptCreateReducer),
+    StoreModule.forFeature(ReceiptListStoreKey, ReceiptListReducer),
+    StoreModule.forFeature(ReceiptDetailStoreKey, ReceiptDetailReducer),
+
     StoreModule.forFeature(
       StayingAutocompleteStoreKey,
       StayingAutocompleteReducer
@@ -286,11 +316,17 @@ import { TourishPlanDetailEffects } from "../TourishPlan/tourishPlan-detail/tour
       EatingAutocompleteReducer
     ),
 
+    StoreModule.forFeature(
+      TourishPlanAutocompleteStoreKey,
+      TourishPlanAutocompleteReducer
+    ),
+
     StoreModule.forFeature(ImageListStoreKey, ImageListReducer),
 
     EffectsModule.forFeature([StayingAutoCompleteListEffects]),
     EffectsModule.forFeature([MovingAutoCompleteListEffects]),
     EffectsModule.forFeature([EatingAutoCompleteListEffects]),
+    EffectsModule.forFeature([TourishPlanAutoCompleteListEffects]),
 
     EffectsModule.forFeature([ImageListEffects]),
 
@@ -317,6 +353,10 @@ import { TourishPlanDetailEffects } from "../TourishPlan/tourishPlan-detail/tour
     EffectsModule.forFeature([RestaurantCreateEffects]),
     EffectsModule.forFeature([RestaurantEffects]),
     EffectsModule.forFeature([RestaurantListEffects]),
+
+    EffectsModule.forFeature([ReceiptCreateEffects]),
+    EffectsModule.forFeature([ReceiptEffects]),
+    EffectsModule.forFeature([ReceiptListEffects]),
   ],
 })
 export class AdminModule {}

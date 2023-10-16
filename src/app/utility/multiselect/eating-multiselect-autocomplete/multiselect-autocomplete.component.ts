@@ -209,17 +209,6 @@ export class EatingMultiselectAutocompleteComponent implements OnInit {
     this.subscriptions.forEach((subscription) => subscription.unsubscribe());
   }
 
-  ngOnChanges(): void {
-    if (this.data_selected !== undefined) {
-      this.data_selected.forEach((item: any) => {
-        if (item !== undefined) {
-          this.eatingIdList.push(item.eating.id);
-          this.eatingNameList.push(item.eating.placeBranch);
-        }
-      });
-    }
-  }
-
   changeType($event: any) {
     console.log($event.target.value);
 
@@ -265,7 +254,8 @@ export class EatingMultiselectAutocompleteComponent implements OnInit {
   }
 
   emitAdjustedData = (): void => {
-    this.result.emit({ data: this.eatingScheduleList });
+    var returnList = this.data_selected.concat(this.eatingScheduleList);
+    this.result.emit({ data: returnList });
   };
 
   selected(event: MatAutocompleteSelectedEvent): void {

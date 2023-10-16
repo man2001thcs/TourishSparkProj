@@ -19,6 +19,7 @@ import { HomeStayListComponent } from "../HomeStay/homeStay_list/homeStay-list.c
 import { TourishPlanCreateAdminComponent } from "../TourishPlan/tourishPlan-create/tourishPlan-create_admin.component";
 import { TourishPlanDetailAdminComponent } from "../TourishPlan/tourishPlan-detail/tourishPlan_admin.component";
 import { TourishPlanListAdminComponent } from "../TourishPlan/tourishPlan-list/tourishPlanList.component";
+import { ReceiptListComponent } from "../Receipt/receipt_list/receipt-list.component";
 
 const routes: Routes = [
   {
@@ -63,6 +64,10 @@ const routes: Routes = [
       {
         path: "restaurant/list",
         component: RestaurantListComponent,
+      },
+      {
+        path: "receipt/list",
+        component: ReceiptListComponent,
       },
     ],
   },

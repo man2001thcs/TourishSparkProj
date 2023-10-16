@@ -1,0 +1,238 @@
+<div style="wfullreceiptidth: 100% !important">
+  <mat-card style="margin-bottom: 20px; padding: 10px 10px 10px">
+    <mat-card-header>
+      <mat-card-title>Danh sách hóa đơn</mat-card-title>
+    </mat-card-header>
+    <mat-card-actions>
+      <button mat-raised-button (click)="openAddDialog()" class="demo-button">
+        Thêm đối tác
+      </button>
+    </mat-card-actions>
+  </mat-card>
+
+  <div class="table-responsive">
+    <table
+      mat-table
+      [dataSource]="receiptList"
+      matSort
+      matSort
+      class="mat-elevation-z8"
+      (matSortChange)="announceSortChange($event)"
+    >
+      <!-- Position Column -->
+      <ng-container matColumnDef="id">
+        <th
+          mat-header-cell
+          *matHeaderCellDef
+          mat-sort-header
+          sortActionDescription="Sort by id"
+        >
+          No.
+        </th>
+        <td mat-cell *matCellDef="let element">
+          <div
+            *ngFor="let fullReceipt of element.fullReceiptList; index as i"
+            style="margin-bottom: 5px"
+          >
+            {{ i + 1 }}
+          </div>
+        </td>
+      </ng-container>
+
+      <!-- SS Column -->
+      <ng-container matColumnDef="tourName">
+        <th
+          mat-header-cell
+          *matHeaderCellDef
+          mat-sort-header
+          sortActionDescription="Sort by tourName"
+        >
+          Tên tour
+        </th>
+        <td mat-cell *matCellDef="let element">
+          {{ element.tourishPlan.tourName }}
+        </td>
+      </ng-container>
+
+      <!-- SS Column -->
+      <ng-container matColumnDef="totalTicketAll">
+        <th
+          mat-header-cell
+          *matHeaderCellDef
+          mat-sort-header
+          sortActionDescription="Sort by totalTicketAll"
+        >
+          Tổng số vé
+        </th>
+        <td mat-cell *matCellDef="let element">
+          {{ element.tourishPlan.totalTicket }}
+        </td>
+      </ng-container>
+
+      <!-- SS Column -->
+      <ng-container matColumnDef="remainTicket">
+        <th
+          mat-header-cell
+          *matHeaderCellDef
+          mat-sort-header
+          sortActionDescription="Sort by remainTicket"
+        >
+          Số vé còn lại
+        </th>
+        <td mat-cell *matCellDef="let element">
+          {{ element.tourishPlan.remainTicket }}
+        </td>
+      </ng-container>
+
+      <!-- Name Column -->
+      <ng-container matColumnDef="guestName">
+        <th
+          mat-header-cell
+          *matHeaderCellDef
+          mat-sort-header
+          sortActionDescription="Sort by guestName"
+        >
+          Tên khách
+        </th>
+        <td mat-cell *matCellDef="let element">
+          <div
+            *ngFor="let fullReceipt of element.fullReceiptList"
+            style="margin-bottom: 5px"
+          >
+            {{ fullReceipt.guestName }}
+          </div>
+        </td>
+      </ng-container>
+
+      <!-- SS Column -->
+      <ng-container matColumnDef="phoneNumber">
+        <th
+          mat-header-cell
+          *matHeaderCellDef
+          mat-sort-header
+          sortActionDescription="Sort by phoneNumber"
+        >
+          Số điện thoại liên lạc
+        </th>
+        <td mat-cell *matCellDef="let element">
+          <div
+            *ngFor="let fullReceipt of element.fullReceiptList"
+            style="margin-bottom: 5px"
+          >
+            {{ fullReceipt.phoneNumber }}
+          </div>
+        </td>
+      </ng-container>
+
+      <!-- SS Column -->
+      <ng-container matColumnDef="totalTicket">
+        <th
+          mat-header-cell
+          *matHeaderCellDef
+          mat-sort-header
+          sortActionDescription="Sort by totalTicket"
+        >
+          Số vé mua
+        </th>
+        <td mat-cell *matCellDef="let element">
+          <div
+            *ngFor="let fullReceipt of element.fullReceiptList"
+            style="margin-bottom: 5px"
+          >
+            {{ fullReceipt.totalTicket }}
+          </div>
+        </td>
+      </ng-container>
+
+      <!-- SS Column -->
+      <ng-container matColumnDef="discountAmount">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Khuyến mãi</th>
+        <td mat-cell *matCellDef="let element">
+          <div
+            *ngFor="let fullReceipt of element.fullReceiptList"
+            style="margin-bottom: 5px"
+          >
+            {{ fullReceipt.discountAmount }}
+          </div>
+        </td>
+      </ng-container>
+
+      <!-- SS Column -->
+      <ng-container matColumnDef="discountFloat">
+        <th
+          mat-header-cell
+          *matHeaderCellDef
+          mat-sort-header
+          sortActionDescription="Sort by discountFloat"
+        >
+          Khuyến mãi (Theo phần trăm)
+        </th>
+        <td mat-cell *matCellDef="let element">
+          <div
+            *ngFor="let fullReceipt of element.fullReceiptList"
+            style="margin-bottom: 5px"
+          >
+            {{ fullReceipt.discountFloat }}
+          </div>
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="createDate">
+        <th
+          mat-header-cell
+          *matHeaderCellDef
+          mat-sort-header
+          sortActionDescription="Sort by createDate"
+        >
+          Ngày tạo
+        </th>
+        <td mat-cell *matCellDef="let element">{{ element.createDate }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="completeDate">
+        <th
+          mat-header-cell
+          *matHeaderCellDef
+          mat-sort-header
+          sortActionDescription="Sort by completeDate"
+        >
+          Ngày kêt thúc
+        </th>
+        <td mat-cell *matCellDef="let element">{{ element.completeDate }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="edit">
+        <th mat-header-cell *matHeaderCellDef></th>
+        <td mat-cell *matCellDef="let element">
+          <button mat-button (click)="openEditDialog(element.fullReceiptId)">
+            Edit
+          </button>
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="delete">
+        <th mat-header-cell *matHeaderCellDef></th>
+        <td mat-cell *matCellDef="let element">
+          <button mat-button (click)="openDeleteDialog(element.fullReceiptId)">
+            Delete
+          </button>
+        </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr
+        mat-row
+        *matRowDef="let row; columns: displayedColumns"
+        [class.demo-row-is-clicked]=""
+      ></tr>
+    </table>
+  </div>
+  <mat-paginator
+    [pageSizeOptions]="pageSizeOpstion"
+    [length]="length"
+    (page)="handlePageEvent($event)"
+    showFirstLastButtons
+    aria-label="Select page of periodic elements"
+  >
+  </mat-paginator>
+</div>

@@ -94,7 +94,7 @@ export interface MovingSchedule {
   driverName: string;
   vehiclePlate: string;
   phoneNumber: string;
-  
+
   singlePrice?: number;
   vehicleType: number;
   transportId: string;
@@ -164,4 +164,32 @@ export interface TourishPlan {
   stayingSchedules?: StayingSchedule[];
   eatSchedules?: EatSchedule[];
   movingSchedules?: MovingSchedule[];
+}
+
+export interface TotalReceipt {
+  totalReceiptId?: string;
+  tourishPlanId: string;
+  completeDate: string;
+
+  description: string;
+  status: number;
+  fullReceiptList: FullReceipt[];
+}
+
+export interface FullReceipt {
+  fullReceiptId?: string;
+  totalReceiptId?: string;
+  guestName: string;
+  originalPrice: number;
+  totalTicket: number;
+  tourishPlanId: string;
+  completeDate?: string;
+  phoneNumber: string;
+  email: string;
+  discountFloat: number;
+  discountAmount: number;
+
+  createDate?: string;
+  description: string;
+  status: number;
 }

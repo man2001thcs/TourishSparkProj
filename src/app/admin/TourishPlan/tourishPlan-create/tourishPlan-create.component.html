@@ -198,12 +198,12 @@
               formControlName="description"
               rows="10"
             ></textarea>
-            <app-validation
-              *ngIf="submited"
-              [formGroup]="createformGroup"
-              [formGroupControlName]="'description'"
-            ></app-validation>
           </mat-form-field>
+          <app-validation
+            *ngIf="submited"
+            [formGroup]="createformGroup"
+            [formGroupControlName]="'description'"
+          ></app-validation>
         </div>
 
         <div

@@ -232,17 +232,6 @@ export class MovingMultiselectAutocompleteComponent implements OnInit {
     this.subscriptions.forEach((subscription) => subscription.unsubscribe());
   }
 
-  ngOnChanges(): void {
-    if (this.data_selected !== undefined) {
-      this.data_selected.forEach((item: any) => {
-        if (item !== undefined) {
-          this.movingIdList.push(item.moving.id);
-          this.movingNameList.push(item.moving.branchName);
-        }
-      });
-    }
-  }
-
   changeType($event: any) {
     console.log($event.target.value);
 

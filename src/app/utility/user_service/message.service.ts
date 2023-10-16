@@ -13,8 +13,7 @@ import { LoadingDialogComponent } from "../notification_admin/loading-dialog.com
   providedIn: "root",
 })
 export class MessageService {
-
-  currentDialogRef : any;
+  currentDialogRef: any;
   constructor(private dialog: MatDialog) {}
 
   openNotifyDialog(this_announce: string) {
@@ -28,14 +27,13 @@ export class MessageService {
 
   openLoadingDialog() {
     this.currentDialogRef = this.dialog.open(LoadingDialogComponent, {
-      data: {
-      },
+      data: {},
     });
     return this.currentDialogRef.afterClosed();
   }
 
   closeLoadingDialog() {
-    this.currentDialogRef.close();
+    if (this.currentDialogRef !== undefined) this.currentDialogRef.close();
   }
 
   openFailNotifyDialog(this_announce: string) {

@@ -1,0 +1,48 @@
+<form>
+  <mat-form-field appearance="outline" class="full-width-input">
+    <mat-label>Favorite TourishPlans</mat-label>
+    <mat-chip-grid #chipGrid aria-label="Fruit selection">
+      <mat-chip-row
+        *ngFor="let tourishPlan of tourishPlanNameList"
+        (removed)="remove(tourishPlan)"
+        style="font-size: 16px"
+      >
+        {{ tourishPlan }}
+        <button matChipRemove [attr.aria-label]="'remove ' + tourishPlan">
+          <mat-icon>cancel</mat-icon>
+        </button>
+      </mat-chip-row>
+    </mat-chip-grid>
+    <input
+      *ngIf="tourishPlanNameList.length < 1"
+      placeholder="Chọn tour"
+      #tourishPlanInput
+      [formControl]="tourishPlanCtrl"
+      [matChipInputFor]="chipGrid"
+      [matAutocomplete]="auto"
+      [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+      (matChipInputTokenEnd)="add($event)"
+    />
+
+    <mat-autocomplete
+      #auto="matAutocomplete"
+      (optionSelected)="selected($event)"
+      (optionsScroll)="onScroll($event)"
+    >
+      <mat-option
+        *ngFor="let tourishPlan of data"
+        [value]="tourishPlan"
+        [disabled]="isChecked(tourishPlan)"
+      >
+        <div>
+          <div style="font-weight: bold">
+            {{ tourishPlan.tourName }}
+            <mat-icon>{{ isChecked(tourishPlan) && "checked" }}</mat-icon>
+          </div>
+
+          <small>{{ onDisplayAtr(tourishPlan) }}</small>
+        </div>
+      </mat-option>
+    </mat-autocomplete>
+  </mat-form-field>
+</form>

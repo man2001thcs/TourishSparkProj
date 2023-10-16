@@ -164,7 +164,19 @@ export class TourishPlanDetailAdminComponent implements OnInit, OnDestroy {
 
           this.editformGroup_info.controls["planStatus"].setValue(
             state.planStatus
-          );       
+          );   
+          
+          this.editformGroup_info.controls["eatingScheduleString"].setValue(
+            JSON.stringify(state.eatSchedules)
+          );
+
+          this.editformGroup_info.controls["movingScheduleString"].setValue(
+            JSON.stringify(state.movingSchedules)
+          );
+
+          this.editformGroup_info.controls["stayingScheduleString"].setValue(
+            JSON.stringify(state.stayingSchedules)
+          );
 
           this.messageService.closeLoadingDialog();
 
@@ -301,10 +313,8 @@ export class TourishPlanDetailAdminComponent implements OnInit, OnDestroy {
     | Promise<boolean | UrlTree>
     | boolean
     | UrlTree {
-    console.log("abc");
     return (
       !this.editformGroup_info.dirty ||
-      !this.editformGroup_status.dirty ||
       this.openDialog()
     );
   }

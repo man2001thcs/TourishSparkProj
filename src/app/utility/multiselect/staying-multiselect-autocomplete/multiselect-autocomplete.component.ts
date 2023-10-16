@@ -212,17 +212,6 @@ export class StayingMultiselectAutocompleteComponent implements OnInit {
     this.subscriptions.forEach((subscription) => subscription.unsubscribe());
   }
 
-  ngOnChanges(): void {
-    if (this.data_selected !== undefined) {
-      this.data_selected.forEach((item: any) => {
-        if (item !== undefined) {
-          this.stayingIdList.push(item.staying.id);
-          this.stayingNameList.push(item.staying.placeBranch);
-        }
-      });
-    }
-  }
-
   changeType($event: any) {
     console.log($event.target.value);
 
