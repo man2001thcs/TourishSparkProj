@@ -159,6 +159,7 @@
 
           <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 edit-form">
             <tourishPlan-multiselect-autocomplete
+            [data_selected]="receipt.totalReceipt?.tourishPlan"
               (result)="selectChangeReceipt($event)"
             >
             </tourishPlan-multiselect-autocomplete>

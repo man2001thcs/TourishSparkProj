@@ -174,6 +174,8 @@ export interface TotalReceipt {
   description: string;
   status: number;
   fullReceiptList: FullReceipt[];
+
+  tourishPlan?: TourishPlan;
 }
 
 export interface FullReceipt {
@@ -192,4 +194,19 @@ export interface FullReceipt {
   createDate?: string;
   description: string;
   status: number;
+
+  totalReceipt?: TotalReceipt;
+}
+
+export interface User {
+  id?: string;
+  userName?: string;
+  password?: string;
+  role: number;
+  email: string;
+  fullName: string;
+  phoneNumber: string;
+  address: string;
+
+  createDate?: string;
 }

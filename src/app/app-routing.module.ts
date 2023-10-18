@@ -7,7 +7,7 @@ import { isGuestGuard } from './guest/guard/can-load-guest.guard';
 const routes: Routes = [
   {
     path: '',
-    redirectTo: 'guest/home',
+    redirectTo: 'guest/signIn',
     pathMatch: 'full',
   },
   {

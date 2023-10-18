@@ -28,6 +28,8 @@ import { EffectsModule } from "@ngrx/effects";
 import { storeKey as LoginStoreKey } from "../log/login/login.store.action";
 import { reducer as LoginReducer } from "../log/login/login.store.reducer";
 
+import { storeKey as SignInStoreKey } from "../log/signIn/signIn-create.store.action";
+import { reducer as SignInReducer } from "../log/signIn/signIn-create.store.reducer";
 
 import { NgbDropdownModule, NgbModule, NgbNavModule, NgbPaginationModule, NgbProgressbar, NgbProgressbarModule } from "@ng-bootstrap/ng-bootstrap";
 import { nl2brPipe } from "src/app/utility/nl2br.pipe";
@@ -40,6 +42,8 @@ import { MatFormFieldModule } from "@angular/material/form-field";
 import { FooterComponent } from "src/app/utility/footer/footer.component";
 import {MatExpansionModule} from '@angular/material/expansion';
 import { SharedModule } from "src/app/shared.module";
+import { UserCreateComponent } from "../log/signIn/signIn-create.component";
+import { UserCreateEffects } from "../log/signIn/signIn-create.store.effect";
 
 @NgModule({
   declarations: [
@@ -47,6 +51,7 @@ import { SharedModule } from "src/app/shared.module";
     LoginComponent,
     HeaderComponent,
     HomeComponent,
+    UserCreateComponent,
     nl2brPipe,
   ],
   imports: [
@@ -84,8 +89,10 @@ import { SharedModule } from "src/app/shared.module";
     ReactiveFormsModule,
 
     StoreModule.forFeature(LoginStoreKey, LoginReducer),
+    StoreModule.forFeature(SignInStoreKey, SignInReducer),
 
     EffectsModule.forFeature([LoginEffects]),
+    EffectsModule.forFeature([UserCreateEffects]),
   ],
   exports: [RouterModule],
 })

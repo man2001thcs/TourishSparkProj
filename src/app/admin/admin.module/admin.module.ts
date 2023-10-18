@@ -196,8 +196,6 @@ import { ReceiptListEffects } from "../Receipt/receipt_list/receipt-list.store.e
     PassengerCarDetailComponent,
     PassengerCarListComponent,
 
-    ValidationComponent,
-
     AirPlaneCreateComponent,
     AirPlaneDetailComponent,
     AirPlaneListComponent,

@@ -17,7 +17,11 @@ import { debounceTime } from "rxjs/operators";
 import { State as TourishPlanListState } from "./multiselect-autocomplete.store.reducer";
 import * as TourishPlanListActions from "./multiselect-autocomplete.store.action";
 import { Store } from "@ngrx/store";
-import { getMessage, getTourishPlanList, getSysError } from "./multiselect-autocomplete.store.selector";
+import {
+  getMessage,
+  getTourishPlanList,
+  getSysError,
+} from "./multiselect-autocomplete.store.selector";
 import { MessageService } from "../../user_service/message.service";
 import { TourishPlan } from "src/app/model/baseModel";
 
@@ -35,7 +39,7 @@ export class TourishPlanMultiselectAutocompleteComponent implements OnInit {
 
   @Output() result = new EventEmitter<{ data: Array<string> }>();
 
-  @Input() data_selected!: Array<TourishPlan>;
+  @Input() data_selected!: TourishPlan | undefined;
   @Input() key: string = "";
 
   tourishPlanIdList: string[] = [];
@@ -59,7 +63,8 @@ export class TourishPlanMultiselectAutocompleteComponent implements OnInit {
   errorMessageState!: Observable<any>;
   errorSystemState!: Observable<any>;
 
-  @ViewChild("tourishPlanInput") tourishPlanInput!: ElementRef<HTMLInputElement>;
+  @ViewChild("tourishPlanInput")
+  tourishPlanInput!: ElementRef<HTMLInputElement>;
 
   constructor(
     private store: Store<TourishPlanListState>,
@@ -158,12 +163,8 @@ export class TourishPlanMultiselectAutocompleteComponent implements OnInit {
 
   ngOnChanges(): void {
     if (this.data_selected !== undefined) {
-      this.data_selected.forEach((item: any) => {
-        if (item !== undefined) {
-          this.tourishPlanIdList.push(item.id);
-          this.tourishPlanNameList.push(item.tourName);
-        }
-      });
+      this.tourishPlanIdList.push(this.data_selected.id ?? "");
+      this.tourishPlanNameList.push(this.data_selected.tourName);
     }
   }
 

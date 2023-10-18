@@ -8,6 +8,7 @@ export const ERR_MESSAGE_CODE_EN: Map<string, string> = new Map([
   ["C007", "Refresh token has been revoked"],
   ["C008", "Token doesn't match"],
   ["C009", "Unexpected error"],
+  ["C010", "Account existed"],
 
   ["C600", "Message not found"],
   ["C601", "Message add error"],
@@ -81,6 +82,7 @@ export const ERR_MESSAGE_CODE_VI: Map<string, string> = new Map([
     ["C007", "Refresh token đã bị thu hồi"],
     ["C008", "Token không khớp"],
     ["C009", "Lỗi không xác định"],
+    ["C010", "Tài khoản đã tồn tại"],
 
     ["C600", "Tin nhắn không tồn tại"],
     ["C601", "Tin nhắn thêm vào bị lỗi"],
@@ -138,9 +140,18 @@ export const ERR_MESSAGE_CODE_VI: Map<string, string> = new Map([
     ["C515", "Tour không còn đủ số vé"],
   ]);
 
+  export function getViErrMessagePhase(key: string): string {
+    return SUCCESS_MESSAGE_CODE_VI.get(key) ?? "";
+  }
+
+  export function getViMessagePhase(key: string): string {
+    return ERR_MESSAGE_CODE_VI.get(key) ?? "";
+  }
+
 export const SUCCESS_MESSAGE_CODE_EN: Map<string, string> = new Map([
     ["I000", "Login success"],
     ["I001", "Token has been renewed"],
+    ["I010", "Account can be created"],
 
     ["I601", "Message add ok"],
     ["I602", "Message update ok"],
@@ -183,6 +194,7 @@ export const SUCCESS_MESSAGE_CODE_EN: Map<string, string> = new Map([
   export const SUCCESS_MESSAGE_CODE_VI: Map<string, string> = new Map([
     ["I000", "Đăng nhập thành công"],
     ["I001", "Token đã được làm mới"],
+    ["I010", "Tài khoản này có thể được dùng"],
 
     ["I601", "Tin nhắn thêm thành công"],
     ["I602", "Tin nhắn update thành công"],

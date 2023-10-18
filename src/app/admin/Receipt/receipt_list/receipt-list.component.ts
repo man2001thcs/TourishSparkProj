@@ -27,15 +27,33 @@ import { ReceiptCreateComponent } from "../receipt_create/receipt-create.compone
 import { MessageService } from "src/app/utility/user_service/message.service";
 import { ConfirmDialogComponent } from "src/app/utility/confirm-dialog/confirm-dialog.component";
 import { TotalReceipt } from "src/app/model/baseModel";
+import {
+  animate,
+  state,
+  style,
+  transition,
+  trigger,
+} from "@angular/animations";
 
 @Component({
   selector: "app-receiptList",
   templateUrl: "./receipt-list.component.html",
   styleUrls: ["./receipt-list.component.css"],
+  animations: [
+    trigger('detailExpand', [
+      state('collapsed', style({height: '0px', minHeight: '0'})),
+      state('expanded', style({height: '*'})),
+      transition('expanded <=> collapsed', animate('225ms cubic-bezier(0.4, 0.0, 0.2, 1)')),
+    ]),
+  ],
 })
 export class ReceiptListComponent implements OnInit, AfterViewInit, OnDestroy {
   receiptList!: TotalReceipt[];
   subscriptions: Subscription[] = [];
+
+  expandedElement!: any;
+  isExpansionDetailRow = (i: number, row: Object) =>
+    row.hasOwnProperty("detailRow");
 
   receiptListState!: Observable<any>;
   receiptDeleteState!: Observable<any>;
@@ -48,16 +66,12 @@ export class ReceiptListComponent implements OnInit, AfterViewInit, OnDestroy {
     "totalTicketAll",
     "remainTicket",
     //"tourishPlanId",
-    "guestName",
-    "phoneNumber",
-    "totalTicket",
-    "discountFloat",
-    "discountAmount",
     "createDate",
     "completeDate",
-    "edit",
-    "delete",
   ];
+
+  displayedColumnsWithExpand = [...this.displayedColumns, 'expand'];
+
   @ViewChild(MatPaginator) paraginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
 
@@ -119,8 +133,6 @@ export class ReceiptListComponent implements OnInit, AfterViewInit, OnDestroy {
         },
       })
     );
-
-    this.messageService.openLoadingDialog();
 
     this.subscriptions.push(
       this.errorMessageState.subscribe((state) => {
@@ -217,7 +229,9 @@ export class ReceiptListComponent implements OnInit, AfterViewInit, OnDestroy {
     });
   }
 
-  addData(): void {}
+  addData(): void {
+    console.log("abc");
+  }
 
   handlePageEvent(e: PageEvent) {
     // this.length = e.length;
@@ -235,6 +249,21 @@ export class ReceiptListComponent implements OnInit, AfterViewInit, OnDestroy {
         },
       })
     );
+    this.messageService.openLoadingDialog();
+  }
+
+  selectChangeReceipt($event: any) {
+    console.log($event);
+    this.store.dispatch(
+      ReceiptListActions.getReceiptList({
+        payload: {
+          page: this.pageIndex + 1,
+          pageSize: this.pageSize,
+          tourishPlanId: $event.data[0],
+        },
+      })
+    );
+    this.messageService.openLoadingDialog();
   }
 
   announceSortChange(sortState: Sort) {
