@@ -30,6 +30,8 @@ import { FooterComponent } from "./utility/footer/footer.component";
 import { LoadingDialogComponent } from "./utility/notification_admin/loading-dialog.component";
 import { MatProgressSpinnerModule } from "@angular/material/progress-spinner";
 
+import { SocialLoginModule, SocialAuthServiceConfig, FacebookLoginProvider, GoogleLoginProvider, GoogleSigninButtonModule } from '@abacritt/angularx-social-login';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -58,10 +60,33 @@ import { MatProgressSpinnerModule } from "@angular/material/progress-spinner";
     ReactiveFormsModule,
     MatDialogModule,
     MatProgressSpinnerModule,
-
+    SocialLoginModule,
     MatButtonModule,
+    GoogleSigninButtonModule,
   ],
   providers: [
+    {
+      provide: 'SocialAuthServiceConfig',
+      useValue: {
+        autoLogin: false,
+        providers: [
+          {
+            id: GoogleLoginProvider.PROVIDER_ID,
+            provider: new GoogleLoginProvider(
+              '614502632255-431u4lhjtostn9rpngh1vtqolujli60d.apps.googleusercontent.com'
+            )
+          },
+          {
+            id: FacebookLoginProvider.PROVIDER_ID,
+            provider: new FacebookLoginProvider('clientId')
+          }
+        ],
+        onError: (err) => {
+          console.error(err);
+        }
+      } as SocialAuthServiceConfig,
+    },
+    
     {
       provide: HTTP_INTERCEPTORS,
       useClass: AuthInterceptor,

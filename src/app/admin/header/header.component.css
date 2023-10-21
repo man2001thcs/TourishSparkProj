@@ -75,11 +75,15 @@ img.img-logo {
   transition: 0.5s;
   flex-direction: column;
 
+  overflow-y: auto;
+
   display: flex;
   flex-grow: 0;
   opacity: 1;
 
   margin-top: 10px;
+
+  margin-bottom: 20px;
 
   border-end-end-radius: 20px;
   border-bottom-left-radius: 20px;

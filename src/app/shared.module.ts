@@ -11,6 +11,7 @@ import {MatStepperModule} from '@angular/material/stepper';
 import { NgbAlertModule } from "@ng-bootstrap/ng-bootstrap";
 import { ValidationComponent } from "./utility/validation/validation.component";
 import { MatInputModule } from "@angular/material/input";
+import { GoogleSigninButtonModule } from "@abacritt/angularx-social-login";
 
 @NgModule({
   declarations: [
@@ -33,7 +34,8 @@ import { MatInputModule } from "@angular/material/input";
     MatStepperModule,
     FormsModule,
     OutsideClickDirective,
-    ValidationComponent
+    ValidationComponent,
+    GoogleSigninButtonModule
   ],
 })
 export class SharedModule {}

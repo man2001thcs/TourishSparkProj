@@ -7,13 +7,23 @@ import { Router } from "@angular/router";
 import { Observable, Subscription, timeout } from "rxjs";
 import { LoginUnionActions } from "./login.store.action";
 import { Store } from "@ngrx/store";
-import { getLoginProfile, getMessage, getSysError } from "./login.store.selector";
+import {
+  getLoginProfile,
+  getMessage,
+  getSysError,
+} from "./login.store.selector";
 import * as LoginAction from "./login.store.action";
 import { TokenStorageService } from "src/app/utility/user_service/token.service";
 import { MessageService } from "src/app/utility/user_service/message.service";
 import { NbDialogRef } from "@nebular/theme";
-import { ConfirmDialogComponent, DialogData } from "src/app/utility/confirm-dialog/confirm-dialog.component";
+import {
+  ConfirmDialogComponent,
+  DialogData,
+} from "src/app/utility/confirm-dialog/confirm-dialog.component";
 import { MAT_DIALOG_DATA, MatDialogRef } from "@angular/material/dialog";
+import { SocialAuthService, SocialUser } from "@abacritt/angularx-social-login";
+import { getUser } from "../signIn/signIn-create.store.selector";
+
 export interface DialogSignInData {
   title: string;
 }
@@ -28,23 +38,22 @@ export class LoginComponent implements OnInit {
   errorMessage = "";
 
   getLoginProfile: Observable<any>;
+
   errorMessageState: Observable<any>;
   errorSystemState: Observable<any>;
-  
+
   subscriptions: Subscription[] = [];
   loginProfile: any;
-
 
   constructor(
     private fb: FormBuilder,
     private tokenStorage: TokenStorageService,
-    public dialogRef: MatDialogRef<LoginComponent>, 
-    @Inject(MAT_DIALOG_DATA) public data: DialogData,
     private userService: UserService,
     private messageService: MessageService,
     private hash: HashService,
     private router: Router,
     private store: Store<LoginUnionActions>,
+    private socialAuthService: SocialAuthService
   ) {
     this.getLoginProfile = this.store.select(getLoginProfile);
     this.errorMessageState = this.store.select(getMessage);
@@ -52,6 +61,25 @@ export class LoginComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.socialAuthService.authState.subscribe((user: SocialUser) => {
+      this.store.dispatch(
+        LoginAction.login({
+          payload: {
+            userName: user.email,
+            password: "None",
+            role: 0,
+            email: user.email,
+            fullName: user.firstName + " " + user.lastName,
+            address: "Chưa có",
+            phoneNumber: "Chưa có",
+            googleToken: user.idToken,
+            loginPhase: 'GoogleSignIn'
+          },
+        })
+      );
+      this.messageService.openLoadingDialog();
+    });
+
     this.signInformGroup = this.fb.group({
       userName: [
         "",
@@ -71,10 +99,9 @@ export class LoginComponent implements OnInit {
       this.getLoginProfile.subscribe((state) => {
         if (state) {
           this.loginProfile = state;
-          console.log(state);
 
           this.messageService.closeLoadingDialog();
-          
+
           const response = JSON.parse(
             window.atob(state.accessToken.split(".")[1])
           );
@@ -89,11 +116,14 @@ export class LoginComponent implements OnInit {
             .subscribe((res) => {
               if (response) {
                 console.log(response);
-                this.onNoClick();
-                if (response.Role === "User") {
-                  this.router.navigate(["/user/home"]);
+                if (response.Role === "New") {
+                  this.messageService
+                  .openNotifyDialog("Tài khoản đã liên kết, vui lòng chờ admin xét duyệt");
+                }
+                if (response.Role === "Staff") {
+                  this.router.navigate(["/admin/tourish-plan/list"]);
                 } else if (response.Role === "Admin") {
-                  this.router.navigate(["/admin/transport/passenger-car/list"]);
+                  this.router.navigate(["/admin/tourish-plan/list"]);
                 }
               }
             });
@@ -127,10 +157,6 @@ export class LoginComponent implements OnInit {
     this.subscriptions.forEach((subscription) => subscription.unsubscribe());
   }
 
-  onNoClick(): void {
-    this.dialogRef.close();
-  }
-
   valueChange(target: string, event: Event) {
     this.signInformGroup.value[target] = event;
     console.log(event);
@@ -140,6 +166,7 @@ export class LoginComponent implements OnInit {
     this.signInformGroup.setValue({
       userName: "man2001thcs",
       password: "123",
+      loginPhase: 'login'
     });
   }
 
@@ -151,10 +178,15 @@ export class LoginComponent implements OnInit {
         payload: {
           userName: this.signInformGroup.value.userName,
           password: this.signInformGroup.value.password,
+          loginPhase: 'login'
         },
       })
     );
 
     this.messageService.openLoadingDialog();
+  }
+
+  signInWithGoogle() {
+    this.tokenStorage.signInWithGoogle();
   }
 }

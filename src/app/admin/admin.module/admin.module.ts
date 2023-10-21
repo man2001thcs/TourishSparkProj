@@ -134,6 +134,12 @@ import { reducer as ReceiptListReducer } from "../Receipt/receipt_list/receipt-l
 import { storeKey as ReceiptDetailStoreKey } from "../Receipt/receipt_detail/receipt-detail.store.action";
 import { reducer as ReceiptDetailReducer } from "../Receipt/receipt_detail/receipt-detail.store.reducer";
 
+import { storeKey as UserListStoreKey } from "../User/user_list/user-list.store.action";
+import { reducer as UserListReducer } from "../User/user_list/user-list.store.reducer";
+
+import { storeKey as UserDetailStoreKey } from "../User/user_detail/user-detail.store.action";
+import { reducer as UserDetailReducer } from "../User/user_detail/user-detail.store.reducer";
+
 import { SharedModule } from "src/app/shared.module";
 import { MatExpansionModule } from "@angular/material/expansion";
 import { MatProgressSpinnerModule } from "@angular/material/progress-spinner";
@@ -189,6 +195,10 @@ import { ReceiptDetailComponent } from "../Receipt/receipt_detail/receipt-detail
 import { ReceiptCreateEffects } from "../Receipt/receipt_create/receipt-create.store.effect";
 import { ReceiptEffects } from "../Receipt/receipt_detail/receipt-detail.store.effect";
 import { ReceiptListEffects } from "../Receipt/receipt_list/receipt-list.store.effect";
+import { UserDetailComponent } from "../User/user_detail/user-detail.component";
+import { UserListComponent } from "../User/user_list/user-list.component";
+import { UserEffects } from "../User/user_detail/user-detail.store.effect";
+import { UserListEffects } from "../User/user_list/user-list.store.effect";
 
 @NgModule({
   declarations: [
@@ -219,6 +229,9 @@ import { ReceiptListEffects } from "../Receipt/receipt_list/receipt-list.store.e
     ReceiptCreateComponent,
     ReceiptListComponent,
     ReceiptDetailComponent,
+
+    UserDetailComponent,
+    UserListComponent,
 
     AdminMainComponent,
     HeaderAdminComponent,
@@ -299,6 +312,9 @@ import { ReceiptListEffects } from "../Receipt/receipt_list/receipt-list.store.e
     StoreModule.forFeature(ReceiptListStoreKey, ReceiptListReducer),
     StoreModule.forFeature(ReceiptDetailStoreKey, ReceiptDetailReducer),
 
+    StoreModule.forFeature(UserListStoreKey, UserListReducer),
+    StoreModule.forFeature(UserDetailStoreKey, UserDetailReducer),
+
     StoreModule.forFeature(
       StayingAutocompleteStoreKey,
       StayingAutocompleteReducer
@@ -355,6 +371,9 @@ import { ReceiptListEffects } from "../Receipt/receipt_list/receipt-list.store.e
     EffectsModule.forFeature([ReceiptCreateEffects]),
     EffectsModule.forFeature([ReceiptEffects]),
     EffectsModule.forFeature([ReceiptListEffects]),
+
+    EffectsModule.forFeature([UserEffects]),
+    EffectsModule.forFeature([UserListEffects]),
   ],
 })
 export class AdminModule {}

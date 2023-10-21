@@ -91,7 +91,7 @@ export class ReceiptDetailComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.editformGroup_info = this.fb.group({
-      id: [
+      fullReceiptId: [
         this.data.id,
         Validators.compose([
           Validators.required,
@@ -99,6 +99,7 @@ export class ReceiptDetailComponent implements OnInit, OnDestroy {
           Validators.pattern(/^[a-z]{6,32}$/i),
         ]),
       ],
+      totalReceiptId: ["", Validators.compose([Validators.required])],
       guestName: ["", Validators.compose([Validators.required])],
       phoneNumber: [
         "",

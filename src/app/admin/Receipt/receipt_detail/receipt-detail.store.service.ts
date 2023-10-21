@@ -14,6 +14,6 @@ export class ReceiptStoreService {
 
   editReceipt(payload: any): Observable<any> {
     console.log('ok');
-    return this.http.put('/api/UpdateReceipt/' + payload.id, payload);
+    return this.http.put('/api/UpdateReceipt/' + payload.fullReceiptId, payload);
   }
 }

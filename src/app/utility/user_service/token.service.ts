@@ -1,6 +1,8 @@
 import { HttpClient, HttpHeaders } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { MessageService } from "./message.service";
+import { SocialAuthService } from "@abacritt/angularx-social-login";
+import { GoogleLoginProvider } from "@abacritt/angularx-social-login";
 
 const TOKEN_KEY = "auth-token";
 const REFRESHTOKEN_KEY = "auth-refreshtoken";
@@ -21,7 +23,14 @@ interface CartItem {
   providedIn: "root",
 })
 export class TokenStorageService {
-  constructor(private http: HttpClient) {}
+  constructor(
+    private http: HttpClient,
+    private socialAuthService: SocialAuthService
+  ) {}
+
+  signInWithGoogle() {
+    return this.socialAuthService.signIn(GoogleLoginProvider.PROVIDER_ID);
+  }
 
   signOut(): void {
     window.sessionStorage.clear();

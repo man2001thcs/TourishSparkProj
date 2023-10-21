@@ -7,12 +7,17 @@ import { RouterModule } from "@angular/router";
 import { SearchResolver } from "../resolver/search.resolver";
 import { HomeComponent } from "../home/home.component";
 import { UserCreateComponent } from "../log/signIn/signIn-create.component";
+import { LoginComponent } from "../log/login/login.component";
 
 const routes: Routes = [
   {
     path: "guest",
     component: MainComponent,
     children: [
+      {
+        path: "login",
+        component: LoginComponent,
+      },
       {
         path: "signIn",
         component: UserCreateComponent,

@@ -1,0 +1,118 @@
+<div class="container" style="padding: 20px 0 20px">
+  <div
+    class="outlet"
+    style="
+      display: flex;
+      justify-content: center;
+      width: 100%;
+      flex-direction: column !important;
+    "
+  >
+    <div class="row">
+      <h2 mat-form-label style="font-weight: heavy">
+        Chỉnh sửa thông tin nhân viên
+      </h2>
+    </div>
+
+    <div class="row" style="display: flex; flex-direction: column !important; flex-wrap: 1; padding-left: 90px !important;">
+      <form [formGroup]="editformGroup_info">
+        <div class="row">
+          <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 create-form">
+            <div class="row">
+              <mat-form-field appearance="outline" class="full-width-input">
+                <mat-label>Tên đối tác</mat-label>
+                <input
+                  matInput
+                  fullwidth
+                  placeholder="Vd: Bồ Công Anh"
+                  formControlName="userName"
+                />
+              </mat-form-field>
+            </div>
+
+            <div class="row">
+              <mat-form-field appearance="outline" class="full-width-input">
+                <mat-label>Email liên lạc</mat-label>
+                <input
+                  matInput
+                  placeholder="Vd: abc@gmail.com"
+                  formControlName="email"
+                />
+              </mat-form-field>
+            </div>
+
+            <div class="row">
+              <mat-form-field appearance="outline" class="full-width-input">
+                <mat-label>Số điện thoại liên lạc</mat-label>
+                <input
+                  matInput
+                  placeholder="Vd: 0123456789"
+                  formControlName="phoneNumber"
+                />
+              </mat-form-field>
+            </div>
+          </div>
+
+          <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 create-form">
+            <div class="row">
+              <mat-form-field appearance="outline" class="full-width-input">
+                <mat-label>Địa chỉ trụ sở</mat-label>
+                <input
+                  matInput
+                  placeholder="Vd: 43 Nguyễn Chí Thanh"
+                  formControlName="address"
+                />
+              </mat-form-field>
+            </div>
+
+            <div class="row">
+              <mat-form-field appearance="outline" class="full-width-input">
+                <mat-label>Vai trò</mat-label>
+                <input
+                  matInput
+                  placeholder="Vd: New"
+                  formControlName="role"
+                />
+              </mat-form-field>
+            </div>
+
+            <div class="row">
+              <mat-form-field appearance="outline" class="full-width-input">
+                <mat-label>Tên người dùng</mat-label>
+                <input
+                  matInput
+                  placeholder="Vd: ABC"
+                  formControlName="fullName"
+                />
+              </mat-form-field>
+            </div>
+          </div>
+        </div>      
+
+        <div class="row" style="display: flex; flex-direction: row !important; flex-wrap: 1;">
+          <div style="margin-right: 20px;">
+            <button
+              mat-raised-button
+              color="primary"
+              (click)="formSubmit_edit_info()"
+            >
+              Lưu
+            </button>
+          </div>
+
+          <div>
+            <button
+              mat-raised-button
+              color="warn"
+              type="button"
+              (click)="formReset()"
+            >
+              Khôi phục
+            </button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+

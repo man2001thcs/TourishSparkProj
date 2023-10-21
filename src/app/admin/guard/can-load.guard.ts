@@ -21,7 +21,7 @@ export class CanLoadGuardAdmin {
     console.log(roles);
 
     if (roles) {
-      if (this.tokenService.getUserRole() === roles[0]) return true;
+      if (roles.indexOf(this.tokenService.getUserRole()) > -1) return true;
       else {
         //this.router.navigate(['/forbidden']);
         return false;

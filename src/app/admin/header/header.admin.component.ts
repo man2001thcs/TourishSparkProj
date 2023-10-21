@@ -71,7 +71,7 @@ export class HeaderAdminComponent {
 
   async signOut() {
     await this.tokenService.signOut();
-    this.router.navigate(["/guest/home"]);
+    this.router.navigate(["/guest/login"]);
   }
 
   outsideClick(hasClickedOutside: any) {

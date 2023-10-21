@@ -16,6 +16,7 @@ import { NbDialogService } from "@nebular/theme";
 import { Observable, Subscription, debounceTime } from "rxjs";
 import { UserService } from "src/app/utility/user_service/user.service";
 import { MessageService } from "src/app/utility/user_service/message.service";
+import { Router } from "@angular/router";
 
 @Component({
   selector: "app-guest-header",
@@ -57,6 +58,7 @@ export class HeaderComponent implements OnInit {
   constructor(
     public dialog: MatDialog,
     private messageService: MessageService,
+    private router: Router,
     private _elementRef: ElementRef,
     private _api: UserService
   ) {
@@ -85,10 +87,7 @@ export class HeaderComponent implements OnInit {
   // }
 
   openLoginDialog() {
-    this.dialog
-      .open(LoginComponent)
-      .afterClosed()
-      .subscribe((result) => console.log(`Dialog result: ${result}`));
+    this.router.navigate(["guest/login"]);
   }
 
   formSubmit(): void {}

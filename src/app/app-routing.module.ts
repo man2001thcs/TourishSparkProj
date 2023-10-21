@@ -7,7 +7,7 @@ import { isGuestGuard } from './guest/guard/can-load-guest.guard';
 const routes: Routes = [
   {
     path: '',
-    redirectTo: 'guest/signIn',
+    redirectTo: 'guest/login',
     pathMatch: 'full',
   },
   {
@@ -15,14 +15,14 @@ const routes: Routes = [
     loadChildren: () =>
       import('./guest/guest.module/guest.module').then((m) => m.GuestModule),
     canLoad: [isGuestGuard],
-    data :{permittedRoles:['Guest']}
+    data :{permittedRoles:['New']}
   },
   {
     path: 'admin',
     loadChildren: () =>
       import('./admin/admin.module/admin.module').then((m) => m.AdminModule),
     canLoad: [isAdminGuard],
-    data :{permittedRoles:['Admin']}
+    data :{permittedRoles:['Staff', 'Admin']}
   },
 ];
 
