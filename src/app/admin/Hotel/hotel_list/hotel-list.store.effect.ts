@@ -20,7 +20,6 @@ export class HotelListEffects {
       switchMap((action) => {
         return this.storeService.getHotelList(action).pipe(
           map((response) => {
-            console.log(response);
             if (response.resultCd === 0) {
               console.log(response);
               return HotelListAction.getHotelListSuccess({
@@ -65,9 +64,7 @@ export class HotelListEffects {
       switchMap((action) => {
         return this.storeService.deleteHotel(action).pipe(
           map((response) => {
-            console.log(response);
             if (response.resultCd === 0) {
-              console.log(response);
               return HotelListAction.deleteHotelSuccess({
                 response: response,
               });

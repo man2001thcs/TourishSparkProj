@@ -43,6 +43,7 @@ import { HomeStay } from "src/app/model/baseModel";
 })
 export class HomeStayCreateComponent implements OnInit, OnDestroy {
   isEditing: boolean = true;
+  isSubmitted = false;
 
   homeStayParam!: HomeStayParam;
 
@@ -102,13 +103,13 @@ export class HomeStayCreateComponent implements OnInit, OnDestroy {
     //Called after the constructor, initializing input properties, and the first call to ngOnChanges.
     //Add 'implements OnInit' to the class.
     this.createformGroup_info = this.fb.group({
-      placeBranch: "",
-      hotlineNumber: "",
-      supportEmail: "",
-      headQuarterAddress: "",
-      discountFloat: 0,
-      discountAmount: 0,
-      description: "",
+      branchName: ["", Validators.compose([Validators.required])],
+      hotlineNumber: ["", Validators.compose([Validators.required])],
+      supportEmail: ["", Validators.compose([Validators.required])],
+      headQuarterAddress: ["", Validators.compose([Validators.required])],
+      discountFloat: [0, Validators.compose([Validators.required])],
+      discountAmount: [0, Validators.compose([Validators.required])],
+      description: ["", Validators.compose([Validators.required])],
     });
   }
 
@@ -132,22 +133,23 @@ export class HomeStayCreateComponent implements OnInit, OnDestroy {
   }
 
   formSubmit_create_info(): void {
-    const payload: HomeStay = {
-      placeBranch: this.createformGroup_info.value.placeBranch,
-      hotlineNumber: this.createformGroup_info.value.hotlineNumber,
-      supportEmail: this.createformGroup_info.value.supportEmail,
-      headQuarterAddress: this.createformGroup_info.value.headQuarterAddress,
-      discountFloat: this.createformGroup_info.value.discountFloat,
-      discountAmount: this.createformGroup_info.value.discountAmount,
-      description: this.createformGroup_info.value.description,
-    };
+    this.isSubmitted = true;
+    if (this.createformGroup_info.valid) {
+      const payload: HomeStay = {
+        placeBranch: this.createformGroup_info.value.placeBranch,
+        hotlineNumber: this.createformGroup_info.value.hotlineNumber,
+        supportEmail: this.createformGroup_info.value.supportEmail,
+        headQuarterAddress: this.createformGroup_info.value.headQuarterAddress,
+        discountFloat: this.createformGroup_info.value.discountFloat,
+        discountAmount: this.createformGroup_info.value.discountAmount,
+        description: this.createformGroup_info.value.description,
+      };
 
-    this.store.dispatch(
-      homeStayActions.createHomeStay({
-        payload: payload,
-      })
-    );
-
-    console.log(payload);
+      this.store.dispatch(
+        homeStayActions.createHomeStay({
+          payload: payload,
+        })
+      );
+    }
   }
 }

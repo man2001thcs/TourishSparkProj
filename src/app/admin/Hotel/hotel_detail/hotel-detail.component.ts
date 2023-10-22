@@ -83,40 +83,18 @@ export class HotelDetailComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.editformGroup_info = this.fb.group({
-      id: [
-        this.data.id,
-        Validators.compose([
-          Validators.required,
-          Validators.minLength(6),
-          Validators.pattern(/^[a-z]{6,32}$/i),
-        ]),
-      ],
-      placeBranch: [
-        this.hotel.placeBranch ?? "",
-        Validators.compose([Validators.required]),
-      ],
+      id: [this.data.id, Validators.compose([Validators.required])],
+      placeBranch: ["", Validators.compose([Validators.required])],
       hotlineNumber: [
-        this.hotel.hotlineNumber ?? "",
+        "",
         Validators.compose([Validators.required, Validators.minLength(8)]),
       ],
-      supportEmail: [
-        this.hotel.supportEmail ?? "",
-        Validators.compose([Validators.required]),
-      ],
-      headQuarterAddress: [
-        this.hotel.headQuarterAddress ?? "",
-        Validators.compose([Validators.required]),
-      ],
-      discountFloat: [
-        this.hotel.discountFloat ?? 0,
-        Validators.compose([Validators.required]),
-      ],
-      discountAmount: [
-        this.hotel.discountAmount ?? 0,
-        Validators.compose([Validators.required]),
-      ],
+      supportEmail: ["", Validators.compose([Validators.required])],
+      headQuarterAddress: ["", Validators.compose([Validators.required])],
+      discountFloat: [0, Validators.compose([Validators.required])],
+      discountAmount: [0, Validators.compose([Validators.required])],
 
-      description: this.hotel.description,
+      description: ["", Validators.compose([Validators.required])]
     });
 
     this.subscriptions.push(

@@ -170,6 +170,10 @@ export class LoginComponent implements OnInit {
     });
   }
 
+  navigateRegister(){
+    this.router.navigate(['guest/signIn']);
+  }
+
   formSubmit(): void {
     //console.log(this.signInformGroup.value);
 

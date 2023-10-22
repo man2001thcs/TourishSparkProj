@@ -44,6 +44,7 @@ import { HomeStay } from "src/app/model/baseModel";
 })
 export class HomeStayDetailComponent implements OnInit, OnDestroy {
   isEditing: boolean = true;
+  isSubmitted = false;
   homeStay: HomeStay = {
     id: "",
     placeBranch: "",
@@ -83,40 +84,18 @@ export class HomeStayDetailComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.editformGroup_info = this.fb.group({
-      id: [
-        this.data.id,
-        Validators.compose([
-          Validators.required,
-          Validators.minLength(6),
-          Validators.pattern(/^[a-z]{6,32}$/i),
-        ]),
-      ],
-      placeBranch: [
-        this.homeStay.placeBranch ?? "",
-        Validators.compose([Validators.required]),
-      ],
+      id: [this.data.id, Validators.compose([Validators.required])],
+      placeBranch: ["", Validators.compose([Validators.required])],
       hotlineNumber: [
-        this.homeStay.hotlineNumber ?? "",
+        "",
         Validators.compose([Validators.required, Validators.minLength(8)]),
       ],
-      supportEmail: [
-        this.homeStay.supportEmail ?? "",
-        Validators.compose([Validators.required]),
-      ],
-      headQuarterAddress: [
-        this.homeStay.headQuarterAddress ?? "",
-        Validators.compose([Validators.required]),
-      ],
-      discountFloat: [
-        this.homeStay.discountFloat ?? 0,
-        Validators.compose([Validators.required]),
-      ],
-      discountAmount: [
-        this.homeStay.discountAmount ?? 0,
-        Validators.compose([Validators.required]),
-      ],
+      supportEmail: ["", Validators.compose([Validators.required])],
+      headQuarterAddress: ["", Validators.compose([Validators.required])],
+      discountFloat: [0, Validators.compose([Validators.required])],
+      discountAmount: [0, Validators.compose([Validators.required])],
 
-      description: this.homeStay.description,
+      description: ["", Validators.compose([Validators.required])]
     });
 
     this.subscriptions.push(
@@ -215,21 +194,24 @@ export class HomeStayDetailComponent implements OnInit, OnDestroy {
   }
 
   formSubmit_edit_info(): void {
-    const payload: HomeStay = {
-      id: this.data.id,
-      placeBranch: this.editformGroup_info.value.placeBranch,
-      hotlineNumber: this.editformGroup_info.value.hotlineNumber,
-      supportEmail: this.editformGroup_info.value.supportEmail,
-      headQuarterAddress: this.editformGroup_info.value.headQuarterAddress,
-      discountFloat: this.editformGroup_info.value.discountFloat,
-      discountAmount: this.editformGroup_info.value.discountAmount,
-      description: this.editformGroup_info.value.description,
-    };
+    this.isSubmitted = true;
+    if (this.editformGroup_info.valid) {
+      const payload: HomeStay = {
+        id: this.data.id,
+        placeBranch: this.editformGroup_info.value.placeBranch,
+        hotlineNumber: this.editformGroup_info.value.hotlineNumber,
+        supportEmail: this.editformGroup_info.value.supportEmail,
+        headQuarterAddress: this.editformGroup_info.value.headQuarterAddress,
+        discountFloat: this.editformGroup_info.value.discountFloat,
+        discountAmount: this.editformGroup_info.value.discountAmount,
+        description: this.editformGroup_info.value.description,
+      };
 
-    this.store.dispatch(
-      HomeStayActions.editHomeStay({
-        payload: payload,
-      })
-    );
+      this.store.dispatch(
+        HomeStayActions.editHomeStay({
+          payload: payload,
+        })
+      );
+    }
   }
 }

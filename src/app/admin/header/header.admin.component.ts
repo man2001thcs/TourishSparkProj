@@ -1,5 +1,13 @@
 import { User } from "../../model/user";
-import { Component, ElementRef, EventEmitter, OnInit, Output, ViewChild } from "@angular/core";
+import {
+  Component,
+  ElementRef,
+  EventEmitter,
+  OnDestroy,
+  OnInit,
+  Output,
+  ViewChild,
+} from "@angular/core";
 import {
   FormBuilder,
   FormControl,
@@ -7,17 +15,20 @@ import {
   Validators,
 } from "@angular/forms";
 import { MatDialog } from "@angular/material/dialog";
-import { Router } from "@angular/router";
+import { NavigationEnd, Router } from "@angular/router";
 import { Observable, Subscription } from "rxjs";
 import { TokenStorageService } from "src/app/utility/user_service/token.service";
 import { UserService } from "src/app/utility/user_service/user.service";
+
+import { filter } from "rxjs/operators";
+import { getHeaderPhase } from "src/app/utility/config/headerCode";
 
 @Component({
   selector: "app-admin-header",
   templateUrl: "./header.component.html",
   styleUrls: ["./header.component.css"],
 })
-export class HeaderAdminComponent {
+export class HeaderAdminComponent implements OnDestroy {
   @ViewChild("mySidenav")
   myNameElem!: ElementRef;
 
@@ -30,8 +41,8 @@ export class HeaderAdminComponent {
   @ViewChild("searchInput") searchInput!: ElementRef<HTMLInputElement>;
 
   @Output() checkNavOpen = new EventEmitter<boolean>();
-  
-  activeItem = '1st';
+
+  activeItem = "1st";
   isNavOpen = true;
   isAutoCompleteOpen = false;
 
@@ -43,7 +54,7 @@ export class HeaderAdminComponent {
   countNavClick = 0;
   countSearchClick = 0;
   subscriptions: Subscription[] = [];
-  
+
   constructor(
     private dialog: MatDialog,
     private tokenService: TokenStorageService,
@@ -57,6 +68,19 @@ export class HeaderAdminComponent {
     this.id = Number(localStorage.getItem("id")) ?? 0;
     console.log(localStorage.getItem("id"));
 
+    this.activeItem = getHeaderPhase(this.router.url);
+
+    this.subscriptions.push(
+      this.router.events
+        .pipe(filter((event) => event instanceof NavigationEnd))
+        .subscribe((event) => {
+          if (event instanceof NavigationEnd) {
+            console.log(event.url);
+            this.activeItem = getHeaderPhase(event.url);
+          }
+        })
+    );
+
     this.searchFormGroup = this.fb.group({
       searchValue: [
         "",
@@ -67,6 +91,10 @@ export class HeaderAdminComponent {
         ]),
       ],
     });
+  }
+
+  ngOnDestroy(): void {
+    this.subscriptions.forEach((subscription) => subscription.unsubscribe());
   }
 
   async signOut() {
@@ -103,7 +131,7 @@ export class HeaderAdminComponent {
     this.myNameElem.nativeElement.style["border-left"] = "2px solid #EDF1F7";
     this.myNameElem.nativeElement.style["border-right"] = "2px solid #EDF1F7";
 
-    this.headerElem.nativeElement.style['width'] = "100%";
+    this.headerElem.nativeElement.style["width"] = "100%";
 
     this.isNavOpen = true;
     this.addNewItem(this.isNavOpen);
@@ -119,10 +147,8 @@ export class HeaderAdminComponent {
     this.myNameElem.nativeElement.style["border-left"] = "0px solid #EDF1F7";
     this.myNameElem.nativeElement.style["border-right"] = "0px solid #EDF1F7";
 
-    
-    this.headerElem.nativeElement.style['width'] = "70%";
+    this.headerElem.nativeElement.style["width"] = "70%";
     document.body.style.backgroundColor = "white";
-
 
     this.isNavOpen = false;
     this.countNavClick = 0;
@@ -169,7 +195,7 @@ export class HeaderAdminComponent {
   }
 
   async navigateUrl(url: string) {
-    this.router.navigate(['admin/' + url]);
+    this.router.navigate(["admin/" + url]);
   }
 
   formSubmit(): void {}

@@ -3,181 +3,181 @@
     <button mat-raised-button class="demo-button">Add tourishPlan</button>
   </div>
 
-  <table
-    mat-table
-    [dataSource]="tourishPlanList"
-    matSort
-    matSort
-    class="mat-elevation-z8"
-    (matSortChange)="announceSortChange($event)"
-  >
-    <!-- Position Column -->
-    <ng-container matColumnDef="id">
-      <th
-        mat-header-cell
-        *matHeaderCellDef
-        mat-sort-header
-        sortActionDescription="Sort by id"
-      >
-        No.
-      </th>
-      <td mat-cell *matCellDef="let element">
-        <a routerLink="/admin/tourishPlanDetail/{{ element.id }}/edit">
-          {{ element.id }}</a
+  <div class="table-responsive">
+    <table
+      mat-table
+      [dataSource]="tourishPlanList"
+      matSort
+      matSort
+      class="mat-elevation-z8"
+      (matSortChange)="announceSortChange($event)"
+    >
+      <!-- Position Column -->
+      <ng-container matColumnDef="id">
+        <th
+          mat-header-cell
+          *matHeaderCellDef
+          mat-sort-header
+          sortActionDescription="Sort by id"
         >
-      </td>
-    </ng-container>
+          No.
+        </th>
+        <td mat-cell *matCellDef="let element">
+          <a routerLink="/admin/tourishPlanDetail/{{ element.id }}/edit">
+            {{ element.id }}</a
+          >
+        </td>
+      </ng-container>
 
-    <!-- Name Column -->
-    <ng-container matColumnDef="tourName">
-      <th
-        mat-header-cell
-        *matHeaderCellDef
-        mat-sort-header
-        sortActionDescription="Sort by tourName"
-      >
-        Tên tour
-      </th>
-      <td mat-cell *matCellDef="let element">{{ element.tourName }}</td>
-    </ng-container>
+      <!-- Name Column -->
+      <ng-container matColumnDef="tourName">
+        <th
+          mat-header-cell
+          *matHeaderCellDef
+          mat-sort-header
+          sortActionDescription="Sort by tourName"
+        >
+          Tên tour
+        </th>
+        <td mat-cell *matCellDef="let element">{{ element.tourName }}</td>
+      </ng-container>
 
-    <!-- SS Column -->
-    <ng-container matColumnDef="startingPoint">
-      <th
-        mat-header-cell
-        *matHeaderCellDef
-        mat-sort-header
-        sortActionDescription="Sort by startingPoint"
-      >
-        Điểm bắt đầu
-      </th>
-      <td mat-cell *matCellDef="let element">{{ element.startingPoint }}</td>
-    </ng-container>
+      <!-- SS Column -->
+      <ng-container matColumnDef="startingPoint">
+        <th
+          mat-header-cell
+          *matHeaderCellDef
+          mat-sort-header
+          sortActionDescription="Sort by startingPoint"
+        >
+          Điểm bắt đầu
+        </th>
+        <td mat-cell *matCellDef="let element">{{ element.startingPoint }}</td>
+      </ng-container>
 
-    <!-- SS Column -->
-    <ng-container matColumnDef="endPoint">
-      <th
-        mat-header-cell
-        *matHeaderCellDef
-        mat-sort-header
-        sortActionDescription="Sort by endPoint"
-      >
-        Điểm kết thúc
-      </th>
-      <td mat-cell *matCellDef="let element">{{ element.endPoint }}</td>
-    </ng-container>
+      <!-- SS Column -->
+      <ng-container matColumnDef="endPoint">
+        <th
+          mat-header-cell
+          *matHeaderCellDef
+          mat-sort-header
+          sortActionDescription="Sort by endPoint"
+        >
+          Điểm kết thúc
+        </th>
+        <td mat-cell *matCellDef="let element">{{ element.endPoint }}</td>
+      </ng-container>
 
-    <!-- SS Column -->
-    <ng-container matColumnDef="supportNumber">
-      <th
-        mat-header-cell
-        *matHeaderCellDef
-        mat-sort-header
-        sortActionDescription="Sort by supportNumber"
-      >
-        SĐT
-      </th>
-      <td mat-cell *matCellDef="let element">{{ element.supportNumber }}</td>
-    </ng-container>
+      <!-- SS Column -->
+      <ng-container matColumnDef="supportNumber">
+        <th
+          mat-header-cell
+          *matHeaderCellDef
+          mat-sort-header
+          sortActionDescription="Sort by supportNumber"
+        >
+          SĐT
+        </th>
+        <td mat-cell *matCellDef="let element">{{ element.supportNumber }}</td>
+      </ng-container>
 
-    <!-- SS Column -->
-    <ng-container matColumnDef="totalTicket">
-      <th
-        mat-header-cell
-        *matHeaderCellDef
-        mat-sort-header
-        sortActionDescription="Sort by totalTicket"
-      >
-        Tổng vé
-      </th>
-      <td mat-cell *matCellDef="let element">{{ element.totalTicket }}</td>
-    </ng-container>
+      <!-- SS Column -->
+      <ng-container matColumnDef="totalTicket">
+        <th
+          mat-header-cell
+          *matHeaderCellDef
+          mat-sort-header
+          sortActionDescription="Sort by totalTicket"
+        >
+          Tổng vé
+        </th>
+        <td mat-cell *matCellDef="let element">{{ element.totalTicket }}</td>
+      </ng-container>
 
-    <!-- SS Column -->
-    <ng-container matColumnDef="remainTicket">
-      <th
-        mat-header-cell
-        *matHeaderCellDef
-        mat-sort-header
-        sortActionDescription="Sort by remainTicket"
-      >
-        Số vé còn lại
-      </th>
-      <td mat-cell *matCellDef="let element">{{ element.remainTicket }}</td>
-    </ng-container>
+      <!-- SS Column -->
+      <ng-container matColumnDef="remainTicket">
+        <th
+          mat-header-cell
+          *matHeaderCellDef
+          mat-sort-header
+          sortActionDescription="Sort by remainTicket"
+        >
+          Số vé còn lại
+        </th>
+        <td mat-cell *matCellDef="let element">{{ element.remainTicket }}</td>
+      </ng-container>
 
-     <!-- SS Column -->
-     <ng-container matColumnDef="planStatus">
-      <th
-        mat-header-cell
-        *matHeaderCellDef
-        mat-sort-header
-        sortActionDescription="Sort by planStatus"
-      >
-        Tình trạng
-      </th>
-      <td mat-cell *matCellDef="let element">{{ element.planStatus }}</td>
-    </ng-container>
+      <!-- SS Column -->
+      <ng-container matColumnDef="planStatus">
+        <th
+          mat-header-cell
+          *matHeaderCellDef
+          mat-sort-header
+          sortActionDescription="Sort by planStatus"
+        >
+          Tình trạng
+        </th>
+        <td mat-cell *matCellDef="let element">{{ element.planStatus }}</td>
+      </ng-container>
 
-    <ng-container matColumnDef="createDate">
-      <th
-        mat-header-cell
-        *matHeaderCellDef
-        mat-sort-header
-        sortActionDescription="Sort by createDate"
-      >
-        Ngày tạo
-      </th>
-      <td mat-cell *matCellDef="let element">{{ element.createDate }}</td>
-    </ng-container>
+      <ng-container matColumnDef="createDate">
+        <th
+          mat-header-cell
+          *matHeaderCellDef
+          mat-sort-header
+          sortActionDescription="Sort by createDate"
+        >
+          Ngày tạo
+        </th>
+        <td mat-cell *matCellDef="let element">{{ element.createDate }}</td>
+      </ng-container>
 
-    <ng-container matColumnDef="startDate">
-      <th
-        mat-header-cell
-        *matHeaderCellDef
-        mat-sort-header
-        sortActionDescription="Sort by startDate"
-      >
-        Ngày bắt đầu
-      </th>
-      <td mat-cell *matCellDef="let element">{{ element.startDate }}</td>
-    </ng-container>
+      <ng-container matColumnDef="startDate">
+        <th
+          mat-header-cell
+          *matHeaderCellDef
+          mat-sort-header
+          sortActionDescription="Sort by startDate"
+        >
+          Ngày bắt đầu
+        </th>
+        <td mat-cell *matCellDef="let element">{{ element.startDate }}</td>
+      </ng-container>
 
-    <ng-container matColumnDef="endDate">
-      <th
-        mat-header-cell
-        *matHeaderCellDef
-        mat-sort-header
-        sortActionDescription="Sort by endDate"
-      >
-        Ngày kết thúc
-      </th>
-      <td mat-cell *matCellDef="let element">{{ element.endDate }}</td>
-    </ng-container>
+      <ng-container matColumnDef="endDate">
+        <th
+          mat-header-cell
+          *matHeaderCellDef
+          mat-sort-header
+          sortActionDescription="Sort by endDate"
+        >
+          Ngày kết thúc
+        </th>
+        <td mat-cell *matCellDef="let element">{{ element.endDate }}</td>
+      </ng-container>
 
-    <ng-container matColumnDef="edit">
-      <th mat-header-cell *matHeaderCellDef></th>
-      <td mat-cell *matCellDef="let element">
-        <button mat-button (click)="onClickEdit(element.id)">
-          Edit
-        </button>
-      </td>
-    </ng-container>
+      <ng-container matColumnDef="edit">
+        <th mat-header-cell *matHeaderCellDef></th>
+        <td mat-cell *matCellDef="let element">
+          <button mat-button (click)="onClickEdit(element.id)">Edit</button>
+        </td>
+      </ng-container>
 
-    <ng-container matColumnDef="delete">
-      <th mat-header-cell *matHeaderCellDef></th>
-      <td mat-cell *matCellDef="let element">
-        <button mat-button>Delete</button>
-      </td>
-    </ng-container>
+      <ng-container matColumnDef="delete">
+        <th mat-header-cell *matHeaderCellDef></th>
+        <td mat-cell *matCellDef="let element">
+          <button mat-button>Delete</button>
+        </td>
+      </ng-container>
 
-    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-    <tr
-      mat-row
-      *matRowDef="let row; columns: displayedColumns"
-      [class.demo-row-is-clicked]=""
-    ></tr>
-  </table>
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr
+        mat-row
+        *matRowDef="let row; columns: displayedColumns"
+        [class.demo-row-is-clicked]=""
+      ></tr>
+    </table>
+  </div>
   <mat-paginator
     [pageSizeOptions]="pageSizeOpstion"
     [length]="length"

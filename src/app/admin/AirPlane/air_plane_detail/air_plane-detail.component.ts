@@ -38,13 +38,15 @@ import { MessageService } from "src/app/utility/user_service/message.service";
 import { AirPlane } from "src/app/model/baseModel";
 
 @Component({
-  selector: "app-air-plane-detail",
+  selector: "app-book-detail",
   templateUrl: "./air_plane-detail.component.html",
   styleUrls: ["./air_plane-detail.component.css"],
 })
 export class AirPlaneDetailComponent implements OnInit, OnDestroy {
   isEditing: boolean = true;
-  airPlane: AirPlane = {
+  isSubmitted = false;
+
+  passengerCar: AirPlane = {
     id: "",
     branchName: "",
     hotlineNumber: "",
@@ -54,7 +56,7 @@ export class AirPlaneDetailComponent implements OnInit, OnDestroy {
     discountAmount: 0,
     description: "",
   };
-  airPlaneParam!: AirPlaneParam;
+  passengerCarParam!: AirPlaneParam;
 
   this_announce = "";
   firstTime = false;
@@ -62,7 +64,7 @@ export class AirPlaneDetailComponent implements OnInit, OnDestroy {
 
   errorMessageState!: Observable<any>;
   errorSystemState!: Observable<any>;
-  airPlaneState!: Observable<any>;
+  passengerCarState!: Observable<any>;
   editAirPlaneState!: Observable<any>;
   subscriptions: Subscription[] = [];
 
@@ -75,7 +77,7 @@ export class AirPlaneDetailComponent implements OnInit, OnDestroy {
     private _route: ActivatedRoute,
     @Inject(MAT_DIALOG_DATA) public data: AirPlaneParam
   ) {
-    this.airPlaneState = this.store.select(getAirPlane);
+    this.passengerCarState = this.store.select(getAirPlane);
     this.editAirPlaneState = this.store.select(editAirPlane);
     this.errorMessageState = this.store.select(getMessage);
     this.errorSystemState = this.store.select(getSysError);
@@ -87,42 +89,40 @@ export class AirPlaneDetailComponent implements OnInit, OnDestroy {
         this.data.id,
         Validators.compose([
           Validators.required,
-          Validators.minLength(6),
-          Validators.pattern(/^[a-z]{6,32}$/i),
         ]),
       ],
       branchName: [
-        this.airPlane.branchName ?? "",
+        "",
         Validators.compose([Validators.required]),
       ],
       hotlineNumber: [
-        this.airPlane.hotlineNumber ?? "",
+        "",
         Validators.compose([Validators.required, Validators.minLength(8)]),
       ],
       supportEmail: [
-        this.airPlane.supportEmail ?? "",
+        "",
         Validators.compose([Validators.required]),
       ],
       headQuarterAddress: [
-        this.airPlane.headQuarterAddress ?? "",
+        "",
         Validators.compose([Validators.required]),
       ],
       discountFloat: [
-        this.airPlane.discountFloat ?? 0,
+        0,
         Validators.compose([Validators.required]),
       ],
       discountAmount: [
-        this.airPlane.discountAmount ?? 0,
+       0,
         Validators.compose([Validators.required]),
       ],
 
-      description: this.airPlane.description,
+      description: "",
     });
 
     this.subscriptions.push(
-      this.airPlaneState.subscribe((state) => {
+      this.passengerCarState.subscribe((state) => {
         if (state) {
-          this.airPlane = state;
+          this.passengerCar = state;
 
           this.editformGroup_info.controls["branchName"].setValue(
             state.branchName
@@ -200,13 +200,13 @@ export class AirPlaneDetailComponent implements OnInit, OnDestroy {
 
   formReset(): void {
     this.editformGroup_info.setValue({
-      branchName: this.airPlane.branchName ?? "",
-      hotlineNumber: this.airPlane.hotlineNumber ?? "",
-      supportEmail: this.airPlane.supportEmail ?? "",
-      headQuarterAddress: this.airPlane.headQuarterAddress ?? "",
-      discountFloat: this.airPlane.discountFloat ?? 0,
-      discountAmount: this.airPlane.discountAmount ?? 0,
-      description: this.airPlane.description,
+      branchName: this.passengerCar.branchName ?? "",
+      hotlineNumber: this.passengerCar.hotlineNumber ?? "",
+      supportEmail: this.passengerCar.supportEmail ?? "",
+      headQuarterAddress: this.passengerCar.headQuarterAddress ?? "",
+      discountFloat: this.passengerCar.discountFloat ?? 0,
+      discountAmount: this.passengerCar.discountAmount ?? 0,
+      description: this.passengerCar.description,
     });
   }
 
@@ -215,21 +215,25 @@ export class AirPlaneDetailComponent implements OnInit, OnDestroy {
   }
 
   formSubmit_edit_info(): void {
-    const payload: AirPlane = {
-      id: this.data.id,
-      branchName: this.editformGroup_info.value.branchName,
-      hotlineNumber: this.editformGroup_info.value.hotlineNumber,
-      supportEmail: this.editformGroup_info.value.supportEmail,
-      headQuarterAddress: this.editformGroup_info.value.headQuarterAddress,
-      discountFloat: this.editformGroup_info.value.discountFloat,
-      discountAmount: this.editformGroup_info.value.discountAmount,
-      description: this.editformGroup_info.value.description,
-    };
-
-    this.store.dispatch(
-      AirPlaneActions.editAirPlane({
-        payload: payload,
-      })
-    );
+    this.isSubmitted = true;
+    if (!this.editformGroup_info.invalid){
+      const payload: AirPlane = {
+        id: this.data.id,
+        branchName: this.editformGroup_info.value.branchName,
+        hotlineNumber: this.editformGroup_info.value.hotlineNumber,
+        supportEmail: this.editformGroup_info.value.supportEmail,
+        headQuarterAddress: this.editformGroup_info.value.headQuarterAddress,
+        discountFloat: this.editformGroup_info.value.discountFloat,
+        discountAmount: this.editformGroup_info.value.discountAmount,
+        description: this.editformGroup_info.value.description,
+      };
+  
+      this.store.dispatch(
+        AirPlaneActions.editAirPlane({
+          payload: payload,
+        })
+      );
+    } else console.log(this.editformGroup_info.invalid)
+   
   }
 }

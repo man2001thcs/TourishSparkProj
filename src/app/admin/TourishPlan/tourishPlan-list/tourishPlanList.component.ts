@@ -87,6 +87,7 @@ export class TourishPlanListAdminComponent
     this.subscriptions.push(
       this.tourishPlanListState.subscribe((state) => {
         if (state) {
+          this.messageService.closeLoadingDialog();
           this.tourishPlanList = state.data;
           this.length = state.count;
         }
@@ -121,6 +122,7 @@ export class TourishPlanListAdminComponent
         },
       })
     );
+    this.messageService.openLoadingDialog();
 
     this.subscriptions.push(
       this.errorMessageState.subscribe((state) => {

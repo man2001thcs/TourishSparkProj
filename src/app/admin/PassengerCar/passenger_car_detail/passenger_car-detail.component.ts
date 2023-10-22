@@ -44,6 +44,8 @@ import { PassengerCar } from "src/app/model/baseModel";
 })
 export class PassengerCarDetailComponent implements OnInit, OnDestroy {
   isEditing: boolean = true;
+  isSubmitted = false;
+
   passengerCar: PassengerCar = {
     id: "",
     branchName: "",
@@ -87,36 +89,34 @@ export class PassengerCarDetailComponent implements OnInit, OnDestroy {
         this.data.id,
         Validators.compose([
           Validators.required,
-          Validators.minLength(6),
-          Validators.pattern(/^[a-z]{6,32}$/i),
         ]),
       ],
       branchName: [
-        this.passengerCar.branchName ?? "",
+        "",
         Validators.compose([Validators.required]),
       ],
       hotlineNumber: [
-        this.passengerCar.hotlineNumber ?? "",
+        "",
         Validators.compose([Validators.required, Validators.minLength(8)]),
       ],
       supportEmail: [
-        this.passengerCar.supportEmail ?? "",
+        "",
         Validators.compose([Validators.required]),
       ],
       headQuarterAddress: [
-        this.passengerCar.headQuarterAddress ?? "",
+        "",
         Validators.compose([Validators.required]),
       ],
       discountFloat: [
-        this.passengerCar.discountFloat ?? 0,
+        0,
         Validators.compose([Validators.required]),
       ],
       discountAmount: [
-        this.passengerCar.discountAmount ?? 0,
+       0,
         Validators.compose([Validators.required]),
       ],
 
-      description: this.passengerCar.description,
+      description: "",
     });
 
     this.subscriptions.push(
@@ -215,21 +215,25 @@ export class PassengerCarDetailComponent implements OnInit, OnDestroy {
   }
 
   formSubmit_edit_info(): void {
-    const payload: PassengerCar = {
-      id: this.data.id,
-      branchName: this.editformGroup_info.value.branchName,
-      hotlineNumber: this.editformGroup_info.value.hotlineNumber,
-      supportEmail: this.editformGroup_info.value.supportEmail,
-      headQuarterAddress: this.editformGroup_info.value.headQuarterAddress,
-      discountFloat: this.editformGroup_info.value.discountFloat,
-      discountAmount: this.editformGroup_info.value.discountAmount,
-      description: this.editformGroup_info.value.description,
-    };
-
-    this.store.dispatch(
-      PassengerCarActions.editPassengerCar({
-        payload: payload,
-      })
-    );
+    this.isSubmitted = true;
+    if (!this.editformGroup_info.invalid){
+      const payload: PassengerCar = {
+        id: this.data.id,
+        branchName: this.editformGroup_info.value.branchName,
+        hotlineNumber: this.editformGroup_info.value.hotlineNumber,
+        supportEmail: this.editformGroup_info.value.supportEmail,
+        headQuarterAddress: this.editformGroup_info.value.headQuarterAddress,
+        discountFloat: this.editformGroup_info.value.discountFloat,
+        discountAmount: this.editformGroup_info.value.discountAmount,
+        description: this.editformGroup_info.value.description,
+      };
+  
+      this.store.dispatch(
+        PassengerCarActions.editPassengerCar({
+          payload: payload,
+        })
+      );
+    } else console.log(this.editformGroup_info.invalid)
+   
   }
 }

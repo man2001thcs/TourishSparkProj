@@ -32,6 +32,7 @@ import { AirPlane } from "src/app/model/baseModel";
 })
 export class AirPlaneCreateComponent implements OnInit, OnDestroy {
   isEditing: boolean = true;
+  isSubmitted = false;
 
   airPlaneParam!: AirPlaneParam;
 
@@ -64,7 +65,7 @@ export class AirPlaneCreateComponent implements OnInit, OnDestroy {
     this.subscriptions.push(
       this.createAirPlaneState.subscribe((state) => {
         if (state) {
-          this.store
+          this.store;
           this.messageService.openMessageNotifyDialog(state.messageCode);
         }
       })
@@ -122,22 +123,23 @@ export class AirPlaneCreateComponent implements OnInit, OnDestroy {
   }
 
   formSubmit_create_info(): void {
-    const payload: AirPlane = {
-      branchName: this.createformGroup_info.value.branchName,
-      hotlineNumber: this.createformGroup_info.value.hotlineNumber,
-      supportEmail: this.createformGroup_info.value.supportEmail,
-      headQuarterAddress: this.createformGroup_info.value.headQuarterAddress,
-      discountFloat: this.createformGroup_info.value.discountFloat,
-      discountAmount: this.createformGroup_info.value.discountAmount,
-      description: this.createformGroup_info.value.description,
-    };
+    this.isSubmitted = true;
+    if (this.createformGroup_info.valid) {
+      const payload: AirPlane = {
+        branchName: this.createformGroup_info.value.branchName,
+        hotlineNumber: this.createformGroup_info.value.hotlineNumber,
+        supportEmail: this.createformGroup_info.value.supportEmail,
+        headQuarterAddress: this.createformGroup_info.value.headQuarterAddress,
+        discountFloat: this.createformGroup_info.value.discountFloat,
+        discountAmount: this.createformGroup_info.value.discountAmount,
+        description: this.createformGroup_info.value.description,
+      };
 
-    this.store.dispatch(
-      airPlaneActions.createAirPlane({
-        payload: payload,
-      })
-    );
-
-    console.log(payload);
+      this.store.dispatch(
+        airPlaneActions.createAirPlane({
+          payload: payload,
+        })
+      );
+    }
   }
 }

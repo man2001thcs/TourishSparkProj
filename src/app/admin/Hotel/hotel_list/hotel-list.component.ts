@@ -85,6 +85,7 @@ export class HotelListComponent
     this.subscriptions.push(
       this.hotelListState.subscribe((state) => {
         if (state) {
+          console.log("abcg: ", state);
           this.messageService.closeLoadingDialog();
           this.hotelList = state.data;
           this.length = state.count;
@@ -95,7 +96,7 @@ export class HotelListComponent
     this.subscriptions.push(
       this.hotelDeleteState.subscribe((state) => {
         if (state) {
-          console.log("abc: ", state);
+          console.log("abcd: ", state);
           this.messageService.openMessageNotifyDialog(state.messageCode);
 
           if (state.resultCd === 0) {
