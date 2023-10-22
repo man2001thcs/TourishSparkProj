@@ -44,6 +44,7 @@ import { FullReceipt, TotalReceipt } from "src/app/model/baseModel";
 })
 export class ReceiptDetailComponent implements OnInit, OnDestroy {
   isEditing: boolean = true;
+  isSubmitted = false;
   receipt: FullReceipt = {
     fullReceiptId: "",
     totalReceiptId: "",
@@ -62,7 +63,6 @@ export class ReceiptDetailComponent implements OnInit, OnDestroy {
     phoneNumber: "",
   };
   receiptParam!: ReceiptParam;
-  submited = false;
 
   this_announce = "";
   firstTime = false;
@@ -219,26 +219,30 @@ export class ReceiptDetailComponent implements OnInit, OnDestroy {
   }
 
   formSubmit_edit_info(): void {
-    const payload: FullReceipt = {
-      totalReceiptId: this.receipt.totalReceiptId,
-      fullReceiptId: this.data.id,
-      guestName: this.editformGroup_info.value.guestName,
-      tourishPlanId: this.editformGroup_info.value.tourishPlanId,
-      totalTicket: this.editformGroup_info.value.totalTicket,
-      originalPrice: this.editformGroup_info.value.originalPrice,
-      discountFloat: this.editformGroup_info.value.discountFloat,
-      discountAmount: this.editformGroup_info.value.discountAmount,
-      email: this.editformGroup_info.value.email,
-      phoneNumber: this.editformGroup_info.value.phoneNumber,
-      description: this.editformGroup_info.value.description,
-      status: this.editformGroup_info.value.status,
-    };
-
-    this.store.dispatch(
-      ReceiptActions.editReceipt({
-        payload: payload,
-      })
-    );
+    this.isSubmitted = true;
+    if (this.editformGroup_info.valid){
+      const payload: FullReceipt = {
+        totalReceiptId: this.receipt.totalReceiptId,
+        fullReceiptId: this.data.id,
+        guestName: this.editformGroup_info.value.guestName,
+        tourishPlanId: this.editformGroup_info.value.tourishPlanId,
+        totalTicket: this.editformGroup_info.value.totalTicket,
+        originalPrice: this.editformGroup_info.value.originalPrice,
+        discountFloat: this.editformGroup_info.value.discountFloat,
+        discountAmount: this.editformGroup_info.value.discountAmount,
+        email: this.editformGroup_info.value.email,
+        phoneNumber: this.editformGroup_info.value.phoneNumber,
+        description: this.editformGroup_info.value.description,
+        status: this.editformGroup_info.value.status,
+      };
+  
+      this.store.dispatch(
+        ReceiptActions.editReceipt({
+          payload: payload,
+        })
+      );
+    }
+    
   }
 
   selectChangeReceipt($event: any): any {

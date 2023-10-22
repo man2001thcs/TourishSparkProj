@@ -47,7 +47,7 @@ export class TourishPlanCreateAdminComponent
   this_announce = "";
 
   createformGroup!: FormGroup;
-  submited = false;
+  isSubmitted = false;
 
   stayingSchedule: any;
 
@@ -158,7 +158,7 @@ export class TourishPlanCreateAdminComponent
   }
 
   formSubmit_create_info(): void {
-    this.submited = true;
+    this.isSubmitted = true;
     if (this.createformGroup.valid) {
       this.store.dispatch(
         TourishPlanActions.createTourishPlan({

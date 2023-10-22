@@ -57,6 +57,8 @@ export class RestaurantCreateComponent implements OnInit, OnDestroy {
   createRestaurantState!: Observable<any>;
   subscriptions: Subscription[] = [];
 
+  isSubmitted = false;
+
   constructor(
     private dialog: MatDialog,
     private fb: FormBuilder,
@@ -102,13 +104,13 @@ export class RestaurantCreateComponent implements OnInit, OnDestroy {
     //Called after the constructor, initializing input properties, and the first call to ngOnChanges.
     //Add 'implements OnInit' to the class.
     this.createformGroup_info = this.fb.group({
-      placeBranch: "",
-      hotlineNumber: "",
-      supportEmail: "",
-      headQuarterAddress: "",
-      discountFloat: 0,
-      discountAmount: 0,
-      description: "",
+      placeBranch: ["", Validators.compose([Validators.required])],
+      hotlineNumber: ["", Validators.compose([Validators.required])],
+      supportEmail: ["", Validators.compose([Validators.required])],
+      headQuarterAddress: ["", Validators.compose([Validators.required])],
+      discountFloat: [0, Validators.compose([Validators.required])],
+      discountAmount: [0, Validators.compose([Validators.required])],
+      description: ["", Validators.compose([Validators.required])],
     });
   }
 
@@ -132,22 +134,23 @@ export class RestaurantCreateComponent implements OnInit, OnDestroy {
   }
 
   formSubmit_create_info(): void {
-    const payload: Restaurant = {
-      placeBranch: this.createformGroup_info.value.placeBranch,
-      hotlineNumber: this.createformGroup_info.value.hotlineNumber,
-      supportEmail: this.createformGroup_info.value.supportEmail,
-      headQuarterAddress: this.createformGroup_info.value.headQuarterAddress,
-      discountFloat: this.createformGroup_info.value.discountFloat,
-      discountAmount: this.createformGroup_info.value.discountAmount,
-      description: this.createformGroup_info.value.description,
-    };
+    this.isSubmitted = true;
+    if (this.createformGroup_info.valid) {
+      const payload: Restaurant = {
+        placeBranch: this.createformGroup_info.value.placeBranch,
+        hotlineNumber: this.createformGroup_info.value.hotlineNumber,
+        supportEmail: this.createformGroup_info.value.supportEmail,
+        headQuarterAddress: this.createformGroup_info.value.headQuarterAddress,
+        discountFloat: this.createformGroup_info.value.discountFloat,
+        discountAmount: this.createformGroup_info.value.discountAmount,
+        description: this.createformGroup_info.value.description,
+      };
 
-    this.store.dispatch(
-      restaurantActions.createRestaurant({
-        payload: payload,
-      })
-    );
-
-    console.log(payload);
+      this.store.dispatch(
+        restaurantActions.createRestaurant({
+          payload: payload,
+        })
+      );
+    }
   }
 }

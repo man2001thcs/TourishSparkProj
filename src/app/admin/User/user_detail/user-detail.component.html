@@ -17,17 +17,29 @@
     <div class="row" style="display: flex; flex-direction: column !important; flex-wrap: 1; padding-left: 90px !important;">
       <form [formGroup]="editformGroup_info">
         <div class="row">
-          <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 create-form">
+          <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 edit-form">
             <div class="row">
               <mat-form-field appearance="outline" class="full-width-input">
-                <mat-label>Tên đối tác</mat-label>
+                <mat-label>Tên tài khoản</mat-label>
                 <input
                   matInput
                   fullwidth
                   placeholder="Vd: Bồ Công Anh"
                   formControlName="userName"
+                  [disabled]='true'
                 />
               </mat-form-field>
+
+              <div style="margin-top: -20px; margin-bottom: 10px">
+                <app-validation
+                  *ngIf="
+                    this.editformGroup_info.get('userName')?.errors &&
+                    (editformGroup_info.get('userName')?.touched || isSubmitted)
+                  "
+                  [formGroup]="editformGroup_info"
+                  [formGroupControlName]="'userName'"
+                ></app-validation>
+              </div>
             </div>
 
             <div class="row">
@@ -37,8 +49,20 @@
                   matInput
                   placeholder="Vd: abc@gmail.com"
                   formControlName="email"
+                  [disabled]='true'
                 />
               </mat-form-field>
+
+              <div style="margin-top: -20px; margin-bottom: 10px">
+                <app-validation
+                  *ngIf="
+                    this.editformGroup_info.get('email')?.errors &&
+                    (editformGroup_info.get('email')?.touched || isSubmitted)
+                  "
+                  [formGroup]="editformGroup_info"
+                  [formGroupControlName]="'email'"
+                ></app-validation>
+              </div>
             </div>
 
             <div class="row">
@@ -50,10 +74,20 @@
                   formControlName="phoneNumber"
                 />
               </mat-form-field>
+              <div style="margin-top: -20px; margin-bottom: 10px">
+                <app-validation
+                  *ngIf="
+                    this.editformGroup_info.get('phoneNumber')?.errors &&
+                    (editformGroup_info.get('phoneNumber')?.touched || isSubmitted)
+                  "
+                  [formGroup]="editformGroup_info"
+                  [formGroupControlName]="'phoneNumber'"
+                ></app-validation>
+              </div>
             </div>
           </div>
 
-          <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 create-form">
+          <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 edit-form">
             <div class="row">
               <mat-form-field appearance="outline" class="full-width-input">
                 <mat-label>Địa chỉ trụ sở</mat-label>
@@ -63,20 +97,22 @@
                   formControlName="address"
                 />
               </mat-form-field>
+              <div style="margin-top: -20px; margin-bottom: 10px">
+                <app-validation
+                  *ngIf="
+                    this.editformGroup_info.get('address')?.errors &&
+                    (editformGroup_info.get('address')?.touched || isSubmitted)
+                  "
+                  [formGroup]="editformGroup_info"
+                  [formGroupControlName]="'address'"
+                ></app-validation>
+              </div>
             </div>
 
             <div class="row">
               <mat-form-field appearance="outline" class="full-width-input">
                 <mat-label>Vai trò</mat-label>
-                <input
-                  matInput
-                  placeholder="Vd: New"
-                  formControlName="role"
-                />
-              </mat-form-field>
-              <mat-form-field  formControlName="role" appearance="outline" class="full-width-input">
-                <mat-label>Vai trò</mat-label>
-                <select matNativeControl required>
+                <select matNativeControl required formControlName="role">
                   <option value="0">Mới</option>
                   <option value="1">Nhân viên quản lý</option>
                   <option value="2">Quản lý trưởng</option>
@@ -93,6 +129,16 @@
                   formControlName="fullName"
                 />
               </mat-form-field>
+              <div style="margin-top: -20px; margin-bottom: 10px">
+                <app-validation
+                  *ngIf="
+                    this.editformGroup_info.get('fullName')?.errors &&
+                    (editformGroup_info.get('fullName')?.touched || isSubmitted)
+                  "
+                  [formGroup]="editformGroup_info"
+                  [formGroupControlName]="'fullName'"
+                ></app-validation>
+              </div>
             </div>
           </div>
         </div>      

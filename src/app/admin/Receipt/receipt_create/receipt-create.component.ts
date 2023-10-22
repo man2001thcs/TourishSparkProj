@@ -47,7 +47,7 @@ export class ReceiptCreateComponent implements OnInit, OnDestroy {
   receiptParam!: ReceiptParam;
 
   this_announce = "";
-  submited = false;
+  isSubmitted = false;
 
   createformGroup_info!: FormGroup;
 
@@ -143,7 +143,7 @@ export class ReceiptCreateComponent implements OnInit, OnDestroy {
   }
 
   formSubmit_create_info(): void {
-    this.submited = true;
+    this.isSubmitted = true;
 
     if (this.createformGroup_info.valid) {
       const payload: FullReceipt = {

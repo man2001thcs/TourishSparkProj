@@ -44,6 +44,7 @@ import { Hotel } from "src/app/model/baseModel";
 })
 export class HotelDetailComponent implements OnInit, OnDestroy {
   isEditing: boolean = true;
+  isSubmitted = false;
   hotel: Hotel = {
     id: "",
     placeBranch: "",
@@ -193,21 +194,25 @@ export class HotelDetailComponent implements OnInit, OnDestroy {
   }
 
   formSubmit_edit_info(): void {
-    const payload: Hotel = {
-      id: this.data.id,
-      placeBranch: this.editformGroup_info.value.placeBranch,
-      hotlineNumber: this.editformGroup_info.value.hotlineNumber,
-      supportEmail: this.editformGroup_info.value.supportEmail,
-      headQuarterAddress: this.editformGroup_info.value.headQuarterAddress,
-      discountFloat: this.editformGroup_info.value.discountFloat,
-      discountAmount: this.editformGroup_info.value.discountAmount,
-      description: this.editformGroup_info.value.description,
-    };
-
-    this.store.dispatch(
-      HotelActions.editHotel({
-        payload: payload,
-      })
-    );
+    this.isSubmitted = true;
+    if (this.editformGroup_info.valid){
+      const payload: Hotel = {
+        id: this.data.id,
+        placeBranch: this.editformGroup_info.value.placeBranch,
+        hotlineNumber: this.editformGroup_info.value.hotlineNumber,
+        supportEmail: this.editformGroup_info.value.supportEmail,
+        headQuarterAddress: this.editformGroup_info.value.headQuarterAddress,
+        discountFloat: this.editformGroup_info.value.discountFloat,
+        discountAmount: this.editformGroup_info.value.discountAmount,
+        description: this.editformGroup_info.value.description,
+      };
+  
+      this.store.dispatch(
+        HotelActions.editHotel({
+          payload: payload,
+        })
+      );
+    }
+    
   }
 }

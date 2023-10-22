@@ -85,36 +85,16 @@ export class AirPlaneDetailComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.editformGroup_info = this.fb.group({
-      id: [
-        this.data.id,
-        Validators.compose([
-          Validators.required,
-        ]),
-      ],
-      branchName: [
-        "",
-        Validators.compose([Validators.required]),
-      ],
+      id: [this.data.id, Validators.compose([Validators.required])],
+      branchName: ["", Validators.compose([Validators.required])],
       hotlineNumber: [
         "",
         Validators.compose([Validators.required, Validators.minLength(8)]),
       ],
-      supportEmail: [
-        "",
-        Validators.compose([Validators.required]),
-      ],
-      headQuarterAddress: [
-        "",
-        Validators.compose([Validators.required]),
-      ],
-      discountFloat: [
-        0,
-        Validators.compose([Validators.required]),
-      ],
-      discountAmount: [
-       0,
-        Validators.compose([Validators.required]),
-      ],
+      supportEmail: ["", Validators.compose([Validators.required])],
+      headQuarterAddress: ["", Validators.compose([Validators.required])],
+      discountFloat: [0, Validators.compose([Validators.required])],
+      discountAmount: [0, Validators.compose([Validators.required])],
 
       description: "",
     });
@@ -216,7 +196,7 @@ export class AirPlaneDetailComponent implements OnInit, OnDestroy {
 
   formSubmit_edit_info(): void {
     this.isSubmitted = true;
-    if (!this.editformGroup_info.invalid){
+    if (this.editformGroup_info.valid) {
       const payload: AirPlane = {
         id: this.data.id,
         branchName: this.editformGroup_info.value.branchName,
@@ -227,13 +207,12 @@ export class AirPlaneDetailComponent implements OnInit, OnDestroy {
         discountAmount: this.editformGroup_info.value.discountAmount,
         description: this.editformGroup_info.value.description,
       };
-  
+
       this.store.dispatch(
         AirPlaneActions.editAirPlane({
           payload: payload,
         })
       );
-    } else console.log(this.editformGroup_info.invalid)
-   
+    } else console.log(this.editformGroup_info.invalid);
   }
 }

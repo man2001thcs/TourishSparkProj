@@ -44,6 +44,8 @@ import { User } from "src/app/model/baseModel";
 })
 export class UserDetailComponent implements OnInit, OnDestroy {
   isEditing: boolean = true;
+  isSubmitted = false;
+
   user: User = {
     id: "",
     userName: "",
@@ -82,32 +84,16 @@ export class UserDetailComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.editformGroup_info = this.fb.group({
-      id: [
-        this.data.id,
-        Validators.compose([
-          Validators.required,
-          Validators.minLength(6),
-          Validators.pattern(/^[a-z]{6,32}$/i),
-        ]),
-      ],
-      userName: [
-        this.user.userName ?? "",
-        Validators.compose([Validators.required]),
-      ],
+      id: [this.data.id, Validators.compose([Validators.required])],
+      userName: ["", Validators.compose([Validators.required])],
       phoneNumber: [
-        this.user.phoneNumber ?? "",
+        "",
         Validators.compose([Validators.required, Validators.minLength(8)]),
       ],
-      email: [this.user.email ?? "", Validators.compose([Validators.required])],
-      address: [
-        this.user.address ?? "",
-        Validators.compose([Validators.required]),
-      ],
-      role: [this.user.role ?? 0, Validators.compose([Validators.required])],
-      fullName: [
-        this.user.fullName ?? 0,
-        Validators.compose([Validators.required]),
-      ],
+      email: ["", Validators.compose([Validators.required])],
+      address: ["", Validators.compose([Validators.required])],
+      role: [0, Validators.compose([Validators.required])],
+      fullName: [0, Validators.compose([Validators.required])],
     });
 
     this.subscriptions.push(
@@ -191,20 +177,23 @@ export class UserDetailComponent implements OnInit, OnDestroy {
   }
 
   formSubmit_edit_info(): void {
-    const payload: User = {
-      id: this.data.id,
-      userName: this.editformGroup_info.value.userName,
-      phoneNumber: this.editformGroup_info.value.phoneNumber,
-      email: this.editformGroup_info.value.email,
-      address: this.editformGroup_info.value.address,
-      role: this.editformGroup_info.value.role,
-      fullName: this.editformGroup_info.value.fullName,
-    };
+    this.isSubmitted = true;
+    if (this.editformGroup_info.valid) {
+      const payload: User = {
+        id: this.data.id,
+        userName: this.editformGroup_info.value.userName,
+        phoneNumber: this.editformGroup_info.value.phoneNumber,
+        email: this.editformGroup_info.value.email,
+        address: this.editformGroup_info.value.address,
+        role: parseInt(this.editformGroup_info.value.role),
+        fullName: this.editformGroup_info.value.fullName,
+      };
 
-    this.store.dispatch(
-      UserActions.editUser({
-        payload: payload,
-      })
-    );
+      this.store.dispatch(
+        UserActions.editUser({
+          payload: payload,
+        })
+      );
+    }
   }
 }

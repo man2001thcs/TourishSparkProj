@@ -67,7 +67,7 @@ export class TourishPlanDetailAdminComponent implements OnInit, OnDestroy {
     movingSchedules: [],
   };
 
-  submited = false;
+  isSubmitted = false;
 
   tourishPlanParam!: TourishPlanParam;
 
@@ -234,7 +234,7 @@ export class TourishPlanDetailAdminComponent implements OnInit, OnDestroy {
   }
 
   formSubmit_create_info(): void {
-    this.submited = true;
+    this.isSubmitted = true;
     if (this.editformGroup_info.valid) {
       this.store.dispatch(
         TourishPlanActions.editTourishPlan({

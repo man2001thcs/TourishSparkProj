@@ -44,6 +44,7 @@ import { Restaurant } from "src/app/model/baseModel";
 })
 export class RestaurantDetailComponent implements OnInit, OnDestroy {
   isEditing: boolean = true;
+  isSubmitted = false;
   restaurant: Restaurant = {
     id: "",
     placeBranch: "",
@@ -83,40 +84,18 @@ export class RestaurantDetailComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.editformGroup_info = this.fb.group({
-      id: [
-        this.data.id,
-        Validators.compose([
-          Validators.required,
-          Validators.minLength(6),
-          Validators.pattern(/^[a-z]{6,32}$/i),
-        ]),
-      ],
-      placeBranch: [
-        this.restaurant.placeBranch ?? "",
-        Validators.compose([Validators.required]),
-      ],
+      id: [this.data.id, Validators.compose([Validators.required])],
+      placeBranch: ["", Validators.compose([Validators.required])],
       hotlineNumber: [
-        this.restaurant.hotlineNumber ?? "",
+        "",
         Validators.compose([Validators.required, Validators.minLength(8)]),
       ],
-      supportEmail: [
-        this.restaurant.supportEmail ?? "",
-        Validators.compose([Validators.required]),
-      ],
-      headQuarterAddress: [
-        this.restaurant.headQuarterAddress ?? "",
-        Validators.compose([Validators.required]),
-      ],
-      discountFloat: [
-        this.restaurant.discountFloat ?? 0,
-        Validators.compose([Validators.required]),
-      ],
-      discountAmount: [
-        this.restaurant.discountAmount ?? 0,
-        Validators.compose([Validators.required]),
-      ],
+      supportEmail: ["", Validators.compose([Validators.required])],
+      headQuarterAddress: ["", Validators.compose([Validators.required])],
+      discountFloat: [0, Validators.compose([Validators.required])],
+      discountAmount: [0, Validators.compose([Validators.required])],
 
-      description: this.restaurant.description,
+      description: ["", Validators.compose([Validators.required])]
     });
 
     this.subscriptions.push(
@@ -215,21 +194,24 @@ export class RestaurantDetailComponent implements OnInit, OnDestroy {
   }
 
   formSubmit_edit_info(): void {
-    const payload: Restaurant = {
-      id: this.data.id,
-      placeBranch: this.editformGroup_info.value.placeBranch,
-      hotlineNumber: this.editformGroup_info.value.hotlineNumber,
-      supportEmail: this.editformGroup_info.value.supportEmail,
-      headQuarterAddress: this.editformGroup_info.value.headQuarterAddress,
-      discountFloat: this.editformGroup_info.value.discountFloat,
-      discountAmount: this.editformGroup_info.value.discountAmount,
-      description: this.editformGroup_info.value.description,
-    };
-
-    this.store.dispatch(
-      RestaurantActions.editRestaurant({
-        payload: payload,
-      })
-    );
+    this.isSubmitted = true;
+    if (this.editformGroup_info.valid){
+      const payload: Restaurant = {
+        id: this.data.id,
+        placeBranch: this.editformGroup_info.value.placeBranch,
+        hotlineNumber: this.editformGroup_info.value.hotlineNumber,
+        supportEmail: this.editformGroup_info.value.supportEmail,
+        headQuarterAddress: this.editformGroup_info.value.headQuarterAddress,
+        discountFloat: this.editformGroup_info.value.discountFloat,
+        discountAmount: this.editformGroup_info.value.discountAmount,
+        description: this.editformGroup_info.value.description,
+      };
+  
+      this.store.dispatch(
+        RestaurantActions.editRestaurant({
+          payload: payload,
+        })
+      );
+    } 
   }
 }
