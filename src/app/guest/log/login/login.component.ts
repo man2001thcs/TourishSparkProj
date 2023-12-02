@@ -15,7 +15,7 @@ import {
 import * as LoginAction from "./login.store.action";
 import { TokenStorageService } from "src/app/utility/user_service/token.service";
 import { MessageService } from "src/app/utility/user_service/message.service";
-import { NbDialogRef } from "@nebular/theme";
+
 import {
   ConfirmDialogComponent,
   DialogData,
@@ -86,7 +86,6 @@ export class LoginComponent implements OnInit {
         Validators.compose([
           Validators.required,
           Validators.minLength(4),
-          Validators.pattern(/^[a-z]{6,32}$/i),
         ]),
       ],
       password: [

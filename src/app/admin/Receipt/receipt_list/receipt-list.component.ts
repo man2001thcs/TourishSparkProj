@@ -133,6 +133,7 @@ export class ReceiptListComponent implements OnInit, AfterViewInit, OnDestroy {
         },
       })
     );
+    this.messageService.openLoadingDialog();
 
     this.subscriptions.push(
       this.errorMessageState.subscribe((state) => {

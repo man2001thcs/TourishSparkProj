@@ -78,6 +78,7 @@ img.img-logo {
   overflow-y: auto;
 
   display: flex;
+  align-items: center;
   flex-grow: 0;
   opacity: 1;
 
@@ -90,7 +91,7 @@ img.img-logo {
 }
 
 .sidenav .sideNavContent .sidenavCategory {
-  width: 260px;
+  width: 100%;
   flex-direction: column;
   display: flex;
   overflow-x: hidden !important;
@@ -176,6 +177,15 @@ button {
 }
 
 @media screen and (max-height: 450px) {
+  .sidenav {
+    padding-top: 15px;
+  }
+  .sidenav a {
+    font-size: 18px;
+  }
+}
+
+@media screen and (max-height: 650px) {
   .sidenav {
     padding-top: 15px;
   }

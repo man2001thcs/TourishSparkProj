@@ -97,6 +97,10 @@ export class HeaderAdminComponent implements OnDestroy {
     this.subscriptions.forEach((subscription) => subscription.unsubscribe());
   }
 
+  userInfo() {
+    this.router.navigate(["/admin/account/info"]);
+  }
+
   async signOut() {
     await this.tokenService.signOut();
     this.router.navigate(["/guest/login"]);
@@ -122,16 +126,28 @@ export class HeaderAdminComponent implements OnDestroy {
   }
 
   openNav() {
-    this.myNameElem.nativeElement.style.width = "340px";
-    this.myNameElem.nativeElement.style["margin-right"] = "0px";
-    this.myNameElem.nativeElement.style["padding-top"] = "25px";
-    this.myNameElem.nativeElement.style["padding-left"] = "40px";
-    this.myNameElem.nativeElement.style["padding-right"] = "25px";
-    this.myNameElem.nativeElement.style["border-bottom"] = "2px solid #EDF1F7";
-    this.myNameElem.nativeElement.style["border-left"] = "2px solid #EDF1F7";
-    this.myNameElem.nativeElement.style["border-right"] = "2px solid #EDF1F7";
-
-    this.headerElem.nativeElement.style["width"] = "100%";
+    if (window.screen.width >= 650){
+      this.myNameElem.nativeElement.style.width = "340px";
+      this.myNameElem.nativeElement.style["margin-right"] = "0px";
+      this.myNameElem.nativeElement.style["padding-top"] = "25px";
+      this.myNameElem.nativeElement.style["padding-left"] = "0px";
+      this.myNameElem.nativeElement.style["padding-right"] = "0px";
+      this.myNameElem.nativeElement.style["border-bottom"] = "2px solid #EDF1F7";
+      this.myNameElem.nativeElement.style["border-left"] = "2px solid #EDF1F7";
+      this.myNameElem.nativeElement.style["border-right"] = "2px solid #EDF1F7";
+      
+      this.headerElem.nativeElement.style["width"] = "100%";
+    } else {
+      this.myNameElem.nativeElement.style.width = "100%";
+      this.myNameElem.nativeElement.style["margin-top"] = "0px";
+      this.myNameElem.nativeElement.style["margin-right"] = "0px";
+      this.myNameElem.nativeElement.style["padding-top"] = "25px";
+      this.myNameElem.nativeElement.style["padding-left"] = "40px";
+      this.myNameElem.nativeElement.style["padding-right"] = "25px";
+      this.myNameElem.nativeElement.style["border-bottom"] = "2px solid #EDF1F7";
+      this.myNameElem.nativeElement.style["border-left"] = "2px solid #EDF1F7";
+      this.myNameElem.nativeElement.style["border-right"] = "2px solid #EDF1F7";
+    }
 
     this.isNavOpen = true;
     this.addNewItem(this.isNavOpen);

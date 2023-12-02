@@ -140,6 +140,9 @@ import { reducer as UserListReducer } from "../User/user_list/user-list.store.re
 import { storeKey as UserDetailStoreKey } from "../User/user_detail/user-detail.store.action";
 import { reducer as UserDetailReducer } from "../User/user_detail/user-detail.store.reducer";
 
+import { storeKey as AccountInfoStoreKey } from "../Account/account-info/account-info.store.action";
+import { reducer as AccountInfoReducer } from "../Account/account-info/account-info.store.reducer";
+
 import { SharedModule } from "src/app/shared.module";
 import { MatExpansionModule } from "@angular/material/expansion";
 import { MatProgressSpinnerModule } from "@angular/material/progress-spinner";
@@ -199,6 +202,8 @@ import { UserDetailComponent } from "../User/user_detail/user-detail.component";
 import { UserListComponent } from "../User/user_list/user-list.component";
 import { UserEffects } from "../User/user_detail/user-detail.store.effect";
 import { UserListEffects } from "../User/user_list/user-list.store.effect";
+import { AccountInfoComponent } from "../Account/account-info/account-info.component";
+import { AccountEffects } from "../Account/account-info/account-info.store.effect";
 
 @NgModule({
   declarations: [
@@ -232,6 +237,8 @@ import { UserListEffects } from "../User/user_list/user-list.store.effect";
 
     UserDetailComponent,
     UserListComponent,
+
+    AccountInfoComponent,
 
     AdminMainComponent,
     HeaderAdminComponent,
@@ -315,6 +322,8 @@ import { UserListEffects } from "../User/user_list/user-list.store.effect";
     StoreModule.forFeature(UserListStoreKey, UserListReducer),
     StoreModule.forFeature(UserDetailStoreKey, UserDetailReducer),
 
+    StoreModule.forFeature(AccountInfoStoreKey, AccountInfoReducer),
+
     StoreModule.forFeature(
       StayingAutocompleteStoreKey,
       StayingAutocompleteReducer
@@ -374,6 +383,8 @@ import { UserListEffects } from "../User/user_list/user-list.store.effect";
 
     EffectsModule.forFeature([UserEffects]),
     EffectsModule.forFeature([UserListEffects]),
+
+    EffectsModule.forFeature([AccountEffects]),
   ],
 })
 export class AdminModule {}

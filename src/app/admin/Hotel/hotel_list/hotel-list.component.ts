@@ -245,7 +245,7 @@ export class HotelListComponent
     // Furthermore, you can customize the message to add additional
     // details about the values being sorted.
     console.log(sortState);
-    if ((sortState.active = "name")) {
+    if ((sortState.active === "placeBranch")) {
       if (sortState.direction === "asc") {
         this.store.dispatch(
           HotelListActions.getHotelList({
@@ -255,6 +255,7 @@ export class HotelListComponent
             },
           })
         );
+        this.messageService.openLoadingDialog();
       } else if (sortState.direction === "desc") {
         this.store.dispatch(
           HotelListActions.getHotelList({
@@ -265,6 +266,7 @@ export class HotelListComponent
             },
           })
         );
+        this.messageService.openLoadingDialog();
       }
     } else {
     }
