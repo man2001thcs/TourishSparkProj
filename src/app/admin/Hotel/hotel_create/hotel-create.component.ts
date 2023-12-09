@@ -77,6 +77,7 @@ export class HotelCreateComponent implements OnInit, OnDestroy {
     this.subscriptions.push(
       this.createHotelState.subscribe((state) => {
         if (state) {
+          this.messageService.closeLoadingDialog();
           this.messageService.openMessageNotifyDialog(state.messageCode);
         }
       })
@@ -85,6 +86,7 @@ export class HotelCreateComponent implements OnInit, OnDestroy {
     this.subscriptions.push(
       this.errorMessageState.subscribe((state) => {
         if (state) {
+          this.messageService.closeLoadingDialog();
           this.messageService.openMessageNotifyDialog(state);
         }
       })
@@ -93,6 +95,7 @@ export class HotelCreateComponent implements OnInit, OnDestroy {
     this.subscriptions.push(
       this.errorSystemState.subscribe((state) => {
         if (state) {
+          this.messageService.closeLoadingDialog();
           this.messageService.openSystemFailNotifyDialog(state);
         }
       })
@@ -146,6 +149,7 @@ export class HotelCreateComponent implements OnInit, OnDestroy {
         description: this.createformGroup_info.value.description,
       };
 
+      this.messageService.openLoadingDialog();
       this.store.dispatch(
         hotelActions.createHotel({
           payload: payload,

@@ -51,7 +51,12 @@ export class MovingMultiselectAutocompleteComponent implements OnInit {
   @Input() data_selected: Array<MovingSchedule> = [];
   @Input() key: string = "";
 
+  data_selected_edit: MovingSchedule[] = [];
+
   movingScheduleList: MovingSchedule[] = [];
+
+  movingScheduleEdit!: MovingSchedule | null;
+  indexMovingScheduleEdit: number = -1;
 
   movingIdList: string[] = [];
   movingNameList: string[] = [];
@@ -83,7 +88,10 @@ export class MovingMultiselectAutocompleteComponent implements OnInit {
 
   movingFormGroup!: FormGroup;
 
+  editMovingFormGroup!: FormGroup;
+
   isSubmit = false;
+  disableType = false;
 
   subscriptions: Subscription[] = [];
   movingListState!: Observable<any>;
@@ -99,7 +107,9 @@ export class MovingMultiselectAutocompleteComponent implements OnInit {
     private messageService: MessageService,
     private fb: FormBuilder
   ) {
-    this.filteredMovings = this.movingCtrl.valueChanges.pipe(debounceTime(400));
+    this.filteredMovings = this.movingCtrl.valueChanges.pipe(
+      debounceTime(400)
+    );
 
     this.movingListState = this.store
       .select(getMovingList)
@@ -110,44 +120,48 @@ export class MovingMultiselectAutocompleteComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.data_selected_edit = [...this.data_selected];
+
     this.movingFormGroup = this.fb.group({
-      // driverName: ["", Validators.compose([Validators.required])],
-
-      // vehiclePlate: ["", Validators.compose([Validators.required])],
-      // phoneNumber: ["", Validators.compose([Validators.required])],
-      // singlePrice: [0, Validators.compose([Validators.required])],
-
-      // vehicleType: 1,
-      // transportId: ["", Validators.compose([Validators.required])],
-
-      // startingPlace: ["", Validators.compose([Validators.required])],
-      // headingPlace: ["", Validators.compose([Validators.required])],
-
-      // startDate: ["", Validators.compose([Validators.required])],
-      // endDate: ["", Validators.compose([Validators.required])],
-
-      // description: [
-      //   "",
-      //   Validators.compose([Validators.required, Validators.minLength(3)]),
-      // ],
-
-      driverName: ["Doãn Chí Bình", Validators.compose([Validators.required])],
-
-      vehiclePlate: ["9874-Y502", Validators.compose([Validators.required])],
-      phoneNumber: ["035423567", Validators.compose([Validators.required])],
-      singlePrice: [80000, Validators.compose([Validators.required])],
-
-      vehicleType: 1,
+      driverName: ["", Validators.compose([Validators.required])],
+      vehiclePlate: ["", Validators.compose([Validators.required])],
+      phoneNumber: ["", Validators.compose([Validators.required])],
+      branchName: ["", Validators.compose([Validators.required])],
+      status: [0, Validators.compose([Validators.required])],
+      singlePrice: [0, Validators.compose([Validators.required])],
+      vehicleType: [1, Validators.compose([Validators.required])],
       transportId: ["", Validators.compose([Validators.required])],
 
-      startingPlace: ["Hà Nội", Validators.compose([Validators.required])],
-      headingPlace: ["Đà Nẵng", Validators.compose([Validators.required])],
+      startingPlace: ["", Validators.compose([Validators.required])],
+      headingPlace: ["", Validators.compose([Validators.required])],
 
       startDate: ["", Validators.compose([Validators.required])],
       endDate: ["", Validators.compose([Validators.required])],
 
       description: [
-        "Không có",
+        "",
+        Validators.compose([Validators.required, Validators.minLength(3)]),
+      ],
+    });
+
+    this.editMovingFormGroup = this.fb.group({
+      driverName: ["", Validators.compose([Validators.required])],
+      vehiclePlate: ["", Validators.compose([Validators.required])],
+      phoneNumber: ["", Validators.compose([Validators.required])],
+      branchName: ["", Validators.compose([Validators.required])],
+      status: [0, Validators.compose([Validators.required])],
+      singlePrice: [0, Validators.compose([Validators.required])],
+      vehicleType: [1, Validators.compose([Validators.required])],
+      transportId: ["", Validators.compose([Validators.required])],
+
+      startingPlace: ["", Validators.compose([Validators.required])],
+      headingPlace: ["", Validators.compose([Validators.required])],
+
+      startDate: ["", Validators.compose([Validators.required])],
+      endDate: ["", Validators.compose([Validators.required])],
+
+      description: [
+        "",
         Validators.compose([Validators.required, Validators.minLength(3)]),
       ],
     });
@@ -233,12 +247,10 @@ export class MovingMultiselectAutocompleteComponent implements OnInit {
   }
 
   changeType($event: any) {
-    console.log($event.target.value);
-
-    if (parseInt($event.target.value) === 1) {
-      this.movingType = "AirPlane";
-    } else if (parseInt($event.target.value) === 0) {
+    if (parseInt($event.target.value) === 0) {
       this.movingType = "PassengerCar";
+    } else if (parseInt($event.target.value) === 1) {
+      this.movingType = "AirPlane";
     }
 
     this.movingFormGroup.controls["vehicleType"].setValue(
@@ -257,7 +269,7 @@ export class MovingMultiselectAutocompleteComponent implements OnInit {
           search: this.searchWord.toLowerCase(),
           page: this.pageIndex + 1,
           pageSize: 6,
-          movingType: this.movingType,
+          movingType: this.movingType
         },
       })
     );
@@ -288,18 +300,21 @@ export class MovingMultiselectAutocompleteComponent implements OnInit {
   }
 
   emitAdjustedData = (): void => {
-    var returnList = this.data_selected.concat(this.movingScheduleList);
+    var returnList = this.data_selected_edit.concat(this.movingScheduleList);
     this.result.emit({ data: returnList });
   };
 
   selected(event: MatAutocompleteSelectedEvent): void {
-    this.movingIdList.push(event.option.value.id);
     this.movingNameList.push(event.option.value.branchName);
+
+    console.log(event);
 
     this.movingFormGroup.controls["transportId"].setValue(
       event.option.value.id
     );
-
+    this.movingFormGroup.controls["branchName"].setValue(
+      event.option.value.branchName
+    );
     this.movingFormGroup.controls["phoneNumber"].setValue(
       event.option.value.hotlineNumber
     );
@@ -315,16 +330,17 @@ export class MovingMultiselectAutocompleteComponent implements OnInit {
     if (this.movingFormGroup.valid && this.movingFormGroup.dirty) {
       const schedule: MovingSchedule = {
         driverName: this.movingFormGroup.value.driverName,
+        branchName: this.movingFormGroup.value.branchName,
         vehiclePlate: this.movingFormGroup.value.vehiclePlate,
-        phoneNumber: this.movingFormGroup.value.phoneNumber,
+        phoneNumber: this.movingFormGroup.value.sphoneNumber,
 
-        vehicleType: this.movingFormGroup.value.vehicleType,
         transportId: this.movingFormGroup.value.transportId,
-        singlePrice: this.movingFormGroup.value.singlePrice,
-
+        vehicleType: this.movingFormGroup.value.vehicleType,
+        status: this.movingFormGroup.value.status,
         startingPlace: this.movingFormGroup.value.startingPlace,
         headingPlace: this.movingFormGroup.value.headingPlace,
 
+        singlePrice: this.movingFormGroup.value.singlePrice,
         startDate: this.movingFormGroup.value.startDate,
         endDate: this.movingFormGroup.value.endDate,
         description: this.movingFormGroup.value.description,
@@ -332,21 +348,120 @@ export class MovingMultiselectAutocompleteComponent implements OnInit {
 
       this.movingScheduleList = [schedule, ...this.movingScheduleList];
 
-      this.movingScheduleList.sort((a: MovingSchedule, b: MovingSchedule) => {
-        return moment(a.startDate).valueOf() - moment(b.startDate).valueOf();
-      });
+      this.movingScheduleList.sort(
+        (a: MovingSchedule, b: MovingSchedule) => {
+          return moment(a.startDate).valueOf() - moment(b.startDate).valueOf();
+        }
+      );
 
       this.emitAdjustedData();
       this.formReset();
     }
   }
 
-  removeSchedule(id: string): void {
-    var index = this.movingScheduleList.findIndex((entity) => entity.id === id);
-    if (index > -1) this.movingScheduleList.splice(index, 1);
+  clickEditSchedule(id: string): void {
+    var existIndex = this.data_selected_edit.findIndex(
+      (entity) => entity.id === id
+    );
+    if (existIndex > -1) {
+      this.movingScheduleEdit = this.data_selected_edit[existIndex];
+      this.indexMovingScheduleEdit = existIndex;
 
-    var existIndex = this.data_selected.findIndex((entity) => entity.id === id);
-    if (existIndex > -1) this.data_selected.splice(existIndex, 1);
+      this.editMovingFormGroup.controls["driverName"].setValue(
+        this.movingScheduleEdit.driverName
+      );
+      this.editMovingFormGroup.controls["vehiclePlate"].setValue(
+        this.movingScheduleEdit.vehiclePlate
+      );
+
+      this.editMovingFormGroup.controls["phoneNumber"].setValue(
+        this.movingScheduleEdit.phoneNumber
+      );
+      this.editMovingFormGroup.controls["vehicleType"].setValue(
+        this.movingScheduleEdit.vehicleType
+      );
+      this.editMovingFormGroup.controls["transportId"].setValue(
+        this.movingScheduleEdit.transportId
+      );
+      this.editMovingFormGroup.controls["singlePrice"].setValue(
+        this.movingScheduleEdit.singlePrice
+      );
+
+      this.editMovingFormGroup.controls["startingPlace"].setValue(
+        this.movingScheduleEdit.startingPlace
+      );
+      this.editMovingFormGroup.controls["headingPlace"].setValue(
+        this.movingScheduleEdit.headingPlace
+      );
+
+      this.editMovingFormGroup.controls["startDate"].setValue(
+        this.movingScheduleEdit.startDate
+      );
+      this.editMovingFormGroup.controls["endDate"].setValue(
+        this.movingScheduleEdit.endDate
+      );
+      this.editMovingFormGroup.controls["description"].setValue(
+        this.movingScheduleEdit.description
+      );
+    }
+  }
+
+  editToSchedulesList() {
+    if (
+      this.indexMovingScheduleEdit > -1 &&
+      this.movingScheduleEdit != null
+    ) {
+      this.data_selected_edit[this.indexMovingScheduleEdit] = {
+        driverName: this.editMovingFormGroup.value.driverName,
+        branchName: this.editMovingFormGroup.value.branchName,
+        vehiclePlate :this.editMovingFormGroup.value.vehiclePlate,
+        phoneNumber: this.editMovingFormGroup.value.phoneNumber,
+
+        transportId: this.editMovingFormGroup.value.transportId,
+        vehicleType: this.editMovingFormGroup.value.vehicleType,
+        singlePrice: this.editMovingFormGroup.value.singlePrice,
+        status: this.editMovingFormGroup.value.status,
+        startingPlace: this.editMovingFormGroup.value.startingPlace,
+        headingPlace: this.editMovingFormGroup.value.headingPlace,
+
+        startDate: this.editMovingFormGroup.value.startDate,
+        endDate: this.editMovingFormGroup.value.endDate,
+        description: this.editMovingFormGroup.value.description,
+      };
+
+      this.messageService
+        .openNotifyDialog("Thay đổi thành công")
+        .subscribe(() => {
+          this.cancelEditSchedule();
+          this.emitAdjustedData();
+        });
+    }
+  }
+
+  cancelEditSchedule(): void {
+    this.movingScheduleEdit = null;
+    this.indexMovingScheduleEdit = -1;
+  }
+
+  removeSchedule(id: string): void {
+    var index = this.movingScheduleList.findIndex(
+      (entity) => entity.id === id
+    );
+
+    if (index > -1) {
+      console.log(this.movingScheduleList[index]);
+      this.movingScheduleList.splice(index, 1);
+    }
+
+    var existIndex = this.data_selected_edit.findIndex(
+      (entity) => entity.id === id
+    );
+    console.log(existIndex);
+    if (existIndex > -1) {
+      console.log(this.data_selected_edit[existIndex]);
+      this.data_selected_edit.splice(existIndex, 1);
+    }
+
     this.emitAdjustedData();
   }
 
@@ -354,10 +469,10 @@ export class MovingMultiselectAutocompleteComponent implements OnInit {
     this.movingFormGroup.reset({
       driverName: "",
       description: "",
-      vehiclePlate: "",
-      phoneNumber: "",
-      transportId: "",
-      vehicleType: 1,
+      address: "",
+      supportNumber: "",
+      restHouseBranchId: "",
+      restHouseType: 1,
       singlePrice: 0,
       startDate: "",
       endDate: "",
@@ -398,5 +513,17 @@ export class MovingMultiselectAutocompleteComponent implements OnInit {
 
   cancelLoading() {
     this.isLoading = false;
+  }
+
+  changeStatus($event: any) {
+    this.movingFormGroup.controls["status"].setValue(
+      parseInt($event.target.value)
+    );
+  }
+
+  changeStatusExist($event: any) {
+    this.editMovingFormGroup.controls["status"].setValue(
+      parseInt($event.target.value)
+    );
   }
 }

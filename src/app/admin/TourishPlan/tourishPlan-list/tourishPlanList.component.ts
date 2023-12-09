@@ -43,6 +43,8 @@ export class TourishPlanListAdminComponent
   errorMessageState!: Observable<any>;
   errorSystemState!: Observable<any>;
 
+  searchPhase = "";
+
   displayedColumns: string[] = [
     "id",
     "tourName",
@@ -97,14 +99,14 @@ export class TourishPlanListAdminComponent
     this.subscriptions.push(
       this.tourishPlanDeleteState.subscribe((state) => {
         if (state) {
-          console.log("abc: ", state);
+          this.messageService.closeLoadingDialog();
           this.messageService.openMessageNotifyDialog(state.messageCode);
-
           if (state.resultCd === 0) {
             this.store.dispatch(
               TourishPlanListActions.getTourishPlanList({
                 payload: {
                   page: this.pageIndex + 1,
+                  search: this.searchPhase,
                 },
               })
             );
@@ -119,6 +121,7 @@ export class TourishPlanListAdminComponent
       TourishPlanListActions.getTourishPlanList({
         payload: {
           page: this.pageIndex + 1,
+          search: this.searchPhase,
         },
       })
     );
@@ -128,6 +131,7 @@ export class TourishPlanListAdminComponent
       this.errorMessageState.subscribe((state) => {
         if (state) {
           this.messageService.openMessageNotifyDialog(state);
+          this.messageService.closeLoadingDialog();
         }
       })
     );
@@ -136,6 +140,7 @@ export class TourishPlanListAdminComponent
       this.errorSystemState.subscribe((state) => {
         if (state) {
           this.messageService.openSystemFailNotifyDialog(state);
+          this.messageService.closeLoadingDialog();
         }
       })
     );
@@ -177,6 +182,7 @@ export class TourishPlanListAdminComponent
             },
           })
         );
+        this.messageService.openLoadingDialog();
       }
     });
   }
@@ -199,6 +205,23 @@ export class TourishPlanListAdminComponent
         },
       })
     );
+    this.messageService.openLoadingDialog();
+  }
+
+  search() {
+    this.pageSize = 5;
+    this.pageIndex = 0;
+
+    this.messageService.openLoadingDialog();
+    this.store.dispatch(
+      TourishPlanListActions.getTourishPlanList({
+        payload: {
+          page: this.pageIndex + 1,
+          pageSize: this.pageSize,
+          search: this.searchPhase,
+        },
+      })
+    );
   }
 
   onClickEdit(id: string) {
@@ -218,9 +241,11 @@ export class TourishPlanListAdminComponent
             payload: {
               page: 1,
               pageSize: this.pageSize,
+              search: this.searchPhase,
             },
           })
         );
+        this.messageService.openLoadingDialog();
       } else if (sortState.direction === "desc") {
         this.store.dispatch(
           TourishPlanListActions.getTourishPlanList({
@@ -228,9 +253,11 @@ export class TourishPlanListAdminComponent
               sortBy: "name_desc",
               page: 1,
               pageSize: this.pageSize,
+              search: this.searchPhase,
             },
           })
         );
+        this.messageService.openLoadingDialog();
       }
     } else {
     }

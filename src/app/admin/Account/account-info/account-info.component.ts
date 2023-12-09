@@ -117,6 +117,7 @@ export class AccountInfoComponent implements OnInit, OnDestroy {
     this.subscriptions.push(
       this.accountState.subscribe((state) => {
         if (state) {
+          this.messageService.closeLoadingDialog();
           this.account = state;
 
           this.editformGroup_info.controls["userName"].setValue(state.userName);
@@ -136,6 +137,7 @@ export class AccountInfoComponent implements OnInit, OnDestroy {
     this.subscriptions.push(
       this.editAccountState.subscribe((state) => {
         if (state) {
+          this.messageService.closeLoadingDialog();
           this.messageService.openMessageNotifyDialog(state.messageCode);
         }
       })
@@ -144,6 +146,7 @@ export class AccountInfoComponent implements OnInit, OnDestroy {
     this.subscriptions.push(
       this.errorMessageState.subscribe((state) => {
         if (state) {
+          this.messageService.closeLoadingDialog();
           this.messageService.openMessageNotifyDialog(state);
         }
       })
@@ -152,6 +155,7 @@ export class AccountInfoComponent implements OnInit, OnDestroy {
     this.subscriptions.push(
       this.errorSystemState.subscribe((state) => {
         if (state) {
+          this.messageService.closeLoadingDialog();
           this.messageService.openFailNotifyDialog(state);
         }
       })
@@ -165,6 +169,7 @@ export class AccountInfoComponent implements OnInit, OnDestroy {
       })
     );
 
+    this.messageService.openLoadingDialog();
     this.store.dispatch(AccountActions.initial());
 
     //console.log(this.this_book);
@@ -208,6 +213,7 @@ export class AccountInfoComponent implements OnInit, OnDestroy {
           phase: "" 
         };
 
+        this.messageService.openLoadingDialog();
         this.store.dispatch(
           AccountActions.editAccount({
             payload: payload,

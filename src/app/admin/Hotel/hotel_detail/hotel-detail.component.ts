@@ -100,9 +100,11 @@ export class HotelDetailComponent implements OnInit, OnDestroy {
 
     this.subscriptions.push(
       this.hotelState.subscribe((state) => {
+        console.log(state);
         if (state) {
+          console.log(state);
           this.hotel = state;
-
+          this.messageService.closeLoadingDialog();
           this.editformGroup_info.controls["placeBranch"].setValue(
             state.placeBranch
           );
@@ -134,6 +136,7 @@ export class HotelDetailComponent implements OnInit, OnDestroy {
     this.subscriptions.push(
       this.editHotelState.subscribe((state) => {
         if (state) {
+          this.messageService.closeLoadingDialog();
           this.messageService.openMessageNotifyDialog(state.messageCode);
         }
       })
@@ -142,6 +145,7 @@ export class HotelDetailComponent implements OnInit, OnDestroy {
     this.subscriptions.push(
       this.errorMessageState.subscribe((state) => {
         if (state) {
+          this.messageService.closeLoadingDialog();
           this.messageService.openMessageNotifyDialog(state);
         }
       })
@@ -150,10 +154,13 @@ export class HotelDetailComponent implements OnInit, OnDestroy {
     this.subscriptions.push(
       this.errorSystemState.subscribe((state) => {
         if (state) {
+          this.messageService.closeLoadingDialog();
           this.messageService.openFailNotifyDialog(state);
         }
       })
     );
+
+    this.messageService.openLoadingDialog();
 
     this.store.dispatch(
       HotelActions.getHotel({
@@ -207,12 +214,12 @@ export class HotelDetailComponent implements OnInit, OnDestroy {
         description: this.editformGroup_info.value.description,
       };
   
+      this.messageService.openLoadingDialog();
       this.store.dispatch(
         HotelActions.editHotel({
           payload: payload,
         })
       );
-    }
-    
+    } 
   }
 }

@@ -77,7 +77,7 @@ export interface EatSchedule {
 
   restaurantId: string;
   singlePrice?: number;
-
+  status: number;
   description: string;
 
   startDate?: Date;
@@ -91,6 +91,7 @@ export interface MovingSchedule {
   id?: string;
   tourishPlanId?: string;
 
+  branchName: string;
   driverName: string;
   vehiclePlate: string;
   phoneNumber: string;
@@ -101,7 +102,7 @@ export interface MovingSchedule {
 
   startingPlace: string;
   headingPlace: string;
-
+  status: number;
   description: string;
 
   startDate?: Date;
@@ -122,7 +123,7 @@ export interface StayingSchedule {
   restHouseBranchId: string;
 
   singlePrice?: number;
-
+  status: number;
   description: string;
 
   startDate?: Date;

@@ -40,6 +40,7 @@ import {
 export class TourishPlanCreateAdminComponent
   implements OnInit, OnDestroy, CheckDeactivate
 {
+  active = 1;
   isEditing: boolean = true;
   isSubmitting: boolean = false;
 
@@ -128,6 +129,7 @@ export class TourishPlanCreateAdminComponent
     this.subscriptions.push(
       this.tourishPlanState.subscribe((state) => {
         if (state) {
+          this.messageService.closeLoadingDialog();
           this.messageService.openMessageNotifyDialog(state.messageCode);
         }
       })
@@ -136,6 +138,7 @@ export class TourishPlanCreateAdminComponent
     this.subscriptions.push(
       this.errorMessageState.subscribe((state) => {
         if (state) {
+          this.messageService.closeLoadingDialog();
           this.messageService.openMessageNotifyDialog(state);
         }
       })
@@ -144,6 +147,7 @@ export class TourishPlanCreateAdminComponent
     this.subscriptions.push(
       this.errorSystemState.subscribe((state) => {
         if (state) {
+          this.messageService.closeLoadingDialog();
           this.messageService.openFailNotifyDialog(state);
         }
       })
@@ -186,6 +190,7 @@ export class TourishPlanCreateAdminComponent
           },
         })
       );
+      this.messageService.openLoadingDialog();
     }
 
     console.log(this.createformGroup.value);

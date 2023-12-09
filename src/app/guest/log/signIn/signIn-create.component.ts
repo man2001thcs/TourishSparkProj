@@ -222,6 +222,7 @@ export class UserCreateComponent implements OnInit, OnDestroy {
             fullName: this.createformGroup.value.fullName,
             address: this.createformGroup.value.address,
             phoneNumber: this.createformGroup.value.phoneNumber,
+            signInPhase: "SignIn"
           },
         })
       );

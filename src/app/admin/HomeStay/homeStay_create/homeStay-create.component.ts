@@ -76,6 +76,7 @@ export class HomeStayCreateComponent implements OnInit, OnDestroy {
     this.subscriptions.push(
       this.createHomeStayState.subscribe((state) => {
         if (state) {
+          this.messageService.closeLoadingDialog();
           this.messageService.openMessageNotifyDialog(state.messageCode);
         }
       })
@@ -84,6 +85,7 @@ export class HomeStayCreateComponent implements OnInit, OnDestroy {
     this.subscriptions.push(
       this.errorMessageState.subscribe((state) => {
         if (state) {
+          this.messageService.closeLoadingDialog();
           this.messageService.openMessageNotifyDialog(state);
         }
       })
@@ -92,6 +94,7 @@ export class HomeStayCreateComponent implements OnInit, OnDestroy {
     this.subscriptions.push(
       this.errorSystemState.subscribe((state) => {
         if (state) {
+          this.messageService.closeLoadingDialog();
           this.messageService.openSystemFailNotifyDialog(state);
         }
       })
@@ -103,7 +106,7 @@ export class HomeStayCreateComponent implements OnInit, OnDestroy {
     //Called after the constructor, initializing input properties, and the first call to ngOnChanges.
     //Add 'implements OnInit' to the class.
     this.createformGroup_info = this.fb.group({
-      branchName: ["", Validators.compose([Validators.required])],
+      placeBranch: ["", Validators.compose([Validators.required])],
       hotlineNumber: ["", Validators.compose([Validators.required])],
       supportEmail: ["", Validators.compose([Validators.required])],
       headQuarterAddress: ["", Validators.compose([Validators.required])],
@@ -145,6 +148,7 @@ export class HomeStayCreateComponent implements OnInit, OnDestroy {
         description: this.createformGroup_info.value.description,
       };
 
+      this.messageService.openLoadingDialog();
       this.store.dispatch(
         homeStayActions.createHomeStay({
           payload: payload,

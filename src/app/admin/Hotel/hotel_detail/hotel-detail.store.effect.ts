@@ -21,6 +21,7 @@ export class HotelEffects {
         return this.storeService.getHotel(action).pipe(
           map((response) => {
             if (response.resultCd === 0) {
+              console.log(response);
               return HotelAction.getHotelSuccess({
                 response: response,
               });

@@ -45,6 +45,7 @@ export class TourishPlanDetailAdminComponent implements OnInit, OnDestroy {
   tourishPlanId: string = "";
   isEditing: boolean = true;
   isSubmitting = false;
+  active = 1;
 
   tourishPlan: TourishPlan = {
     id: "",
@@ -188,7 +189,16 @@ export class TourishPlanDetailAdminComponent implements OnInit, OnDestroy {
     this.subscriptions.push(
       this.editTourishPlanState.subscribe((state) => {
         if (state) {
+          this.messageService.closeAllDialog();
           this.messageService.openMessageNotifyDialog(state.messageCode);
+
+          this.store.dispatch(
+            TourishPlanActions.getTourishPlan({
+              payload: {
+                id: this.tourishPlanId,
+              },
+            })
+          );  
         }
       })
     );
@@ -196,6 +206,7 @@ export class TourishPlanDetailAdminComponent implements OnInit, OnDestroy {
     this.subscriptions.push(
       this.errorMessageState.subscribe((state) => {
         if (state) {
+          this.messageService.closeAllDialog();
           this.messageService.openMessageNotifyDialog(state);
         }
       })
@@ -204,20 +215,20 @@ export class TourishPlanDetailAdminComponent implements OnInit, OnDestroy {
     this.subscriptions.push(
       this.errorSystemState.subscribe((state) => {
         if (state) {
+          this.messageService.closeAllDialog();
           this.messageService.openSystemFailNotifyDialog(state);
         }
       })
     );
 
+    this.messageService.openLoadingDialog();
     this.store.dispatch(
       TourishPlanActions.getTourishPlan({
         payload: {
           id: this.tourishPlanId,
         },
       })
-    );
-
-    this.messageService.openLoadingDialog();
+    );   
 
     this.store.dispatch(TourishPlanActions.initial());
 
@@ -265,7 +276,7 @@ export class TourishPlanDetailAdminComponent implements OnInit, OnDestroy {
       );
     }
 
-    console.log(this.editformGroup_info.value);
+    this.messageService.openLoadingDialog();
   }
 
   formReset_create_info(): void {
@@ -299,6 +310,19 @@ export class TourishPlanDetailAdminComponent implements OnInit, OnDestroy {
     });
     return ref.afterClosed();
   }
+
+  saveInfomation(): void {
+    const dialogRef = this.dialog.open(ConfirmDialogComponent, {
+      data: {
+        title: "Bạn có lưu lại không?",
+      },
+    });
+
+    dialogRef.afterClosed().subscribe((result) => {
+      this.formSubmit_create_info();
+    });
+  }
+
 
   uploadFinished(event: any) {
     console.log(event);

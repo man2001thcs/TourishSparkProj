@@ -39,6 +39,8 @@ export class AirPlaneListComponent
   airPlaneList!: AirPlane[];
   subscriptions: Subscription[] = [];
 
+  searchPhase= "";
+
   airPlaneListState!: Observable<any>;
   airPlaneDeleteState!: Observable<any>;
   errorMessageState!: Observable<any>;
@@ -103,6 +105,7 @@ export class AirPlaneListComponent
               AirPlaneListActions.getAirPlaneList({
                 payload: {
                   page: this.pageIndex + 1,
+                  search: this.searchPhase
                 },
               })
             );
@@ -117,6 +120,7 @@ export class AirPlaneListComponent
       AirPlaneListActions.getAirPlaneList({
         payload: {
           page: this.pageIndex + 1,
+          search: this.searchPhase
         },
       })
     );
@@ -160,6 +164,7 @@ export class AirPlaneListComponent
         AirPlaneListActions.getAirPlaneList({
           payload: {
             page: this.pageIndex + 1,
+            search: this.searchPhase
           },
         })
       );
@@ -179,6 +184,7 @@ export class AirPlaneListComponent
         AirPlaneListActions.getAirPlaneList({
           payload: {
             page: this.pageIndex + 1,
+            search: this.searchPhase
           },
         })
       );
@@ -232,6 +238,23 @@ export class AirPlaneListComponent
         payload: {
           page: this.pageIndex + 1,
           pageSize: this.pageSize,
+          search: this.searchPhase
+        },
+      })
+    );
+  }
+
+  search() {
+    this.pageSize = 5;
+    this.pageIndex = 0;
+
+    this.messageService.openLoadingDialog();
+    this.store.dispatch(
+      AirPlaneListActions.getAirPlaneList({
+        payload: {
+          page: this.pageIndex + 1,
+          pageSize: this.pageSize,
+          search: this.searchPhase
         },
       })
     );

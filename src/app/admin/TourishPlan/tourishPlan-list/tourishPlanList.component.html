@@ -1,7 +1,40 @@
 <div>
-  <div class="addContainer">
-    <button mat-raised-button class="demo-button">Add tourishPlan</button>
-  </div>
+  <mat-card style="margin-bottom: 20px; padding: 10px 10px 10px">
+    <mat-card-header>
+      <mat-card-title>Đối tác nhà hàng</mat-card-title>
+    </mat-card-header>
+    <mat-card-actions>
+
+      <div
+      style="
+        flex-direction: row;
+        align-items: center;
+        margin-left: 15px;
+        margin-top: 22px !important;
+      "
+    >
+      <mat-form-field appearance="outline" class="full-width-input">
+        <input
+          #searchInput
+          matInput
+          type="text"
+          fullwidth
+          name="search"
+          id="search"
+          placeholder="Tìm kiếm sản phẩm"
+          [(ngModel)]="searchPhase"
+        />
+      </mat-form-field>
+      <button mat-button status="primary" (click)="search()">
+        <i
+          class="fa fa-search"
+          aria-hidden="true"
+          style="font-size: 15px"
+        ></i>
+      </button>
+    </div>
+    </mat-card-actions>
+  </mat-card>
 
   <div class="table-responsive">
     <table
@@ -192,6 +225,4 @@
       Clicked on {{ clickedRow.name }}
     </li>
   </ul>
-
-  <div>fuck</div>
 </div>

@@ -9,6 +9,6 @@ export class MultiSelectEatingListStoreService {
   constructor(private http: HttpClient) {}
 
   getEatingList(payload: any): Observable<any> {
-    return this.http.get("/api/Get" + payload.eatingType, {params: payload});
+    return this.http.get("/api/GetRestaurant", {params: payload});
   }
 }

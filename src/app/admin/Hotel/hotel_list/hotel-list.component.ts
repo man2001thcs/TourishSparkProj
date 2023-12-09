@@ -33,11 +33,10 @@ import { Hotel } from "src/app/model/baseModel";
   templateUrl: "./hotel-list.component.html",
   styleUrls: ["./hotel-list.component.css"],
 })
-export class HotelListComponent
-  implements OnInit, AfterViewInit, OnDestroy
-{
+export class HotelListComponent implements OnInit, AfterViewInit, OnDestroy {
   hotelList!: Hotel[];
   subscriptions: Subscription[] = [];
+  searchPhase = "";
 
   hotelListState!: Observable<any>;
   hotelDeleteState!: Observable<any>;
@@ -100,6 +99,7 @@ export class HotelListComponent
           this.messageService.openMessageNotifyDialog(state.messageCode);
 
           if (state.resultCd === 0) {
+            this.messageService.openLoadingDialog();
             this.store.dispatch(
               HotelListActions.getHotelList({
                 payload: {
@@ -118,6 +118,7 @@ export class HotelListComponent
       HotelListActions.getHotelList({
         payload: {
           page: this.pageIndex + 1,
+          search: this.searchPhase,
         },
       })
     );
@@ -127,6 +128,7 @@ export class HotelListComponent
     this.subscriptions.push(
       this.errorMessageState.subscribe((state) => {
         if (state) {
+          this.messageService.closeLoadingDialog();
           this.messageService.openMessageNotifyDialog(state);
         }
       })
@@ -135,6 +137,7 @@ export class HotelListComponent
     this.subscriptions.push(
       this.errorSystemState.subscribe((state) => {
         if (state) {
+          this.messageService.closeLoadingDialog();
           this.messageService.openSystemFailNotifyDialog(state);
         }
       })
@@ -161,10 +164,10 @@ export class HotelListComponent
         HotelListActions.getHotelList({
           payload: {
             page: this.pageIndex + 1,
+            search: this.searchPhase,
           },
         })
       );
-
       this.messageService.openLoadingDialog();
     });
   }
@@ -179,10 +182,10 @@ export class HotelListComponent
         HotelListActions.getHotelList({
           payload: {
             page: this.pageIndex + 1,
+            search: this.searchPhase,
           },
         })
       );
-
       this.messageService.openLoadingDialog();
     });
   }
@@ -208,6 +211,7 @@ export class HotelListComponent
 
     ref.afterClosed().subscribe((result) => {
       if (result) {
+        this.messageService.openLoadingDialog();
         this.store.dispatch(
           HotelListActions.deleteHotel({
             payload: {
@@ -220,6 +224,22 @@ export class HotelListComponent
   }
 
   addData(): void {}
+
+  search() {
+    this.pageSize = 5;
+    this.pageIndex = 0;
+
+    this.messageService.openLoadingDialog();
+    this.store.dispatch(
+      HotelListActions.getHotelList({
+        payload: {
+          page: this.pageIndex + 1,
+          pageSize: this.pageSize,
+          search: this.searchPhase,
+        },
+      })
+    );
+  }
 
   handlePageEvent(e: PageEvent) {
     // this.length = e.length;
@@ -234,9 +254,11 @@ export class HotelListComponent
         payload: {
           page: this.pageIndex + 1,
           pageSize: this.pageSize,
+          search: this.searchPhase,
         },
       })
     );
+    this.messageService.openLoadingDialog();
   }
 
   announceSortChange(sortState: Sort) {
@@ -245,13 +267,14 @@ export class HotelListComponent
     // Furthermore, you can customize the message to add additional
     // details about the values being sorted.
     console.log(sortState);
-    if ((sortState.active === "placeBranch")) {
+    if (sortState.active === "placeBranch") {
       if (sortState.direction === "asc") {
         this.store.dispatch(
           HotelListActions.getHotelList({
             payload: {
               page: 1,
               pageSize: this.pageSize,
+              search: this.searchPhase,
             },
           })
         );
@@ -263,6 +286,7 @@ export class HotelListComponent
               sortBy: "name_desc",
               page: 1,
               pageSize: this.pageSize,
+              search: this.searchPhase,
             },
           })
         );

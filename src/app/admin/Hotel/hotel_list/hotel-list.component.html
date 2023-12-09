@@ -7,6 +7,35 @@
       <button mat-raised-button (click)="openAddDialog()" class="demo-button">
         Thêm đối tác
       </button>
+
+      <div
+      style="
+        flex-direction: row;
+        align-items: center;
+        margin-left: 15px;
+        margin-top: 22px !important;
+      "
+    >
+      <mat-form-field appearance="outline" class="full-width-input">
+        <input
+          #searchInput
+          matInput
+          type="text"
+          fullwidth
+          name="search"
+          id="search"
+          placeholder="Tìm kiếm sản phẩm"
+          [(ngModel)]="searchPhase"
+        />
+      </mat-form-field>
+      <button mat-button status="primary" (click)="search()">
+        <i
+          class="fa fa-search"
+          aria-hidden="true"
+          style="font-size: 15px"
+        ></i>
+      </button>
+    </div>
     </mat-card-actions>
   </mat-card>
 

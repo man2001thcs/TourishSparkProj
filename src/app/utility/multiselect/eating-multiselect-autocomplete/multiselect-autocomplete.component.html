@@ -1,8 +1,4 @@
-<link
-  rel="stylesheet"
-  href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
-/>
-<div [formGroup]="eatingFormGroup">
+<div>
   <div class="row">
     <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 create-form">
       <div class="row">
@@ -13,22 +9,13 @@
           Thêm thông tin lịnh trình ăn uống
         </h2>
       </div>
-
-      <div class="row">
-        <mat-form-field appearance="outline" class="full-width-input">
-          <mat-label>Loại nơi ở</mat-label>
-          <select matNativeControl required (change)="changeType($event)">
-            <option value="1">Nhà hàng</option>
-          </select>
-        </mat-form-field>
-      </div>
       <div class="row">
         <mat-form-field
           class="example-chip-list"
           appearance="outline"
           class="full-width-input"
         >
-          <mat-label>Danh sách lịch trình ăn uống</mat-label>
+          <mat-label>Danh sách lịch trình nơi ăn uống</mat-label>
           <mat-chip-grid #chipGrid aria-label="Fruit selection">
             <mat-chip-row
               *ngFor="let eating of eatingNameList"
@@ -76,19 +63,31 @@
         </mat-form-field>
       </div>
 
-      <div *ngIf="eatingNameList.length >= 1">
+      <div *ngIf="eatingNameList.length >= 1" [formGroup]="eatingFormGroup">
         <div class="row">
           <h4
             mat-form-label
             style="font-weight: bold; text-decoration: underline"
           >
-            Thêm thông tin nơi ở
+            Thêm thông tin nơi ăn uống
           </h4>
         </div>
 
         <div class="row">
           <mat-form-field appearance="outline" class="full-width-input">
-            <mat-label>Địa chỉ nơi ở</mat-label>
+            <mat-label>Tình trạng</mat-label>
+            <select matNativeControl required (change)="changeStatus($event)">
+              <option value="0">Mới tạo</option>
+              <option value="1">Đang thực hiện</option>
+              <option value="2">Hoàn thành</option>
+              <option value="2">Hủy</option>
+            </select>
+          </mat-form-field>
+        </div>
+
+        <div class="row">
+          <mat-form-field appearance="outline" class="full-width-input">
+            <mat-label>Địa chỉ nơi uống</mat-label>
             <input
               matInput
               fullwidth
@@ -253,7 +252,7 @@
           mat-form-label
           style="font-weight: heavy; font-size: 16px; margin-bottom: 0px"
         >
-          Danh sách lịch trình nơi ở
+          Danh sách lịch trình nơi ăn uống
         </h2>
       </div>
 
@@ -265,6 +264,7 @@
           >Chưa có danh sách</mat-chip
         >
       </div>
+
       <ng-template
         #inputMovingSchedule
         let-index="index"
@@ -287,10 +287,10 @@
         >
           <mat-expansion-panel
             [expanded]="false"
-            style="width: 65%; margin-right: 10px"
+            style="width: 80%; margin-right: 10px"
           >
             <mat-expansion-panel-header>
-              <mat-panel-title> Lịch trình {{ index + 1 }}</mat-panel-title>
+              <mat-panel-title> Lịch trình mới {{ index + 1 }}</mat-panel-title>
             </mat-expansion-panel-header>
             <p>
               <span style="font-weight: bold">Địa điểm: </span> {{ placeName }}
@@ -312,14 +312,14 @@
               <span style="font-weight: bold">Ngày kết thúc:</span>
               {{ endDate }}
             </p>
+            <button
+              mat-raised-button
+              color="primary"
+              (click)="removeSchedule(id)"
+            >
+              Gỡ
+            </button>
           </mat-expansion-panel>
-          <button
-            mat-raised-button
-            color="primary"
-            (click)="removeSchedule(id)"
-          >
-            Gỡ
-          </button>
         </div>
       </ng-template>
 
@@ -345,11 +345,16 @@
         >
           <mat-expansion-panel
             [expanded]="false"
-            style="width: 65%; margin-right: 10px"
+            style="width: 80%; margin-right: 10px"
           >
             <mat-expansion-panel-header>
-              <mat-panel-title style="color: green;">
-                Lịch trình {{ index + 1 }} <i class="fa fa-check" style="margin-left: 5px;" aria-hidden="true"></i
+              <mat-panel-title style="color: green">
+                Lịch trình {{ index + 1 }}
+                <i
+                  class="fa fa-check"
+                  style="margin-left: 5px"
+                  aria-hidden="true"
+                ></i
               ></mat-panel-title>
             </mat-expansion-panel-header>
             <p>
@@ -372,19 +377,27 @@
               <span style="font-weight: bold">Ngày kết thúc:</span>
               {{ endDate }}
             </p>
+            <button
+              mat-raised-button
+              color="primary"
+              (click)="clickEditSchedule(id)"
+              style="margin-right: 10px"
+            >
+              Chỉnh sửa
+            </button>
+            <button
+              mat-raised-button
+              color="danger"
+              (click)="removeSchedule(id)"
+            >
+              Gỡ
+            </button>
           </mat-expansion-panel>
-          <button
-            mat-raised-button
-            color="primary"
-            (click)="removeSchedule(id)"
-          >
-            Gỡ
-          </button>
         </div>
       </ng-template>
 
       <ng-container
-        *ngFor="let schedule of data_selected; index as i"
+        *ngFor="let schedule of data_selected_edit; index as i"
         [ngTemplateOutlet]="existMovingSchedule"
         [ngTemplateOutletContext]="{
           index: i,
@@ -416,6 +429,203 @@
         }"
       >
       </ng-container>
+    </div>
+
+    <div
+      *ngIf="eatingScheduleEdit != null"
+      style="
+        width: 90%;
+        margin-left: auto;
+        margin-right: auto;
+        margin-top: 30px;
+      "
+    >
+      <form [formGroup]="editEatingFormGroup">
+        <div class="row">
+          <h4
+            mat-form-label
+            style="font-weight: bold; text-decoration: underline"
+          >
+            Chỉnh sửa thông tin lịch trình
+          </h4>
+        </div>
+        <div class="row">
+          <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 create-form">
+            <div class="row">
+              <mat-form-field appearance="outline" class="full-width-input">
+                <mat-label>Tình trạng</mat-label>
+                <select matNativeControl required (change)="changeStatusExist($event)">
+                  <option value="0">Mới tạo</option>
+                  <option value="1">Đang thực hiện</option>
+                  <option value="2">Hoàn thành</option>
+                  <option value="2">Hủy</option>
+                </select>
+              </mat-form-field>
+            </div>
+
+            <div class="row">
+              <mat-form-field appearance="outline" class="full-width-input">
+                <mat-label>Địa chỉ nơi ăn uống</mat-label>
+                <input
+                  matInput
+                  fullwidth
+                  placeholder="Vd: Bồ Công Anh"
+                  formControlName="address"
+                />
+              </mat-form-field>
+              <app-validation
+                *ngIf="isSubmit"
+                [formGroup]="editEatingFormGroup"
+                [formGroupControlName]="'address'"
+              ></app-validation>
+            </div>
+
+            <div class="row">
+              <mat-form-field appearance="outline" class="full-width-input">
+                <mat-label>Số diện thoại hỗ trợ</mat-label>
+                <input
+                  matInput
+                  fullwidth
+                  placeholder="Vd: Bồ Công Anh"
+                  formControlName="supportNumber"
+                />
+              </mat-form-field>
+              <app-validation
+                *ngIf="isSubmit"
+                [formGroup]="editEatingFormGroup"
+                [formGroupControlName]="'supportNumber'"
+              ></app-validation>
+            </div>
+
+            <div class="row">
+              <mat-form-field appearance="outline" class="full-width-input">
+                <mat-label>Giá đơn vé trung bình</mat-label>
+                <input
+                  matInput
+                  fullwidth
+                  placeholder="Vd: 180.000đ"
+                  formControlName="singlePrice"
+                />
+              </mat-form-field>
+              <app-validation
+                *ngIf="isSubmit"
+                [formGroup]="editEatingFormGroup"
+                [formGroupControlName]="'singlePrice'"
+              ></app-validation>
+            </div>
+          </div>
+
+          <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 create-form">
+            <div class="row">
+              <mat-form-field appearance="outline" class="full-width-input">
+                <mat-label>Ngày bắt đầu</mat-label>
+                <input
+                  matInput
+                  [ngxMatDatetimePicker]="eatingPicker"
+                  placeholder="Choose a date"
+                  formControlName="startDate"
+                />
+                <mat-datepicker-toggle
+                  matSuffix
+                  [for]="$any(eatingPicker)"
+                ></mat-datepicker-toggle>
+                <ngx-mat-datetime-picker
+                  #eatingPicker
+                  [showSpinners]="true"
+                  [showSeconds]="true"
+                  [touchUi]="touchUi"
+                  [color]="color"
+                  [enableMeridian]="enableMeridian"
+                >
+                </ngx-mat-datetime-picker>
+              </mat-form-field>
+              <app-validation
+                *ngIf="isSubmit"
+                [formGroup]="editEatingFormGroup"
+                [formGroupControlName]="'startDate'"
+              ></app-validation>
+            </div>
+
+            <div class="row">
+              <mat-form-field appearance="outline" class="full-width-input">
+                <mat-label>Ngày kết thúc</mat-label>
+                <input
+                  matInput
+                  [ngxMatDatetimePicker]="picker"
+                  placeholder="Choose a date"
+                  formControlName="endDate"
+                />
+                <mat-datepicker-toggle
+                  matSuffix
+                  [for]="$any(picker)"
+                ></mat-datepicker-toggle>
+                <ngx-mat-datetime-picker
+                  #picker
+                  [showSpinners]="true"
+                  [showSeconds]="true"
+                  [touchUi]="touchUi"
+                  [color]="color"
+                  [enableMeridian]="enableMeridian"
+                >
+                </ngx-mat-datetime-picker>
+              </mat-form-field>
+              <app-validation
+                *ngIf="isSubmit"
+                [formGroup]="editEatingFormGroup"
+                [formGroupControlName]="'endDate'"
+              ></app-validation>
+            </div>
+          </div>
+        </div>
+
+        <div
+          class="row"
+          style="display: flex; flex-direction: column !important; flex-wrap: 1"
+        >
+          <mat-form-field style="width: 90%">
+            <textarea
+              matInput
+              class="form-control"
+              id="description"
+              placeholder="Thông tin đính kèm"
+              formControlName="description"
+              rows="10"
+            ></textarea>
+          </mat-form-field>
+          <app-validation
+            *ngIf="isSubmit"
+            [formGroup]="editEatingFormGroup"
+            [formGroupControlName]="'description'"
+          ></app-validation>
+        </div>
+
+        <div
+          class="row"
+          style="display: flex; flex-direction: row !important; flex-wrap: 1"
+        >
+          <div style="margin-right: 20px">
+            <button
+              mat-raised-button
+              color="primary"
+              type="button"
+              (click)="editToSchedulesList()"
+            >
+              Lưu
+            </button>
+          </div>
+
+          <div>
+            <button
+              mat-raised-button
+              color="warn"
+              type="button"
+              (click)="cancelEditSchedule()"
+            >
+              Hủy
+            </button>
+          </div>
+        </div>
+      </form>
     </div>
   </div>
 </div>

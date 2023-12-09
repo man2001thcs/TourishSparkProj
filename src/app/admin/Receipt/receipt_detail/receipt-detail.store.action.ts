@@ -1,6 +1,6 @@
 import { Action, createAction, props, union } from '@ngrx/store';
 
-export const storeKey = 'admin/hotelInfo';
+export const storeKey = 'admin/receiptInfo';
 
 export const initial = createAction(`[${storeKey}] initial`);
 

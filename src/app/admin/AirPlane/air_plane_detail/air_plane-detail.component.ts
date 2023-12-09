@@ -103,6 +103,7 @@ export class AirPlaneDetailComponent implements OnInit, OnDestroy {
       this.passengerCarState.subscribe((state) => {
         if (state) {
           this.passengerCar = state;
+          this.messageService.closeLoadingDialog();
 
           this.editformGroup_info.controls["branchName"].setValue(
             state.branchName
@@ -135,6 +136,7 @@ export class AirPlaneDetailComponent implements OnInit, OnDestroy {
     this.subscriptions.push(
       this.editAirPlaneState.subscribe((state) => {
         if (state) {
+          this.messageService.closeLoadingDialog();
           this.messageService.openMessageNotifyDialog(state.messageCode);
         }
       })
@@ -143,6 +145,7 @@ export class AirPlaneDetailComponent implements OnInit, OnDestroy {
     this.subscriptions.push(
       this.errorMessageState.subscribe((state) => {
         if (state) {
+          this.messageService.closeLoadingDialog();
           this.messageService.openMessageNotifyDialog(state);
         }
       })
@@ -151,6 +154,7 @@ export class AirPlaneDetailComponent implements OnInit, OnDestroy {
     this.subscriptions.push(
       this.errorSystemState.subscribe((state) => {
         if (state) {
+          this.messageService.closeLoadingDialog();
           this.messageService.openFailNotifyDialog(state);
         }
       })
@@ -213,6 +217,8 @@ export class AirPlaneDetailComponent implements OnInit, OnDestroy {
           payload: payload,
         })
       );
+
+      this.messageService.openLoadingDialog();
     } else console.log(this.editformGroup_info.invalid);
   }
 }

@@ -65,7 +65,7 @@ export class AirPlaneCreateComponent implements OnInit, OnDestroy {
     this.subscriptions.push(
       this.createAirPlaneState.subscribe((state) => {
         if (state) {
-          this.store;
+          this.messageService.closeLoadingDialog();
           this.messageService.openMessageNotifyDialog(state.messageCode);
         }
       })
@@ -74,6 +74,7 @@ export class AirPlaneCreateComponent implements OnInit, OnDestroy {
     this.subscriptions.push(
       this.errorMessageState.subscribe((state) => {
         if (state) {
+          this.messageService.closeLoadingDialog();
           this.messageService.openMessageNotifyDialog(state);
         }
       })
@@ -82,6 +83,7 @@ export class AirPlaneCreateComponent implements OnInit, OnDestroy {
     this.subscriptions.push(
       this.errorSystemState.subscribe((state) => {
         if (state) {
+          this.messageService.closeLoadingDialog();
           this.messageService.openSystemFailNotifyDialog(state);
         }
       })
@@ -140,6 +142,8 @@ export class AirPlaneCreateComponent implements OnInit, OnDestroy {
           payload: payload,
         })
       );
+
+      this.messageService.openLoadingDialog();
     }
   }
 }

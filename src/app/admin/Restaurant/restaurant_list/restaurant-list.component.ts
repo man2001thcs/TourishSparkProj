@@ -68,6 +68,7 @@ export class RestaurantListComponent
   pageSize = 5;
   pageSizeOpstion = [5, 10];
   pageIndex = 0;
+  searchPhase = "";
 
   constructor(
     private adminService: AdminService,
@@ -95,7 +96,7 @@ export class RestaurantListComponent
     this.subscriptions.push(
       this.restaurantDeleteState.subscribe((state) => {
         if (state) {
-          console.log("abc: ", state);
+          this.messageService.closeLoadingDialog();
           this.messageService.openMessageNotifyDialog(state.messageCode);
 
           if (state.resultCd === 0) {
@@ -126,6 +127,7 @@ export class RestaurantListComponent
     this.subscriptions.push(
       this.errorMessageState.subscribe((state) => {
         if (state) {
+          this.messageService.closeLoadingDialog();
           this.messageService.openMessageNotifyDialog(state);
         }
       })
@@ -134,6 +136,7 @@ export class RestaurantListComponent
     this.subscriptions.push(
       this.errorSystemState.subscribe((state) => {
         if (state) {
+          this.messageService.closeLoadingDialog();
           this.messageService.openSystemFailNotifyDialog(state);
         }
       })
@@ -160,10 +163,10 @@ export class RestaurantListComponent
         RestaurantListActions.getRestaurantList({
           payload: {
             page: this.pageIndex + 1,
+            search: this.searchPhase,
           },
         })
       );
-
       this.messageService.openLoadingDialog();
     });
   }
@@ -178,10 +181,10 @@ export class RestaurantListComponent
         RestaurantListActions.getRestaurantList({
           payload: {
             page: this.pageIndex + 1,
+            search: this.searchPhase,
           },
         })
       );
-
       this.messageService.openLoadingDialog();
     });
   }
@@ -214,6 +217,7 @@ export class RestaurantListComponent
             },
           })
         );
+        this.messageService.openLoadingDialog();
       }
     });
   }
@@ -236,6 +240,23 @@ export class RestaurantListComponent
         },
       })
     );
+    this.messageService.openLoadingDialog();
+  }
+
+  search() {
+    this.pageSize = 5;
+    this.pageIndex = 0;
+
+    this.messageService.openLoadingDialog();
+    this.store.dispatch(
+      RestaurantListActions.getRestaurantList({
+        payload: {
+          page: this.pageIndex + 1,
+          pageSize: this.pageSize,
+          search: this.searchPhase,
+        },
+      })
+    );
   }
 
   announceSortChange(sortState: Sort) {
@@ -251,9 +272,11 @@ export class RestaurantListComponent
             payload: {
               page: 1,
               pageSize: this.pageSize,
+              search: this.searchPhase,
             },
           })
         );
+        this.messageService.openLoadingDialog();
       } else if (sortState.direction === "desc") {
         this.store.dispatch(
           RestaurantListActions.getRestaurantList({
@@ -261,9 +284,11 @@ export class RestaurantListComponent
               sortBy: "name_desc",
               page: 1,
               pageSize: this.pageSize,
+              search: this.searchPhase,
             },
           })
         );
+        this.messageService.openLoadingDialog();
       }
     } else {
     }

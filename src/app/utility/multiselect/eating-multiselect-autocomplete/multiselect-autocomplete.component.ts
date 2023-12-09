@@ -51,7 +51,12 @@ export class EatingMultiselectAutocompleteComponent implements OnInit {
   @Input() data_selected: Array<EatSchedule> = [];
   @Input() key: string = "";
 
+  data_selected_edit: EatSchedule[] = [];
+
   eatingScheduleList: EatSchedule[] = [];
+
+  eatingScheduleEdit!: EatSchedule | null;
+  indexEatScheduleEdit: number = -1;
 
   eatingIdList: string[] = [];
   eatingNameList: string[] = [];
@@ -83,7 +88,10 @@ export class EatingMultiselectAutocompleteComponent implements OnInit {
 
   eatingFormGroup!: FormGroup;
 
+  editEatingFormGroup!: FormGroup;
+
   isSubmit = false;
+  disableType = false;
 
   subscriptions: Subscription[] = [];
   eatingListState!: Observable<any>;
@@ -99,17 +107,21 @@ export class EatingMultiselectAutocompleteComponent implements OnInit {
     private messageService: MessageService,
     private fb: FormBuilder
   ) {
-    this.filteredEatings = this.eatingCtrl.valueChanges.pipe(debounceTime(400));
+    this.filteredEatings = this.eatingCtrl.valueChanges.pipe(
+      debounceTime(200)
+    );
 
     this.eatingListState = this.store
       .select(getEatingList)
-      .pipe(debounceTime(400));
+      .pipe(debounceTime(200));
 
     this.errorMessageState = this.store.select(getMessage);
     this.errorSystemState = this.store.select(getSysError);
   }
 
   ngOnInit(): void {
+    this.data_selected_edit = [...this.data_selected];
+
     this.eatingFormGroup = this.fb.group({
       placeName: ["", Validators.compose([Validators.required])],
 
@@ -117,7 +129,26 @@ export class EatingMultiselectAutocompleteComponent implements OnInit {
       supportNumber: ["", Validators.compose([Validators.required])],
       singlePrice: [0, Validators.compose([Validators.required])],
 
-      restaurantType: 1,
+      status: [0, Validators.compose([Validators.required])],
+      restaurantId: ["", Validators.compose([Validators.required])],
+
+      startDate: ["", Validators.compose([Validators.required])],
+      endDate: ["", Validators.compose([Validators.required])],
+
+      description: [
+        "",
+        Validators.compose([Validators.required, Validators.minLength(3)]),
+      ],
+    });
+
+    this.editEatingFormGroup = this.fb.group({
+      placeName: ["", Validators.compose([Validators.required])],
+
+      address: ["", Validators.compose([Validators.required])],
+      supportNumber: ["", Validators.compose([Validators.required])],
+      singlePrice: [0, Validators.compose([Validators.required])],
+
+      status: [0, Validators.compose([Validators.required])],
       restaurantId: ["", Validators.compose([Validators.required])],
 
       startDate: ["", Validators.compose([Validators.required])],
@@ -144,8 +175,7 @@ export class EatingMultiselectAutocompleteComponent implements OnInit {
             payload: {
               search: (state ?? "").toLowerCase(),
               page: 1,
-              pageSize: 6,
-              eatingType: this.eatingType,
+              pageSize: 6
             },
           })
         );
@@ -209,27 +239,6 @@ export class EatingMultiselectAutocompleteComponent implements OnInit {
     this.subscriptions.forEach((subscription) => subscription.unsubscribe());
   }
 
-  changeType($event: any) {
-    console.log($event.target.value);
-
-    if (parseInt($event.target.value) === 1) {
-      this.eatingType = "Restaurant";
-    }
-
-    this.newSearch = true;
-
-    this.store.dispatch(
-      EatingListActions.getEatingList({
-        payload: {
-          search: this.searchWord.toLowerCase(),
-          page: this.pageIndex + 1,
-          pageSize: 6,
-          eatingType: this.eatingType,
-        },
-      })
-    );
-  }
-
   add(event: MatChipInputEvent): void {
     const value = (event.value || "").trim();
 
@@ -250,11 +259,12 @@ export class EatingMultiselectAutocompleteComponent implements OnInit {
       this.eatingNameList.splice(index, 1);
       this.eatingIdList.splice(index, 1);
     }
+
     this.emitAdjustedData();
   }
 
   emitAdjustedData = (): void => {
-    var returnList = this.data_selected.concat(this.eatingScheduleList);
+    var returnList = this.data_selected_edit.concat(this.eatingScheduleList);
     this.result.emit({ data: returnList });
   };
 
@@ -282,12 +292,13 @@ export class EatingMultiselectAutocompleteComponent implements OnInit {
 
   addToSchedule(): void {
     this.isSubmit = true;
-    console.log(this.eatingFormGroup.value);
+    console.log(this.eatingFormGroup.errors);
     console.log(this.eatingFormGroup.valid);
     if (this.eatingFormGroup.valid && this.eatingFormGroup.dirty) {
       const schedule: EatSchedule = {
         placeName: this.eatingFormGroup.value.placeName,
         address: this.eatingFormGroup.value.address,
+        status: this.eatingFormGroup.value.status,
         supportNumber: this.eatingFormGroup.value.supportNumber,
         restaurantId: this.eatingFormGroup.value.restaurantId,
         singlePrice: this.eatingFormGroup.value.singlePrice,
@@ -298,21 +309,104 @@ export class EatingMultiselectAutocompleteComponent implements OnInit {
 
       this.eatingScheduleList = [schedule, ...this.eatingScheduleList];
 
-      this.eatingScheduleList.sort((a: EatSchedule, b: EatSchedule) => {
-        return moment(a.startDate).valueOf() - moment(b.startDate).valueOf();
-      });
+      this.eatingScheduleList.sort(
+        (a: EatSchedule, b: EatSchedule) => {
+          return moment(a.startDate).valueOf() - moment(b.startDate).valueOf();
+        }
+      );
 
       this.emitAdjustedData();
       this.formReset();
     }
   }
 
-  removeSchedule(id: string): void {
-    var index = this.eatingScheduleList.findIndex((entity) => entity.id === id);
-    if (index > -1) this.eatingScheduleList.splice(index, 1);
+  clickEditSchedule(id: string): void {
+    var existIndex = this.data_selected_edit.findIndex(
+      (entity) => entity.id === id
+    );
+    if (existIndex > -1) {
+      this.eatingScheduleEdit = this.data_selected_edit[existIndex];
+      this.indexEatScheduleEdit = existIndex;
 
-    var existIndex = this.data_selected.findIndex((entity) => entity.id === id);
-    if (existIndex > -1) this.data_selected.splice(existIndex, 1);
+      this.editEatingFormGroup.controls["status"].setValue(
+        this.eatingScheduleEdit.status
+      );
+      this.editEatingFormGroup.controls["placeName"].setValue(
+        this.eatingScheduleEdit.placeName
+      );
+      this.editEatingFormGroup.controls["address"].setValue(
+        this.eatingScheduleEdit.address
+      );
+      this.editEatingFormGroup.controls["supportNumber"].setValue(
+        this.eatingScheduleEdit.supportNumber
+      );
+      this.editEatingFormGroup.controls["restaurantId"].setValue(
+        this.eatingScheduleEdit.restaurantId
+      );
+      this.editEatingFormGroup.controls["singlePrice"].setValue(
+        this.eatingScheduleEdit.singlePrice
+      );
+      this.editEatingFormGroup.controls["startDate"].setValue(
+        this.eatingScheduleEdit.startDate
+      );
+      this.editEatingFormGroup.controls["endDate"].setValue(
+        this.eatingScheduleEdit.endDate
+      );
+      this.editEatingFormGroup.controls["description"].setValue(
+        this.eatingScheduleEdit.description
+      );
+    }
+  }
+
+  editToSchedulesList() {
+    if (
+      this.indexEatScheduleEdit > -1 &&
+      this.eatingScheduleEdit != null
+    ) {
+      this.data_selected_edit[this.indexEatScheduleEdit] = {
+        placeName: this.editEatingFormGroup.value.placeName,
+        address: this.editEatingFormGroup.value.address,
+        supportNumber: this.editEatingFormGroup.value.supportNumber,
+        restaurantId: this.editEatingFormGroup.value.restaurantId,
+        singlePrice: this.editEatingFormGroup.value.singlePrice,
+        status: this.editEatingFormGroup.value.status,
+        startDate: this.editEatingFormGroup.value.startDate,
+        endDate: this.editEatingFormGroup.value.endDate,
+        description: this.editEatingFormGroup.value.description,
+      };
+
+      this.messageService
+        .openNotifyDialog("Thay đổi thành công")
+        .subscribe(() => {
+          this.cancelEditSchedule();
+          this.emitAdjustedData();
+        });
+    }
+  }
+
+  cancelEditSchedule(): void {
+    this.eatingScheduleEdit = null;
+    this.indexEatScheduleEdit = -1;
+  }
+
+  removeSchedule(id: string): void {
+    var index = this.eatingScheduleList.findIndex(
+      (entity) => entity.id === id
+    );
+
+    if (index > -1) {
+      console.log(this.eatingScheduleList[index]);
+      this.eatingScheduleList.splice(index, 1);
+    }
+
+    var existIndex = this.data_selected_edit.findIndex(
+      (entity) => entity.id === id
+    );
+    console.log(existIndex);
+    if (existIndex > -1) {
+      console.log(this.data_selected_edit[existIndex]);
+      this.data_selected_edit.splice(existIndex, 1);
+    }
 
     this.emitAdjustedData();
   }
@@ -323,8 +417,8 @@ export class EatingMultiselectAutocompleteComponent implements OnInit {
       description: "",
       address: "",
       supportNumber: "",
-      restaurantId: "",
-      restaurantType: 1,
+      restHouseBranchId: "",
+      restHouseType: 1,
       singlePrice: 0,
       startDate: "",
       endDate: "",
@@ -349,6 +443,18 @@ export class EatingMultiselectAutocompleteComponent implements OnInit {
         );
       }
     }
+  }
+
+  changeStatus($event: any) {
+    this.eatingFormGroup.controls["status"].setValue(
+      parseInt($event.target.value)
+    );
+  }
+
+  changeStatusExist($event: any) {
+    this.editEatingFormGroup.controls["status"].setValue(
+      parseInt($event.target.value)
+    );
   }
 
   onDisplayAtr(eating: Restaurant): string {

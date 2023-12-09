@@ -1,4 +1,4 @@
-<div [formGroup]="movingFormGroup">
+<div>
   <div class="row">
     <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 create-form">
       <div class="row">
@@ -73,7 +73,7 @@
         </mat-form-field>
       </div>
 
-      <div *ngIf="movingNameList.length >= 1">
+      <div *ngIf="movingNameList.length >= 1" [formGroup]="movingFormGroup">
         <div class="row">
           <h4
             mat-form-label
@@ -81,6 +81,18 @@
           >
             Thêm thông tin nơi ở
           </h4>
+        </div>
+
+        <div class="row">
+          <mat-form-field appearance="outline" class="full-width-input">
+            <mat-label>Tình trạng</mat-label>
+            <select matNativeControl required (change)="changeStatus($event)">
+              <option value="0">Mới tạo</option>
+              <option value="1">Đang thực hiện</option>
+              <option value="2">Hoàn thành</option>
+              <option value="2">Hủy</option>
+            </select>
+          </mat-form-field>
         </div>
 
         <div class="row">
@@ -102,11 +114,28 @@
 
         <div class="row">
           <mat-form-field appearance="outline" class="full-width-input">
-            <mat-label>Biển số xe</mat-label>
+            <mat-label>Tên hãng xe</mat-label>
             <input
               matInput
               fullwidth
-              placeholder="Vd: (98Y50452)"
+              placeholder="Vd: Bồ Công Anh"
+              formControlName="branchName"
+            />
+          </mat-form-field>
+          <app-validation
+            *ngIf="isSubmit"
+            [formGroup]="movingFormGroup"
+            [formGroupControlName]="'branchName'"
+          ></app-validation>
+        </div>
+
+        <div class="row">
+          <mat-form-field appearance="outline" class="full-width-input">
+            <mat-label>Biển số phương tiện</mat-label>
+            <input
+              matInput
+              fullwidth
+              placeholder="Vd: 0123145342"
               formControlName="vehiclePlate"
             />
           </mat-form-field>
@@ -123,7 +152,7 @@
             <input
               matInput
               fullwidth
-              placeholder="Vd: 012312342"
+              placeholder="Vd: 0123145342"
               formControlName="phoneNumber"
             />
           </mat-form-field>
@@ -131,23 +160,6 @@
             *ngIf="isSubmit"
             [formGroup]="movingFormGroup"
             [formGroupControlName]="'phoneNumber'"
-          ></app-validation>
-        </div>
-
-        <div class="row">
-          <mat-form-field appearance="outline" class="full-width-input">
-            <mat-label>Giá đơn vé trung bình</mat-label>
-            <input
-              matInput
-              fullwidth
-              placeholder="Vd: 180.000đ"
-              formControlName="singlePrice"
-            />
-          </mat-form-field>
-          <app-validation
-            *ngIf="isSubmit"
-            [formGroup]="movingFormGroup"
-            [formGroupControlName]="'singlePrice'"
           ></app-validation>
         </div>
 
@@ -164,7 +176,7 @@
           <app-validation
             *ngIf="isSubmit"
             [formGroup]="movingFormGroup"
-            [formGroupControlName]="'singlePrice'"
+            [formGroupControlName]="'startingPlace'"
           ></app-validation>
         </div>
 
@@ -176,6 +188,23 @@
               fullwidth
               placeholder="Vd: Đà Nẵng"
               formControlName="headingPlace"
+            />
+          </mat-form-field>
+          <app-validation
+            *ngIf="isSubmit"
+            [formGroup]="movingFormGroup"
+            [formGroupControlName]="'headingPlace'"
+          ></app-validation>
+        </div>
+
+        <div class="row">
+          <mat-form-field appearance="outline" class="full-width-input">
+            <mat-label>Giá đơn vé trung bình</mat-label>
+            <input
+              matInput
+              fullwidth
+              placeholder="Vd: 180.000đ"
+              formControlName="singlePrice"
             />
           </mat-form-field>
           <app-validation
@@ -295,7 +324,9 @@
       </div>
     </div>
 
-    <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 create-form">
+    <div
+      class="col-xs-12 col-sm-12 col-md-6 col-lg-6 create-form"
+    >
       <div class="row">
         <h2
           mat-form-label
@@ -313,6 +344,7 @@
           >Chưa có danh sách</mat-chip
         >
       </div>
+
       <ng-template
         #inputMovingSchedule
         let-index="index"
@@ -335,7 +367,7 @@
         >
           <mat-expansion-panel
             [expanded]="false"
-            style="width: 65%; margin-right: 10px"
+            style="width: 80%; margin-right: 10px"
           >
             <mat-expansion-panel-header>
               <mat-panel-title> Lịch trình mới {{ index + 1 }}</mat-panel-title>
@@ -345,7 +377,7 @@
               {{ driverName }}
             </p>
             <p>
-              <span style="font-weight: bold">Biển số xe:</span>
+              <span style="font-weight: bold">Biển số phương tiện:</span>
               {{ vehiclePlate }}
             </p>
             <p>
@@ -364,14 +396,14 @@
               <span style="font-weight: bold">Ngày kết thúc:</span>
               {{ endDate }}
             </p>
+            <button
+              mat-raised-button
+              color="primary"
+              (click)="removeSchedule(id)"
+            >
+              Gỡ
+            </button>
           </mat-expansion-panel>
-          <button
-            mat-raised-button
-            color="primary"
-            (click)="removeSchedule(id)"
-          >
-            Gỡ
-          </button>
         </div>
       </ng-template>
 
@@ -397,11 +429,16 @@
         >
           <mat-expansion-panel
             [expanded]="false"
-            style="width: 65%; margin-right: 10px"
+            style="width: 80%; margin-right: 10px"
           >
             <mat-expansion-panel-header>
-              <mat-panel-title style="color: green;">
-                Lịch trình {{ index + 1 }} <i class="fa fa-check" style="margin-left: 5px;" aria-hidden="true"></i
+              <mat-panel-title style="color: green">
+                Lịch trình {{ index + 1 }}
+                <i
+                  class="fa fa-check"
+                  style="margin-left: 5px"
+                  aria-hidden="true"
+                ></i
               ></mat-panel-title>
             </mat-expansion-panel-header>
             <p>
@@ -428,19 +465,27 @@
               <span style="font-weight: bold">Ngày kết thúc:</span>
               {{ endDate }}
             </p>
+            <button
+              mat-raised-button
+              color="primary"
+              (click)="clickEditSchedule(id)"
+              style="margin-right: 10px"
+            >
+              Chỉnh sửa
+            </button>
+            <button
+              mat-raised-button
+              color="danger"
+              (click)="removeSchedule(id)"
+            >
+              Gỡ
+            </button>
           </mat-expansion-panel>
-          <button
-            mat-raised-button
-            color="primary"
-            (click)="removeSchedule(id)"
-          >
-            Gỡ
-          </button>
         </div>
       </ng-template>
 
       <ng-container
-        *ngFor="let schedule of data_selected; index as i"
+        *ngFor="let schedule of data_selected_edit; index as i"
         [ngTemplateOutlet]="existMovingSchedule"
         [ngTemplateOutletContext]="{
           index: i,
@@ -448,7 +493,7 @@
           driverName: schedule.driverName,
           vehiclePlate: schedule.vehiclePlate,
           singlePrice: schedule.singlePrice,
-          phoneNumber: schedule.phoneNumber,
+          supportNumber: schedule.phoneNumber,
           startDate: schedule.startDate,
           endDate: schedule.endDate,
           description: schedule.description
@@ -465,13 +510,261 @@
           driverName: schedule.driverName,
           vehiclePlate: schedule.vehiclePlate,
           singlePrice: schedule.singlePrice,
-          phoneNumber: schedule.phoneNumber,
+          supportNumber: schedule.phoneNumber,
           startDate: schedule.startDate,
           endDate: schedule.endDate,
           description: schedule.description
         }"
       >
       </ng-container>
+    </div>
+
+    <div
+      *ngIf="movingScheduleEdit != null"
+      style="
+        width: 90%;
+        margin-left: auto;
+        margin-right: auto;
+        margin-top: 30px;
+      "
+    >
+      <form [formGroup]="editMovingFormGroup">
+        <div class="row">
+          <h4
+            mat-form-label
+            style="font-weight: bold; text-decoration: underline"
+          >
+            Chỉnh sửa thông tin lịch trình
+          </h4>
+        </div>
+        <div class="row">
+          <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 create-form">
+            <div class="row">
+              <mat-form-field appearance="outline" class="full-width-input">
+                <mat-label>Tình trạng</mat-label>
+                <select matNativeControl required (change)="changeStatusExist($event)">
+                  <option value="0">Mới tạo</option>
+                  <option value="1">Đang thực hiện</option>
+                  <option value="2">Hoàn thành</option>
+                  <option value="2">Hủy</option>
+                </select>
+              </mat-form-field>
+            </div>
+
+            <div class="row">
+              <mat-form-field appearance="outline" class="full-width-input">
+                <mat-label>Tên lái xe</mat-label>
+                <input
+                  matInput
+                  fullwidth
+                  placeholder="Vd: Bồ Công Anh"
+                  formControlName="driverName"
+                />
+              </mat-form-field>
+              <app-validation
+                *ngIf="isSubmit"
+                [formGroup]="editMovingFormGroup"
+                [formGroupControlName]="'driverName'"
+              ></app-validation>
+            </div>
+
+            <div class="row">
+              <mat-form-field appearance="outline" class="full-width-input">
+                <mat-label>Tên hãng xe</mat-label>
+                <input
+                  matInput
+                  fullwidth
+                  placeholder="Vd: Bồ Công Anh"
+                  formControlName="branchName"
+                />
+              </mat-form-field>
+              <app-validation
+                *ngIf="isSubmit"
+                [formGroup]="movingFormGroup"
+                [formGroupControlName]="'branchName'"
+              ></app-validation>
+            </div>
+
+            <div class="row">
+              <mat-form-field appearance="outline" class="full-width-input">
+                <mat-label>Số diện thoại hỗ trợ</mat-label>
+                <input
+                  matInput
+                  fullwidth
+                  placeholder="Vd: 0432423423"
+                  formControlName="phoneNumber"
+                />
+              </mat-form-field>
+              <app-validation
+                *ngIf="isSubmit"
+                [formGroup]="editMovingFormGroup"
+                [formGroupControlName]="'phoneNumber'"
+              ></app-validation>
+            </div>
+
+            <div class="row">
+              <mat-form-field appearance="outline" class="full-width-input">
+                <mat-label>Nơi xuất phát</mat-label>
+                <input
+                  matInput
+                  fullwidth
+                  placeholder="Vd: Hà Nội"
+                  formControlName="startingPlace"
+                />
+              </mat-form-field>
+              <app-validation
+                *ngIf="isSubmit"
+                [formGroup]="movingFormGroup"
+                [formGroupControlName]="'startingPlace'"
+              ></app-validation>
+            </div>
+
+            <div class="row">
+              <mat-form-field appearance="outline" class="full-width-input">
+                <mat-label>Nơi đến</mat-label>
+                <input
+                  matInput
+                  fullwidth
+                  placeholder="Vd: Đà Nẵng"
+                  formControlName="headingPlace"
+                />
+              </mat-form-field>
+              <app-validation
+                *ngIf="isSubmit"
+                [formGroup]="movingFormGroup"
+                [formGroupControlName]="'headingPlace'"
+              ></app-validation>
+            </div>
+          </div>
+
+          <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 create-form">
+            <div class="row">
+              <mat-form-field appearance="outline" class="full-width-input">
+                <mat-label>Giá đơn vé trung bình</mat-label>
+                <input
+                  matInput
+                  fullwidth
+                  placeholder="Vd: 180.000đ"
+                  formControlName="singlePrice"
+                />
+              </mat-form-field>
+              <app-validation
+                *ngIf="isSubmit"
+                [formGroup]="editMovingFormGroup"
+                [formGroupControlName]="'singlePrice'"
+              ></app-validation>
+            </div>
+
+            <div class="row">
+              <mat-form-field appearance="outline" class="full-width-input">
+                <mat-label>Ngày bắt đầu</mat-label>
+                <input
+                  matInput
+                  [ngxMatDatetimePicker]="movingPicker"
+                  placeholder="Choose a date"
+                  formControlName="startDate"
+                />
+                <mat-datepicker-toggle
+                  matSuffix
+                  [for]="$any(movingPicker)"
+                ></mat-datepicker-toggle>
+                <ngx-mat-datetime-picker
+                  #movingPicker
+                  [showSpinners]="true"
+                  [showSeconds]="true"
+                  [touchUi]="touchUi"
+                  [color]="color"
+                  [enableMeridian]="enableMeridian"
+                >
+                </ngx-mat-datetime-picker>
+              </mat-form-field>
+              <app-validation
+                *ngIf="isSubmit"
+                [formGroup]="editMovingFormGroup"
+                [formGroupControlName]="'startDate'"
+              ></app-validation>
+            </div>
+
+            <div class="row">
+              <mat-form-field appearance="outline" class="full-width-input">
+                <mat-label>Ngày kết thúc</mat-label>
+                <input
+                  matInput
+                  [ngxMatDatetimePicker]="picker"
+                  placeholder="Choose a date"
+                  formControlName="endDate"
+                />
+                <mat-datepicker-toggle
+                  matSuffix
+                  [for]="$any(picker)"
+                ></mat-datepicker-toggle>
+                <ngx-mat-datetime-picker
+                  #picker
+                  [showSpinners]="true"
+                  [showSeconds]="true"
+                  [touchUi]="touchUi"
+                  [color]="color"
+                  [enableMeridian]="enableMeridian"
+                >
+                </ngx-mat-datetime-picker>
+              </mat-form-field>
+              <app-validation
+                *ngIf="isSubmit"
+                [formGroup]="editMovingFormGroup"
+                [formGroupControlName]="'endDate'"
+              ></app-validation>
+            </div>
+          </div>
+        </div>
+
+        <div
+          class="row"
+          style="display: flex; flex-direction: column !important; flex-wrap: 1"
+        >
+          <mat-form-field style="width: 90%">
+            <textarea
+              matInput
+              class="form-control"
+              id="description"
+              placeholder="Thông tin đính kèm"
+              formControlName="description"
+              rows="10"
+            ></textarea>
+          </mat-form-field>
+          <app-validation
+            *ngIf="isSubmit"
+            [formGroup]="editMovingFormGroup"
+            [formGroupControlName]="'description'"
+          ></app-validation>
+        </div>
+
+        <div
+          class="row"
+          style="display: flex; flex-direction: row !important; flex-wrap: 1"
+        >
+          <div style="margin-right: 20px">
+            <button
+              mat-raised-button
+              color="primary"
+              type="button"
+              (click)="editToSchedulesList()"
+            >
+              Lưu
+            </button>
+          </div>
+
+          <div>
+            <button
+              mat-raised-button
+              color="warn"
+              type="button"
+              (click)="cancelEditSchedule()"
+            >
+              Hủy
+            </button>
+          </div>
+        </div>
+      </form>
     </div>
   </div>
 </div>

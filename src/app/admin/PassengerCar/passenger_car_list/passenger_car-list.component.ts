@@ -69,6 +69,8 @@ export class PassengerCarListComponent
   pageSizeOpstion = [5, 10];
   pageIndex = 0;
 
+  searchPhase = "";
+
   constructor(
     private adminService: AdminService,
     public dialog: MatDialog,
@@ -95,13 +97,14 @@ export class PassengerCarListComponent
     this.subscriptions.push(
       this.passengerCarDeleteState.subscribe((state) => {
         if (state) {
-          console.log("abc: ", state);
+          this.messageService.closeLoadingDialog();
           this.messageService.openMessageNotifyDialog(state.messageCode);
 
           if (state.resultCd === 0) {
             this.store.dispatch(
               PassengerCarListActions.getPassengerCarList({
                 payload: {
+                  search: this.searchPhase,
                   page: this.pageIndex + 1,
                 },
               })
@@ -126,6 +129,7 @@ export class PassengerCarListComponent
     this.subscriptions.push(
       this.errorMessageState.subscribe((state) => {
         if (state) {
+          this.messageService.closeLoadingDialog();
           this.messageService.openMessageNotifyDialog(state);
         }
       })
@@ -134,6 +138,7 @@ export class PassengerCarListComponent
     this.subscriptions.push(
       this.errorSystemState.subscribe((state) => {
         if (state) {
+          this.messageService.closeLoadingDialog();
           this.messageService.openSystemFailNotifyDialog(state);
         }
       })
@@ -160,6 +165,7 @@ export class PassengerCarListComponent
         PassengerCarListActions.getPassengerCarList({
           payload: {
             page: this.pageIndex + 1,
+            search: this.searchPhase,
           },
         })
       );
@@ -178,6 +184,7 @@ export class PassengerCarListComponent
         PassengerCarListActions.getPassengerCarList({
           payload: {
             page: this.pageIndex + 1,
+            search: this.searchPhase,
           },
         })
       );
@@ -236,6 +243,23 @@ export class PassengerCarListComponent
         },
       })
     );
+    this.messageService.openLoadingDialog();
+  }
+
+  search() {
+    this.pageSize = 5;
+    this.pageIndex = 0;
+
+    this.messageService.openLoadingDialog();
+    this.store.dispatch(
+      PassengerCarListActions.getPassengerCarList({
+        payload: {
+          page: this.pageIndex + 1,
+          pageSize: this.pageSize,
+          search: this.searchPhase,
+        },
+      })
+    );
   }
 
   announceSortChange(sortState: Sort) {
@@ -251,9 +275,11 @@ export class PassengerCarListComponent
             payload: {
               page: 1,
               pageSize: this.pageSize,
+              search: this.searchPhase,
             },
           })
         );
+        this.messageService.openLoadingDialog();
       } else if (sortState.direction === "desc") {
         this.store.dispatch(
           PassengerCarListActions.getPassengerCarList({
@@ -261,9 +287,11 @@ export class PassengerCarListComponent
               sortBy: "name_desc",
               page: 1,
               pageSize: this.pageSize,
+              search: this.searchPhase,
             },
           })
         );
+        this.messageService.openLoadingDialog();
       }
     } else {
     }

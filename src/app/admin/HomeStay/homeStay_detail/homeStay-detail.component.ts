@@ -103,6 +103,8 @@ export class HomeStayDetailComponent implements OnInit, OnDestroy {
         if (state) {
           this.homeStay = state;
 
+          this.messageService.closeLoadingDialog();
+          
           this.editformGroup_info.controls["placeBranch"].setValue(
             state.placeBranch
           );
@@ -134,6 +136,7 @@ export class HomeStayDetailComponent implements OnInit, OnDestroy {
     this.subscriptions.push(
       this.editHomeStayState.subscribe((state) => {
         if (state) {
+          this.messageService.closeLoadingDialog();
           this.messageService.openMessageNotifyDialog(state.messageCode);
         }
       })
@@ -142,6 +145,7 @@ export class HomeStayDetailComponent implements OnInit, OnDestroy {
     this.subscriptions.push(
       this.errorMessageState.subscribe((state) => {
         if (state) {
+          this.messageService.closeLoadingDialog();
           this.messageService.openMessageNotifyDialog(state);
         }
       })
@@ -150,11 +154,13 @@ export class HomeStayDetailComponent implements OnInit, OnDestroy {
     this.subscriptions.push(
       this.errorSystemState.subscribe((state) => {
         if (state) {
+          this.messageService.closeLoadingDialog();
           this.messageService.openFailNotifyDialog(state);
         }
       })
     );
 
+    this.messageService.openLoadingDialog();
     this.store.dispatch(
       HomeStayActions.getHomeStay({
         payload: {
@@ -207,6 +213,7 @@ export class HomeStayDetailComponent implements OnInit, OnDestroy {
         description: this.editformGroup_info.value.description,
       };
 
+      this.messageService.openLoadingDialog();
       this.store.dispatch(
         HomeStayActions.editHomeStay({
           payload: payload,

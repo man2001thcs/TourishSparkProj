@@ -22,8 +22,35 @@
         <h2 mat-form-label style="font-weight: heavy">Thêm thông tin Tour</h2>
       </div>
 
+      <ul ngbNav #nav="ngbNav" [(activeId)]="active" class="nav-tabs" style="margin-bottom: 20px;">
+        <li [ngbNavItem]="1">
+          <button ngbNavLink>Thông tin tour</button>
+          <ng-template ngbNavContent>
+
+          </ng-template>
+        </li>
+        <li [ngbNavItem]="2">
+          <button ngbNavLink>Lịch trình ăn uống</button>
+          <ng-template ngbNavContent>
+
+          </ng-template>
+        </li>
+        <li [ngbNavItem]="3">
+          <button ngbNavLink>Lịch trình di chuyển</button>
+          <ng-template ngbNavContent>
+
+          </ng-template>
+        </li>
+        <li [ngbNavItem]="4">
+          <button ngbNavLink>Lịch trình nơi ở</button>
+          <ng-template ngbNavContent>
+
+          </ng-template>
+        </li>
+      </ul>
+
       <form [formGroup]="createformGroup">
-        <div class="row">
+        <div class="row" *ngIf="active === 1">
           <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 create-form">
             <div class="row" style="margin-bottom: 1rem">
               <mat-form-field appearance="outline" class="full-width-input">
@@ -157,7 +184,7 @@
           </div>
         </div>
 
-        <div class="row">
+        <div class="row" *ngIf="active === 1">
           <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 create-form">
             <div class="row" style="margin-bottom: 1rem">
               <mat-form-field appearance="outline" class="full-width-input">
@@ -219,7 +246,7 @@
           </div>
         </div>
 
-        <div class="row">
+        <div class="row" *ngIf="active === 1">
           <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 create-form">
             <div class="row" style="margin-bottom: 1rem">
               <mat-form-field appearance="outline" class="full-width-input">
@@ -240,6 +267,7 @@
         <div
           class="row"
           style="display: flex; flex-direction: column !important; flex-wrap: 1"
+          *ngIf="active === 1"
         >
           <mat-form-field style="width: 90%">
             <textarea
@@ -262,54 +290,17 @@
             ></app-validation>
           </div>
         </div>
-        <div
-          class="row"
-          style="
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            border-bottom: 3px solid #696868;
-            margin-top: 30px;
-            margin-bottom: 30px;
-            width: 93%;
-          "
-        ></div>
 
         <staying-multiselect-autocomplete
           (result)="selectChangeStaying($event)"
+          *ngIf="active === 4"
         >
         </staying-multiselect-autocomplete>
 
-        <div
-          class="row"
-          style="
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            border-bottom: 3px solid #696868;
-            margin-top: 30px;
-            margin-bottom: 30px;
-            width: 93%;
-          "
-        ></div>
-
-        <moving-multiselect-autocomplete (result)="selectChangeMoving($event)">
+        <moving-multiselect-autocomplete (result)="selectChangeMoving($event)" *ngIf="active === 3">
         </moving-multiselect-autocomplete>
 
-        <div
-          class="row"
-          style="
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            border-bottom: 3px solid #696868;
-            margin-top: 30px;
-            margin-bottom: 30px;
-            width: 93%;
-          "
-        ></div>
-
-        <eating-multiselect-autocomplete (result)="selectChangeEating($event)">
+        <eating-multiselect-autocomplete (result)="selectChangeEating($event)" *ngIf="active === 2">
         </eating-multiselect-autocomplete>
 
         <div

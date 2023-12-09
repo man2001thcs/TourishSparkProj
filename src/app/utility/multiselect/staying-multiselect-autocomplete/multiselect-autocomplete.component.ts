@@ -51,7 +51,12 @@ export class StayingMultiselectAutocompleteComponent implements OnInit {
   @Input() data_selected: Array<StayingSchedule> = [];
   @Input() key: string = "";
 
+  data_selected_edit: StayingSchedule[] = [];
+
   stayingScheduleList: StayingSchedule[] = [];
+
+  stayingScheduleEdit!: StayingSchedule | null;
+  indexStayingScheduleEdit: number = -1;
 
   stayingIdList: string[] = [];
   stayingNameList: string[] = [];
@@ -83,6 +88,8 @@ export class StayingMultiselectAutocompleteComponent implements OnInit {
 
   stayingFormGroup!: FormGroup;
 
+  editStayingFormGroup!: FormGroup;
+
   isSubmit = false;
   disableType = false;
 
@@ -113,6 +120,8 @@ export class StayingMultiselectAutocompleteComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.data_selected_edit = [...this.data_selected];
+
     this.stayingFormGroup = this.fb.group({
       placeName: ["", Validators.compose([Validators.required])],
 
@@ -120,7 +129,27 @@ export class StayingMultiselectAutocompleteComponent implements OnInit {
       supportNumber: ["", Validators.compose([Validators.required])],
       singlePrice: [0, Validators.compose([Validators.required])],
 
-      restHouseType: [1 , Validators.compose([Validators.required])],
+      status: [0, Validators.compose([Validators.required])],
+      restHouseType: [1, Validators.compose([Validators.required])],
+      restHouseBranchId: ["", Validators.compose([Validators.required])],
+
+      startDate: ["", Validators.compose([Validators.required])],
+      endDate: ["", Validators.compose([Validators.required])],
+
+      description: [
+        "",
+        Validators.compose([Validators.required, Validators.minLength(3)]),
+      ],
+    });
+
+    this.editStayingFormGroup = this.fb.group({
+      placeName: ["", Validators.compose([Validators.required])],
+
+      address: ["", Validators.compose([Validators.required])],
+      supportNumber: ["", Validators.compose([Validators.required])],
+      singlePrice: [0, Validators.compose([Validators.required])],
+      status: [0, Validators.compose([Validators.required])],
+      restHouseType: [1, Validators.compose([Validators.required])],
       restHouseBranchId: ["", Validators.compose([Validators.required])],
 
       startDate: ["", Validators.compose([Validators.required])],
@@ -227,9 +256,7 @@ export class StayingMultiselectAutocompleteComponent implements OnInit {
 
     this.stayingIdList = [];
     this.stayingNameList = [];
-    this.stayingFormGroup.controls["placeName"].setValue(
-      ""
-    );
+    this.stayingFormGroup.controls["placeName"].setValue("");
 
     this.newSearch = true;
 
@@ -238,8 +265,7 @@ export class StayingMultiselectAutocompleteComponent implements OnInit {
         payload: {
           search: this.searchWord.toLowerCase(),
           page: this.pageIndex + 1,
-          pageSize: 6,
-          stayingType: this.stayingType,
+          pageSize: 6
         },
       })
     );
@@ -270,7 +296,7 @@ export class StayingMultiselectAutocompleteComponent implements OnInit {
   }
 
   emitAdjustedData = (): void => {
-    var returnList = this.data_selected.concat(this.stayingScheduleList);
+    var returnList = this.data_selected_edit.concat(this.stayingScheduleList);
     this.result.emit({ data: returnList });
   };
 
@@ -281,7 +307,6 @@ export class StayingMultiselectAutocompleteComponent implements OnInit {
     this.stayingFormGroup.controls["restHouseBranchId"].setValue(
       event.option.value.id
     );
-
     this.stayingFormGroup.controls["placeName"].setValue(
       event.option.value.placeBranch
     );
@@ -306,6 +331,7 @@ export class StayingMultiselectAutocompleteComponent implements OnInit {
         address: this.stayingFormGroup.value.address,
         supportNumber: this.stayingFormGroup.value.supportNumber,
         restHouseBranchId: this.stayingFormGroup.value.restHouseBranchId,
+        status: this.stayingFormGroup.value.status,
         restHouseType: this.stayingFormGroup.value.restHouseType,
         singlePrice: this.stayingFormGroup.value.singlePrice,
         startDate: this.stayingFormGroup.value.startDate,
@@ -326,14 +352,94 @@ export class StayingMultiselectAutocompleteComponent implements OnInit {
     }
   }
 
+  clickEditSchedule(id: string): void {
+    var existIndex = this.data_selected_edit.findIndex(
+      (entity) => entity.id === id
+    );
+    if (existIndex > -1) {
+      this.stayingScheduleEdit = this.data_selected_edit[existIndex];
+      this.indexStayingScheduleEdit = existIndex;
+
+      this.editStayingFormGroup.controls["placeName"].setValue(
+        this.stayingScheduleEdit.placeName
+      );
+      this.editStayingFormGroup.controls["address"].setValue(
+        this.stayingScheduleEdit.address
+      );
+      this.editStayingFormGroup.controls["supportNumber"].setValue(
+        this.stayingScheduleEdit.supportNumber
+      );
+      this.editStayingFormGroup.controls["restHouseBranchId"].setValue(
+        this.stayingScheduleEdit.restHouseBranchId
+      );
+      this.editStayingFormGroup.controls["restHouseType"].setValue(
+        this.stayingScheduleEdit.restHouseType
+      );
+      this.editStayingFormGroup.controls["singlePrice"].setValue(
+        this.stayingScheduleEdit.singlePrice
+      );
+      this.editStayingFormGroup.controls["startDate"].setValue(
+        this.stayingScheduleEdit.startDate
+      );
+      this.editStayingFormGroup.controls["endDate"].setValue(
+        this.stayingScheduleEdit.endDate
+      );
+      this.editStayingFormGroup.controls["description"].setValue(
+        this.stayingScheduleEdit.description
+      );
+    }
+  }
+
+  editToSchedulesList() {
+    if (
+      this.indexStayingScheduleEdit > -1 &&
+      this.stayingScheduleEdit != null
+    ) {
+      this.data_selected_edit[this.indexStayingScheduleEdit] = {
+        placeName: this.editStayingFormGroup.value.placeName,
+        address: this.editStayingFormGroup.value.address,
+        supportNumber: this.editStayingFormGroup.value.supportNumber,
+        restHouseBranchId: this.editStayingFormGroup.value.restHouseBranchId,
+        restHouseType: this.editStayingFormGroup.value.restHouseType,
+        status: this.editStayingFormGroup.value.status,
+        singlePrice: this.editStayingFormGroup.value.singlePrice,
+        startDate: this.editStayingFormGroup.value.startDate,
+        endDate: this.editStayingFormGroup.value.endDate,
+        description: this.editStayingFormGroup.value.description,
+      };
+
+      this.messageService
+        .openNotifyDialog("Thay đổi thành công")
+        .subscribe(() => {
+          this.cancelEditSchedule();
+          this.emitAdjustedData();
+        });
+    }
+  }
+
+  cancelEditSchedule(): void {
+    this.stayingScheduleEdit = null;
+    this.indexStayingScheduleEdit = -1;
+  }
+
   removeSchedule(id: string): void {
     var index = this.stayingScheduleList.findIndex(
       (entity) => entity.id === id
     );
 
-    if (index > -1) this.stayingScheduleList.splice(index, 1);
-    var existIndex = this.data_selected.findIndex((entity) => entity.id === id);
-    if (existIndex > -1) this.data_selected.splice(existIndex, 1);
+    if (index > -1) {
+      console.log(this.stayingScheduleList[index]);
+      this.stayingScheduleList.splice(index, 1);
+    }
+
+    var existIndex = this.data_selected_edit.findIndex(
+      (entity) => entity.id === id
+    );
+    console.log(existIndex);
+    if (existIndex > -1) {
+      console.log(this.data_selected_edit[existIndex]);
+      this.data_selected_edit.splice(existIndex, 1);
+    }
 
     this.emitAdjustedData();
   }
@@ -386,5 +492,17 @@ export class StayingMultiselectAutocompleteComponent implements OnInit {
 
   cancelLoading() {
     this.isLoading = false;
+  }
+
+  changeStatus($event: any) {
+    this.stayingFormGroup.controls["status"].setValue(
+      parseInt($event.target.value)
+    );
+  }
+
+  changeStatusExist($event: any) {
+    this.editStayingFormGroup.controls["status"].setValue(
+      parseInt($event.target.value)
+    );
   }
 }

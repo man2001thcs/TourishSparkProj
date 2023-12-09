@@ -44,6 +44,8 @@ export class HomeStayListComponent
   errorMessageState!: Observable<any>;
   errorSystemState!: Observable<any>;
 
+  searchPhase = "";
+
   displayedColumns: string[] = [
     "id",
     "placeBranch",
@@ -84,7 +86,7 @@ export class HomeStayListComponent
   ngOnInit(): void {
     this.subscriptions.push(
       this.homeStayListState.subscribe((state) => {
-        if (state) {
+        if (state) {         
           this.messageService.closeLoadingDialog();
           this.homeStayList = state.data;
           this.length = state.count;
@@ -95,7 +97,7 @@ export class HomeStayListComponent
     this.subscriptions.push(
       this.homeStayDeleteState.subscribe((state) => {
         if (state) {
-          console.log("abc: ", state);
+          this.messageService.closeLoadingDialog();
           this.messageService.openMessageNotifyDialog(state.messageCode);
 
           if (state.resultCd === 0) {
@@ -103,6 +105,7 @@ export class HomeStayListComponent
               HomeStayListActions.getHomeStayList({
                 payload: {
                   page: this.pageIndex + 1,
+                  search: this.searchPhase
                 },
               })
             );
@@ -112,20 +115,20 @@ export class HomeStayListComponent
     );
 
     this.store.dispatch(HomeStayListActions.initial());
-
     this.store.dispatch(
       HomeStayListActions.getHomeStayList({
         payload: {
           page: this.pageIndex + 1,
+          search: this.searchPhase
         },
       })
     );
-
     this.messageService.openLoadingDialog();
 
     this.subscriptions.push(
       this.errorMessageState.subscribe((state) => {
         if (state) {
+          this.messageService.closeLoadingDialog();
           this.messageService.openMessageNotifyDialog(state);
         }
       })
@@ -134,6 +137,7 @@ export class HomeStayListComponent
     this.subscriptions.push(
       this.errorSystemState.subscribe((state) => {
         if (state) {
+          this.messageService.closeLoadingDialog();
           this.messageService.openSystemFailNotifyDialog(state);
         }
       })
@@ -160,10 +164,10 @@ export class HomeStayListComponent
         HomeStayListActions.getHomeStayList({
           payload: {
             page: this.pageIndex + 1,
+            search: this.searchPhase
           },
         })
       );
-
       this.messageService.openLoadingDialog();
     });
   }
@@ -178,6 +182,7 @@ export class HomeStayListComponent
         HomeStayListActions.getHomeStayList({
           payload: {
             page: this.pageIndex + 1,
+            search: this.searchPhase
           },
         })
       );
@@ -207,6 +212,7 @@ export class HomeStayListComponent
 
     ref.afterClosed().subscribe((result) => {
       if (result) {
+        this.messageService.openLoadingDialog();
         this.store.dispatch(
           HomeStayListActions.deleteHomeStay({
             payload: {
@@ -220,6 +226,22 @@ export class HomeStayListComponent
 
   addData(): void {}
 
+  search() {
+    this.pageSize = 5;
+    this.pageIndex = 0;
+
+    this.messageService.openLoadingDialog();
+    this.store.dispatch(
+      HomeStayListActions.getHomeStayList({
+        payload: {
+          page: this.pageIndex + 1,
+          pageSize: this.pageSize,
+          search: this.searchPhase
+        },
+      })
+    );
+  }
+
   handlePageEvent(e: PageEvent) {
     // this.length = e.length;
 
@@ -228,11 +250,13 @@ export class HomeStayListComponent
 
     console.log(this.pageIndex);
 
+    this.messageService.openLoadingDialog();
     this.store.dispatch(
       HomeStayListActions.getHomeStayList({
         payload: {
           page: this.pageIndex + 1,
           pageSize: this.pageSize,
+          search: this.searchPhase
         },
       })
     );
@@ -246,21 +270,25 @@ export class HomeStayListComponent
     console.log(sortState);
     if ((sortState.active = "name")) {
       if (sortState.direction === "asc") {
+        this.messageService.openLoadingDialog();
         this.store.dispatch(
           HomeStayListActions.getHomeStayList({
             payload: {
               page: 1,
               pageSize: this.pageSize,
+              search: this.searchPhase
             },
           })
         );
       } else if (sortState.direction === "desc") {
+        this.messageService.openLoadingDialog();
         this.store.dispatch(
           HomeStayListActions.getHomeStayList({
             payload: {
               sortBy: "name_desc",
               page: 1,
               pageSize: this.pageSize,
+              search: this.searchPhase
             },
           })
         );
