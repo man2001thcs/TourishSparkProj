@@ -76,6 +76,7 @@ export class ReceiptCreateComponent implements OnInit, OnDestroy {
     this.subscriptions.push(
       this.createReceiptState.subscribe((state) => {
         if (state) {
+          this.messageService.closeLoadingDialog();
           this.messageService.openMessageNotifyDialog(state.messageCode);
         }
       })
@@ -84,6 +85,7 @@ export class ReceiptCreateComponent implements OnInit, OnDestroy {
     this.subscriptions.push(
       this.errorMessageState.subscribe((state) => {
         if (state) {
+          this.messageService.closeLoadingDialog();
           this.messageService.openMessageNotifyDialog(state);
         }
       })
@@ -92,6 +94,7 @@ export class ReceiptCreateComponent implements OnInit, OnDestroy {
     this.subscriptions.push(
       this.errorSystemState.subscribe((state) => {
         if (state) {
+          this.messageService.closeLoadingDialog();
           this.messageService.openSystemFailNotifyDialog(state);
         }
       })
@@ -164,6 +167,8 @@ export class ReceiptCreateComponent implements OnInit, OnDestroy {
           payload: payload,
         })
       );
+
+      this.messageService.openLoadingDialog();
     }
   }
 

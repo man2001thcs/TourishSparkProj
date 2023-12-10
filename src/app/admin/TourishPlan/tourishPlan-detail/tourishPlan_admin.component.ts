@@ -198,7 +198,7 @@ export class TourishPlanDetailAdminComponent implements OnInit, OnDestroy {
                 id: this.tourishPlanId,
               },
             })
-          );  
+          );           
         }
       })
     );
@@ -314,7 +314,7 @@ export class TourishPlanDetailAdminComponent implements OnInit, OnDestroy {
   saveInfomation(): void {
     const dialogRef = this.dialog.open(ConfirmDialogComponent, {
       data: {
-        title: "Bạn có lưu lại không?",
+        title: "Bạn có muốn lưu lại không?",
       },
     });
 

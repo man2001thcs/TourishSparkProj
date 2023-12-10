@@ -60,6 +60,8 @@ export class ReceiptListComponent implements OnInit, AfterViewInit, OnDestroy {
   errorMessageState!: Observable<any>;
   errorSystemState!: Observable<any>;
 
+  active = 0;
+
   displayedColumns: string[] = [
     "id",
     "tourName",
@@ -110,15 +112,18 @@ export class ReceiptListComponent implements OnInit, AfterViewInit, OnDestroy {
         if (state) {
           console.log("abc: ", state);
           this.messageService.openMessageNotifyDialog(state.messageCode);
+          this.messageService.closeLoadingDialog();
 
           if (state.resultCd === 0) {
             this.store.dispatch(
               ReceiptListActions.getReceiptList({
                 payload: {
                   page: this.pageIndex + 1,
+                  status: this.active
                 },
               })
             );
+            this.messageService.openLoadingDialog();
           }
         }
       })
@@ -130,6 +135,7 @@ export class ReceiptListComponent implements OnInit, AfterViewInit, OnDestroy {
       ReceiptListActions.getReceiptList({
         payload: {
           page: this.pageIndex + 1,
+          status: this.active
         },
       })
     );
@@ -138,6 +144,7 @@ export class ReceiptListComponent implements OnInit, AfterViewInit, OnDestroy {
     this.subscriptions.push(
       this.errorMessageState.subscribe((state) => {
         if (state) {
+          this.messageService.closeLoadingDialog();
           this.messageService.openMessageNotifyDialog(state);
         }
       })
@@ -146,6 +153,7 @@ export class ReceiptListComponent implements OnInit, AfterViewInit, OnDestroy {
     this.subscriptions.push(
       this.errorSystemState.subscribe((state) => {
         if (state) {
+          this.messageService.closeLoadingDialog();
           this.messageService.openSystemFailNotifyDialog(state);
         }
       })
@@ -172,10 +180,10 @@ export class ReceiptListComponent implements OnInit, AfterViewInit, OnDestroy {
         ReceiptListActions.getReceiptList({
           payload: {
             page: this.pageIndex + 1,
+            status: this.active
           },
         })
       );
-
       this.messageService.openLoadingDialog();
     });
   }
@@ -190,10 +198,10 @@ export class ReceiptListComponent implements OnInit, AfterViewInit, OnDestroy {
         ReceiptListActions.getReceiptList({
           payload: {
             page: this.pageIndex + 1,
+            status: this.active
           },
         })
       );
-
       this.messageService.openLoadingDialog();
     });
   }
@@ -226,12 +234,27 @@ export class ReceiptListComponent implements OnInit, AfterViewInit, OnDestroy {
             },
           })
         );
+        this.messageService.openLoadingDialog();
       }
     });
   }
 
   addData(): void {
     console.log("abc");
+  }
+
+  tourStatusChange(): void {
+    this.pageIndex = 0;
+
+    this.store.dispatch(
+      ReceiptListActions.getReceiptList({
+        payload: {
+          page: this.pageIndex + 1,
+          status: this.active
+        },
+      })
+    );
+    this.messageService.openLoadingDialog();
   }
 
   handlePageEvent(e: PageEvent) {
@@ -247,6 +270,7 @@ export class ReceiptListComponent implements OnInit, AfterViewInit, OnDestroy {
         payload: {
           page: this.pageIndex + 1,
           pageSize: this.pageSize,
+          status: this.active
         },
       })
     );
@@ -261,6 +285,7 @@ export class ReceiptListComponent implements OnInit, AfterViewInit, OnDestroy {
           page: this.pageIndex + 1,
           pageSize: this.pageSize,
           tourishPlanId: $event.data[0],
+          status: this.active
         },
       })
     );
@@ -280,9 +305,11 @@ export class ReceiptListComponent implements OnInit, AfterViewInit, OnDestroy {
             payload: {
               page: 1,
               pageSize: this.pageSize,
+              status: this.active
             },
           })
         );
+        this.messageService.openLoadingDialog();
       } else if (sortState.direction === "desc") {
         this.store.dispatch(
           ReceiptListActions.getReceiptList({
@@ -290,9 +317,11 @@ export class ReceiptListComponent implements OnInit, AfterViewInit, OnDestroy {
               sortBy: "name_desc",
               page: 1,
               pageSize: this.pageSize,
+              status: this.active
             },
           })
         );
+        this.messageService.openLoadingDialog();
       }
     } else {
     }

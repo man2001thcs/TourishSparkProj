@@ -92,12 +92,7 @@ export class ReceiptDetailComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.editformGroup_info = this.fb.group({
       fullReceiptId: [
-        this.data.id,
-        Validators.compose([
-          Validators.required,
-          Validators.minLength(6),
-          Validators.pattern(/^[a-z]{6,32}$/i),
-        ]),
+        this.data.id      
       ],
       totalReceiptId: ["", Validators.compose([Validators.required])],
       guestName: ["", Validators.compose([Validators.required])],
@@ -119,7 +114,12 @@ export class ReceiptDetailComponent implements OnInit, OnDestroy {
       this.receiptState.subscribe((state) => {
         if (state) {
           this.receipt = state;
+          this.messageService.closeLoadingDialog();
+          console.log(state);
 
+          this.editformGroup_info.controls["totalReceiptId"].setValue(
+            state.totalReceiptId
+          );
           this.editformGroup_info.controls["guestName"].setValue(
             state.guestName
           );
@@ -131,8 +131,8 @@ export class ReceiptDetailComponent implements OnInit, OnDestroy {
             state.phoneNumber
           );
           this.editformGroup_info.controls["status"].setValue(state.status);
-          this.editformGroup_info.controls["originalPrice"].setValue(
-            state.originalPrice
+          this.editformGroup_info.controls["totalTicket"].setValue(
+            state.totalTicket
           );
 
           this.editformGroup_info.controls["discountFloat"].setValue(
@@ -153,6 +153,7 @@ export class ReceiptDetailComponent implements OnInit, OnDestroy {
     this.subscriptions.push(
       this.editReceiptState.subscribe((state) => {
         if (state) {
+          this.messageService.closeLoadingDialog();
           this.messageService.openMessageNotifyDialog(state.messageCode);
         }
       })
@@ -161,6 +162,7 @@ export class ReceiptDetailComponent implements OnInit, OnDestroy {
     this.subscriptions.push(
       this.errorMessageState.subscribe((state) => {
         if (state) {
+          this.messageService.closeLoadingDialog();
           this.messageService.openMessageNotifyDialog(state);
         }
       })
@@ -169,6 +171,7 @@ export class ReceiptDetailComponent implements OnInit, OnDestroy {
     this.subscriptions.push(
       this.errorSystemState.subscribe((state) => {
         if (state) {
+          this.messageService.closeLoadingDialog();
           this.messageService.openFailNotifyDialog(state);
         }
       })
@@ -181,6 +184,7 @@ export class ReceiptDetailComponent implements OnInit, OnDestroy {
         },
       })
     );
+    this.messageService.openLoadingDialog();
 
     this.store.dispatch(ReceiptActions.initial());
 
@@ -220,6 +224,8 @@ export class ReceiptDetailComponent implements OnInit, OnDestroy {
 
   formSubmit_edit_info(): void {
     this.isSubmitted = true;
+
+    console.log(this.editformGroup_info.value);
     if (this.editformGroup_info.valid){
       const payload: FullReceipt = {
         totalReceiptId: this.receipt.totalReceiptId,
@@ -233,7 +239,7 @@ export class ReceiptDetailComponent implements OnInit, OnDestroy {
         email: this.editformGroup_info.value.email,
         phoneNumber: this.editformGroup_info.value.phoneNumber,
         description: this.editformGroup_info.value.description,
-        status: this.editformGroup_info.value.status,
+        status: parseInt(this.editformGroup_info.value.status),
       };
   
       this.store.dispatch(
@@ -241,8 +247,21 @@ export class ReceiptDetailComponent implements OnInit, OnDestroy {
           payload: payload,
         })
       );
+      this.messageService.openLoadingDialog();
     }
     
+  }
+
+  saveInfomation(): void {
+    const dialogRef = this.dialog.open(ConfirmDialogComponent, {
+      data: {
+        title: "Bạn có muốn lưu lại không?",
+      },
+    });
+
+    dialogRef.afterClosed().subscribe((result) => {
+      this.formSubmit_edit_info();
+    });
   }
 
   selectChangeReceipt($event: any): any {

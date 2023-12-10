@@ -30,6 +30,28 @@
     </div>
   </div>
 
+  <ul
+    ngbNav
+    #nav="ngbNav"
+    [(activeId)]="active"
+    (activeIdChange)="tourStatusChange()"
+    class="nav-tabs"
+    style="margin-bottom: 20px"
+  >
+    <li [ngbNavItem]="0">
+      <button ngbNavLink>Tour mới tạo</button>
+    </li>
+    <li [ngbNavItem]="1">
+      <button ngbNavLink>Tour đang hoạt động</button>
+    </li>
+    <li [ngbNavItem]="2">
+      <button ngbNavLink>Tour đã hoàn thành</button>
+    </li>
+    <li [ngbNavItem]="3">
+      <button ngbNavLink>Tour hủy</button>
+    </li>
+  </ul>
+
   <div class="table-responsive">
     <table
       mat-table

@@ -116,7 +116,7 @@
             <div class="row">
               <mat-form-field appearance="outline" class="full-width-input">
                 <mat-label>Trạng thái đơn</mat-label>
-                <select matNativeControl required>
+                <select matNativeControl required formControlName="status">
                   <option value="0">Mới tạo</option>
                   <option value="1">Chờ thanh toán</option>
                   <option value="2">Thanh toán thành công</option>
@@ -192,13 +192,6 @@
               </div>
             </div>
           </div>
-
-          <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 edit-form">
-            <tourishPlan-multiselect-autocomplete
-              (result)="selectChangeReceipt($event)"
-            >
-            </tourishPlan-multiselect-autocomplete>
-          </div>
         </div>
 
         <div
@@ -237,7 +230,7 @@
             <button
               mat-raised-button
               color="primary"
-              (click)="formSubmit_edit_info()"
+              (click)="saveInfomation()"
             >
               Lưu
             </button>
