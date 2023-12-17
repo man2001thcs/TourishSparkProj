@@ -373,6 +373,9 @@ export class MovingMultiselectAutocompleteComponent implements OnInit {
       this.editMovingFormGroup.controls["vehiclePlate"].setValue(
         this.movingScheduleEdit.vehiclePlate
       );
+      this.editMovingFormGroup.controls["branchName"].setValue(
+        this.movingScheduleEdit.branchName
+      );
 
       this.editMovingFormGroup.controls["phoneNumber"].setValue(
         this.movingScheduleEdit.phoneNumber
