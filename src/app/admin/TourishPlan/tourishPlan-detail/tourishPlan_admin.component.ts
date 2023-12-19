@@ -323,6 +323,24 @@ export class TourishPlanDetailAdminComponent implements OnInit, OnDestroy {
     });
   }
 
+  getTotalPrice(): number {
+    let totalPrice  = 0;
+
+    this.tourishPlan.stayingSchedules?.forEach(entity => {
+      totalPrice  += entity.singlePrice ?? 0;
+    });
+
+    this.tourishPlan.eatSchedules?.forEach(entity => {
+      totalPrice  += entity.singlePrice ?? 0;
+    });
+
+    this.tourishPlan.movingSchedules?.forEach(entity => {
+      totalPrice  += entity.singlePrice ?? 0;
+    });
+
+    return totalPrice;
+  }
+
 
   uploadFinished(event: any) {
     console.log(event);

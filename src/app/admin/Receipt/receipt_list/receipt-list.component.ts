@@ -26,7 +26,7 @@ import { ReceiptDetailComponent } from "../receipt_detail/receipt-detail.compone
 import { ReceiptCreateComponent } from "../receipt_create/receipt-create.component";
 import { MessageService } from "src/app/utility/user_service/message.service";
 import { ConfirmDialogComponent } from "src/app/utility/confirm-dialog/confirm-dialog.component";
-import { TotalReceipt } from "src/app/model/baseModel";
+import { FullReceipt, TotalReceipt, TourishPlan } from "src/app/model/baseModel";
 import {
   animate,
   state,
@@ -41,8 +41,8 @@ import {
   styleUrls: ["./receipt-list.component.css"],
   animations: [
     trigger('detailExpand', [
-      state('collapsed', style({height: '0px', minHeight: '0'})),
-      state('expanded', style({height: '*'})),
+      state('collapsed', style({ height: '0px', minHeight: '0' })),
+      state('expanded', style({ height: '*' })),
       transition('expanded <=> collapsed', animate('225ms cubic-bezier(0.4, 0.0, 0.2, 1)')),
     ]),
   ],
@@ -65,6 +65,7 @@ export class ReceiptListComponent implements OnInit, AfterViewInit, OnDestroy {
   displayedColumns: string[] = [
     "id",
     "tourName",
+    "singlePrice",
     "totalTicketAll",
     "remainTicket",
     //"tourishPlanId",
@@ -159,7 +160,7 @@ export class ReceiptListComponent implements OnInit, AfterViewInit, OnDestroy {
       })
     );
   }
-  ngAfterViewInit(): void {}
+  ngAfterViewInit(): void { }
 
   ngOnDestroy(): void {
     this.store.dispatch(ReceiptListActions.resetReceiptList());
@@ -256,6 +257,46 @@ export class ReceiptListComponent implements OnInit, AfterViewInit, OnDestroy {
     );
     this.messageService.openLoadingDialog();
   }
+
+  getTotalPriceReceipt(tourishPlan: TourishPlan, fullReceipt: FullReceipt): number {
+    let totalPrice = 0;
+
+    tourishPlan.stayingSchedules?.forEach(entity => {
+      totalPrice += entity.singlePrice ?? 0;
+    });
+
+    tourishPlan.eatSchedules?.forEach(entity => {
+      totalPrice += entity.singlePrice ?? 0;
+    });
+
+    tourishPlan.movingSchedules?.forEach(entity => {
+      totalPrice += entity.singlePrice ?? 0;
+    });
+
+    totalPrice = (totalPrice - fullReceipt.discountAmount) * (fullReceipt.totalTicket) * (1 -
+      fullReceipt.discountFloat);   
+     
+    return  Math.floor(totalPrice);
+  }
+
+  getTotalPrice(tourishPlan: TourishPlan): number {
+    let totalPrice  = 0;
+
+    tourishPlan.stayingSchedules?.forEach(entity => {
+      totalPrice  += entity.singlePrice ?? 0;
+    });
+
+    tourishPlan.eatSchedules?.forEach(entity => {
+      totalPrice  += entity.singlePrice ?? 0;
+    });
+
+    tourishPlan.movingSchedules?.forEach(entity => {
+      totalPrice  += entity.singlePrice ?? 0;
+    });
+
+    return totalPrice;
+  }
+
 
   handlePageEvent(e: PageEvent) {
     // this.length = e.length;
