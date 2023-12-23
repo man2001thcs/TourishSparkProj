@@ -36,6 +36,7 @@ import {
 } from "./hotel-detail.store.selector";
 import { MessageService } from "src/app/utility/user_service/message.service";
 import { Hotel } from "src/app/model/baseModel";
+import { FusekiService } from "src/app/utility/spark-sql-service/spark.sql.service";
 
 @Component({
   selector: "app-book-detail",
@@ -74,6 +75,7 @@ export class HotelDetailComponent implements OnInit, OnDestroy {
     private store: Store<HotelState>,
     private messageService: MessageService,
     private _route: ActivatedRoute,
+    private fusekiService: FusekiService,
     @Inject(MAT_DIALOG_DATA) public data: HotelParam
   ) {
     this.hotelState = this.store.select(getHotel);
@@ -95,80 +97,84 @@ export class HotelDetailComponent implements OnInit, OnDestroy {
       discountFloat: [0, Validators.compose([Validators.required])],
       discountAmount: [0, Validators.compose([Validators.required])],
 
-      description: ["", Validators.compose([Validators.required])]
+      description: ["", Validators.compose([Validators.required])],
     });
 
-    this.subscriptions.push(
-      this.hotelState.subscribe((state) => {
-        console.log(state);
-        if (state) {
-          console.log(state);
-          this.hotel = state;
-          this.messageService.closeLoadingDialog();
-          this.editformGroup_info.controls["placeBranch"].setValue(
-            state.placeBranch
-          );
-          this.editformGroup_info.controls["hotlineNumber"].setValue(
-            state.hotlineNumber
-          );
-          this.editformGroup_info.controls["supportEmail"].setValue(
-            state.supportEmail
-          );
-          this.editformGroup_info.controls["headQuarterAddress"].setValue(
-            state.headQuarterAddress
-          );
+    const sparqlQuery = `
+    PREFIX ex: <http://example.org/hotel#>
+    SELECT ?hotel ?id ?branch ?hotline ?email ?address ?discountFloat ?discountAmount ?description ?createDate ?updateDate
+    WHERE {
+      ?hotel a ex:Hotel ;
+             ex:Id ?id ;
+             ex:PlaceBranch ?branch ;
+             ex:HotlineNumber ?hotline ;
+             ex:SupportEmail ?email ;
+             ex:HeadQuarterAddress ?address ;
+             ex:DiscountFloat ?discountFloat ;
+             ex:DiscountAmount ?discountAmount ;
+             ex:Description ?description ;
+             ex:CreateDate ?createDate ;
+             ex:UpdateDate ?updateDate .
 
-          this.editformGroup_info.controls["discountFloat"].setValue(
-            state.discountFloat
-          );
+      FILTER (?id = "${this.data.id}")
+    }
+  `;
 
-          this.editformGroup_info.controls["discountAmount"].setValue(
-            state.discountAmount
-          );
+    this.fusekiService.queryFuseki(sparqlQuery).subscribe((response: any) => {
+      console.log("res", JSON.stringify(response));
+      const bindings = response.results.bindings[0];
+      const state = {
+        id: bindings.id.value,
+        placeBranch: bindings.branch.value,
+        hotlineNumber: bindings.hotline.value,
+        supportEmail: bindings.email.value,
+        headQuarterAddress: bindings.address.value,
+        discountFloat: parseFloat(bindings.discountFloat.value),
+        discountAmount: parseFloat(bindings.discountAmount.value),
+        description: bindings.description.value,
+        createDate: new Date(bindings.createDate.value),
+        updateDate: new Date(bindings.updateDate.value),
+      };
 
-          this.editformGroup_info.controls["description"].setValue(
-            state.description
-          );
-        }
-      })
-    );
+      this.hotel = state;
+      this.messageService.closeLoadingDialog();
+      this.editformGroup_info.controls["placeBranch"].setValue(
+        state.placeBranch
+      );
+      this.editformGroup_info.controls["hotlineNumber"].setValue(
+        state.hotlineNumber
+      );
+      this.editformGroup_info.controls["supportEmail"].setValue(
+        state.supportEmail
+      );
+      this.editformGroup_info.controls["headQuarterAddress"].setValue(
+        state.headQuarterAddress
+      );
 
-    this.subscriptions.push(
-      this.editHotelState.subscribe((state) => {
-        if (state) {
-          this.messageService.closeLoadingDialog();
-          this.messageService.openMessageNotifyDialog(state.messageCode);
-        }
-      })
-    );
+      this.editformGroup_info.controls["discountFloat"].setValue(
+        state.discountFloat
+      );
 
-    this.subscriptions.push(
-      this.errorMessageState.subscribe((state) => {
-        if (state) {
-          this.messageService.closeLoadingDialog();
-          this.messageService.openMessageNotifyDialog(state);
-        }
-      })
-    );
+      this.editformGroup_info.controls["discountAmount"].setValue(
+        state.discountAmount
+      );
 
-    this.subscriptions.push(
-      this.errorSystemState.subscribe((state) => {
-        if (state) {
-          this.messageService.closeLoadingDialog();
-          this.messageService.openFailNotifyDialog(state);
-        }
-      })
-    );
+      this.editformGroup_info.controls["description"].setValue(
+        state.description
+      );
+
+      // Handle the response data here
+    });
 
     this.messageService.openLoadingDialog();
 
-    this.store.dispatch(
-      HotelActions.getHotel({
-        payload: {
-          id: this.data.id,
-        },
-      })
-    );
+    // this.store.dispatch(
+    //   HotelActions.getHotel({
+    //     payload: {
+    //       id: this.data.id,
+    //     },
+    //   })
+    // );
 
     this.store.dispatch(HotelActions.initial());
 
@@ -202,7 +208,7 @@ export class HotelDetailComponent implements OnInit, OnDestroy {
 
   formSubmit_edit_info(): void {
     this.isSubmitted = true;
-    if (this.editformGroup_info.valid){
+    if (this.editformGroup_info.valid) {
       const payload: Hotel = {
         id: this.data.id,
         placeBranch: this.editformGroup_info.value.placeBranch,
@@ -213,13 +219,60 @@ export class HotelDetailComponent implements OnInit, OnDestroy {
         discountAmount: this.editformGroup_info.value.discountAmount,
         description: this.editformGroup_info.value.description,
       };
-  
-      this.messageService.openLoadingDialog();
-      this.store.dispatch(
-        HotelActions.editHotel({
-          payload: payload,
-        })
-      );
-    } 
+
+      const updateQuery = `
+      PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+      PREFIX owl: <http://www.w3.org/2002/07/owl#>
+      PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+      PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+      PREFIX ex: <http://example.org/hotel#>
+
+      DELETE {
+        ?hotelToUpdate ex:PlaceBranch ?oldPlaceBranch ;
+                       ex:HotlineNumber ?oldHotline ;
+                       ex:SupportEmail ?oldEmail ;
+                       ex:HeadQuarterAddress ?oldAddress ;
+                       ex:DiscountFloat ?oldDiscountFloat ;
+                       ex:DiscountAmount ?oldDiscountAmount ;
+                       ex:Description ?oldDescription ;
+                       ex:UpdateDate ?oldUpdateDate .
+      }
+      INSERT {
+        ?hotelToUpdate ex:PlaceBranch "${this.editformGroup_info.value.placeBranch}" ;
+                       ex:HotlineNumber "${this.editformGroup_info.value.hotlineNumber}" ;
+                       ex:SupportEmail "${this.editformGroup_info.value.supportEmail}" ;
+                       ex:HeadQuarterAddress "${this.editformGroup_info.value.headQuarterAddress}" ;
+                       ex:DiscountFloat ${this.editformGroup_info.value.discountFloat} ;
+                       ex:DiscountAmount ${this.editformGroup_info.value.discountAmount} ;
+                       ex:Description "${this.editformGroup_info.value.description}" ;
+                       ex:UpdateDate "${new Date().toISOString()}"^^xsd:dateTime .
+      }
+      WHERE {
+        ?hotelToUpdate a ex:Hotel ;
+                       ex:Id "${this.data.id}" ;
+                       ex:PlaceBranch ?oldPlaceBranch ;
+                       ex:HotlineNumber ?oldHotline ;
+                       ex:SupportEmail ?oldEmail ;
+                       ex:HeadQuarterAddress ?oldAddress ;
+                       ex:DiscountFloat ?oldDiscountFloat ;
+                       ex:DiscountAmount ?oldDiscountAmount ;
+                       ex:Description ?oldDescription ;
+                       ex:UpdateDate ?oldUpdateDate .
+      }
+    `;
+
+    this.fusekiService.insertFuseki(updateQuery).subscribe((response) => {
+      console.log("Hotel inserted successfully:", response);
+      this.messageService.openMessageNotifyDialog("Update Ok");
+      // Handle the response as needed
+    });
+
+      // this.messageService.openLoadingDialog();
+      // this.store.dispatch(
+      //   HotelActions.editHotel({
+      //     payload: payload,
+      //   })
+      // );
+    }
   }
 }

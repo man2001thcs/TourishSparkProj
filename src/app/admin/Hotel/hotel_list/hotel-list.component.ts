@@ -27,6 +27,7 @@ import { HotelCreateComponent } from "../hotel_create/hotel-create.component";
 import { MessageService } from "src/app/utility/user_service/message.service";
 import { ConfirmDialogComponent } from "src/app/utility/confirm-dialog/confirm-dialog.component";
 import { Hotel } from "src/app/model/baseModel";
+import { FusekiService } from "src/app/utility/spark-sql-service/spark.sql.service";
 
 @Component({
   selector: "app-hotelList",
@@ -64,7 +65,7 @@ export class HotelListComponent implements OnInit, AfterViewInit, OnDestroy {
   clickedRows = new Set<any>();
 
   length = 0;
-  pageSize = 5;
+  pageSize = 10;
   pageSizeOpstion = [5, 10];
   pageIndex = 0;
 
@@ -72,6 +73,7 @@ export class HotelListComponent implements OnInit, AfterViewInit, OnDestroy {
     private adminService: AdminService,
     public dialog: MatDialog,
     private messageService: MessageService,
+    private fusekiService: FusekiService,
     private store: Store<HotelListState>
   ) {
     this.hotelListState = this.store.select(getHotelList);
@@ -81,69 +83,80 @@ export class HotelListComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.subscriptions.push(
-      this.hotelListState.subscribe((state) => {
-        if (state) {
-          console.log("abcg: ", state);
-          this.messageService.closeLoadingDialog();
-          this.hotelList = state.data;
-          this.length = state.count;
-        }
-      })
-    );
-
-    this.subscriptions.push(
-      this.hotelDeleteState.subscribe((state) => {
-        if (state) {
-          console.log("abcd: ", state);
-          this.messageService.openMessageNotifyDialog(state.messageCode);
-
-          if (state.resultCd === 0) {
-            this.messageService.openLoadingDialog();
-            this.store.dispatch(
-              HotelListActions.getHotelList({
-                payload: {
-                  page: this.pageIndex + 1,
-                },
-              })
-            );
-          }
-        }
-      })
-    );
+    this.sparkGet();
 
     this.store.dispatch(HotelListActions.initial());
 
-    this.store.dispatch(
-      HotelListActions.getHotelList({
-        payload: {
-          page: this.pageIndex + 1,
-          search: this.searchPhase,
-        },
-      })
-    );
+    // this.store.dispatch(
+    //   HotelListActions.getHotelList({
+    //     payload: {
+    //       page: this.pageIndex + 1,
+    //       search: this.searchPhase,
+    //     },
+    //   })
+    // );
 
-    this.messageService.openLoadingDialog();
-
-    this.subscriptions.push(
-      this.errorMessageState.subscribe((state) => {
-        if (state) {
-          this.messageService.closeLoadingDialog();
-          this.messageService.openMessageNotifyDialog(state);
-        }
-      })
-    );
-
-    this.subscriptions.push(
-      this.errorSystemState.subscribe((state) => {
-        if (state) {
-          this.messageService.closeLoadingDialog();
-          this.messageService.openSystemFailNotifyDialog(state);
-        }
-      })
-    );
+    // this.messageService.openLoadingDialog();
   }
   ngAfterViewInit(): void {}
+
+  sparkGet() {
+    const offset = this.pageIndex * this.pageSize;
+
+    const countQuery = `
+    PREFIX ex: <http://example.org/hotel#>
+    SELECT (COUNT(?hotel) as ?totalCount)
+    WHERE {
+      ?hotel a ex:Hotel .
+    }
+  `;
+
+    const queryString = `
+    PREFIX ex: <http://example.org/hotel#>
+  
+    SELECT ?hotel ?id ?branch ?hotline ?email ?address ?discountFloat ?discountAmount ?description ?createDate ?updateDate
+    WHERE {
+      ?hotel a ex:Hotel ;
+             ex:Id ?id ;
+             ex:PlaceBranch ?branch ;
+             ex:HotlineNumber ?hotline ;
+             ex:SupportEmail ?email ;
+             ex:HeadQuarterAddress ?address ;
+             ex:DiscountFloat ?discountFloat ;
+             ex:DiscountAmount ?discountAmount ;
+             ex:Description ?description ;
+             ex:CreateDate ?createDate ;
+             ex:UpdateDate ?updateDate .
+    }
+    LIMIT ${this.pageSize}
+    OFFSET ${offset}
+  `;
+
+    this.fusekiService.queryFuseki(countQuery).subscribe((response) => {
+      console.log("res", JSON.stringify(response));
+      this.length = parseInt(response.results.bindings[0].totalCount.value, 10);
+      // Handle the response data here
+    });
+
+    this.fusekiService.queryFuseki(queryString).subscribe((response) => {
+      console.log("res", JSON.stringify(response));
+      const bindings = response.results.bindings;
+      this.hotelList = bindings.map((binding: any) => {
+        return {
+          id: binding.id.value,
+          placeBranch: binding.branch.value,
+          hotlineNumber: binding.hotline.value,
+          supportEmail: binding.email.value,
+          headQuarterAddress: binding.address.value,
+          discountFloat: parseFloat(binding.discountFloat.value),
+          discountAmount: parseFloat(binding.discountAmount.value),
+          description: binding.description.value,
+          createDate: new Date(binding.createDate.value),
+          updateDate: new Date(binding.updateDate.value),
+        };
+      });
+    });
+  }
 
   ngOnDestroy(): void {
     this.store.dispatch(HotelListActions.resetHotelList());
@@ -159,16 +172,7 @@ export class HotelListComponent implements OnInit, AfterViewInit, OnDestroy {
 
     dialogRef.afterClosed().subscribe((result) => {
       console.log(result);
-
-      this.store.dispatch(
-        HotelListActions.getHotelList({
-          payload: {
-            page: this.pageIndex + 1,
-            search: this.searchPhase,
-          },
-        })
-      );
-      this.messageService.openLoadingDialog();
+      this.sparkGet();
     });
   }
 
@@ -177,16 +181,7 @@ export class HotelListComponent implements OnInit, AfterViewInit, OnDestroy {
 
     dialogRef.afterClosed().subscribe((result) => {
       console.log(result);
-
-      this.store.dispatch(
-        HotelListActions.getHotelList({
-          payload: {
-            page: this.pageIndex + 1,
-            search: this.searchPhase,
-          },
-        })
-      );
-      this.messageService.openLoadingDialog();
+      this.sparkGet();
     });
   }
 
@@ -211,14 +206,42 @@ export class HotelListComponent implements OnInit, AfterViewInit, OnDestroy {
 
     ref.afterClosed().subscribe((result) => {
       if (result) {
-        this.messageService.openLoadingDialog();
-        this.store.dispatch(
-          HotelListActions.deleteHotel({
-            payload: {
-              id: id,
-            },
-          })
-        );
+        const updateQuery = `
+              PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+              PREFIX owl: <http://www.w3.org/2002/07/owl#>
+              PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+              PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+              PREFIX ex: <http://example.org/hotel#>
+        
+              DELETE {
+                ?hotelToUpdate ex:PlaceBranch ?oldPlaceBranch ;
+                              ex:HotlineNumber ?oldHotline ;
+                              ex:SupportEmail ?oldEmail ;
+                              ex:HeadQuarterAddress ?oldAddress ;
+                              ex:DiscountFloat ?oldDiscountFloat ;
+                              ex:DiscountAmount ?oldDiscountAmount ;
+                              ex:Description ?oldDescription ;
+                              ex:UpdateDate ?oldUpdateDate .
+              }
+              WHERE {
+                ?hotelToUpdate a ex:Hotel ;
+                              ex:Id "${id}" ;
+                              ex:PlaceBranch ?oldPlaceBranch ;
+                              ex:HotlineNumber ?oldHotline ;
+                              ex:SupportEmail ?oldEmail ;
+                              ex:HeadQuarterAddress ?oldAddress ;
+                              ex:DiscountFloat ?oldDiscountFloat ;
+                              ex:DiscountAmount ?oldDiscountAmount ;
+                              ex:Description ?oldDescription ;
+                              ex:UpdateDate ?oldUpdateDate .
+              }
+        `;
+
+        this.fusekiService.insertFuseki(updateQuery).subscribe((response) => {
+          console.log("Hotel inserted successfully:", response);
+          this.messageService.openMessageNotifyDialog("Update Ok");
+          // Handle the response as needed
+        });
       }
     });
   }
@@ -247,18 +270,50 @@ export class HotelListComponent implements OnInit, AfterViewInit, OnDestroy {
     this.pageSize = e.pageSize;
     this.pageIndex = e.pageIndex;
 
-    console.log(this.pageIndex);
+    const offset = this.pageIndex * this.pageSize;
 
-    this.store.dispatch(
-      HotelListActions.getHotelList({
-        payload: {
-          page: this.pageIndex + 1,
-          pageSize: this.pageSize,
-          search: this.searchPhase,
-        },
-      })
-    );
-    this.messageService.openLoadingDialog();
+    const queryString = `
+    PREFIX ex: <http://example.org/hotel#>
+  
+    SELECT ?hotel ?id ?branch ?hotline ?email ?address ?discountFloat ?discountAmount ?description ?createDate ?updateDate
+    WHERE {
+      ?hotel a ex:Hotel ;
+             ex:Id ?id ;
+             ex:PlaceBranch ?branch ;
+             ex:HotlineNumber ?hotline ;
+             ex:SupportEmail ?email ;
+             ex:HeadQuarterAddress ?address ;
+             ex:DiscountFloat ?discountFloat ;
+             ex:DiscountAmount ?discountAmount ;
+             ex:Description ?description ;
+             ex:CreateDate ?createDate ;
+             ex:UpdateDate ?updateDate .
+    }
+    LIMIT ${this.pageSize}
+    OFFSET ${offset}
+  `;
+
+    this.fusekiService.queryFuseki(queryString).subscribe((response) => {
+      console.log("res", JSON.stringify(response));
+      const bindings = response.results.bindings;
+      this.hotelList = bindings.map((binding: any) => {
+        return {
+          id: binding.id.value,
+          placeBranch: binding.branch.value,
+          hotlineNumber: binding.hotline.value,
+          supportEmail: binding.email.value,
+          headQuarterAddress: binding.address.value,
+          discountFloat: parseFloat(binding.discountFloat.value),
+          discountAmount: parseFloat(binding.discountAmount.value),
+          description: binding.description.value,
+          createDate: new Date(binding.createDate.value),
+          updateDate: new Date(binding.updateDate.value),
+        };
+      });
+
+      console.log(this.hotelList);
+      // Handle the response data here
+    });
   }
 
   announceSortChange(sortState: Sort) {
@@ -269,27 +324,8 @@ export class HotelListComponent implements OnInit, AfterViewInit, OnDestroy {
     console.log(sortState);
     if (sortState.active === "placeBranch") {
       if (sortState.direction === "asc") {
-        this.store.dispatch(
-          HotelListActions.getHotelList({
-            payload: {
-              page: 1,
-              pageSize: this.pageSize,
-              search: this.searchPhase,
-            },
-          })
-        );
         this.messageService.openLoadingDialog();
       } else if (sortState.direction === "desc") {
-        this.store.dispatch(
-          HotelListActions.getHotelList({
-            payload: {
-              sortBy: "name_desc",
-              page: 1,
-              pageSize: this.pageSize,
-              search: this.searchPhase,
-            },
-          })
-        );
         this.messageService.openLoadingDialog();
       }
     } else {
