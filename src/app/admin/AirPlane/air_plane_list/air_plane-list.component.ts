@@ -27,19 +27,18 @@ import { AirPlaneCreateComponent } from "../air_plane_create/air_plane-create.co
 import { MessageService } from "src/app/utility/user_service/message.service";
 import { ConfirmDialogComponent } from "src/app/utility/confirm-dialog/confirm-dialog.component";
 import { AirPlane } from "src/app/model/baseModel";
+import { FusekiService } from "src/app/utility/spark-sql-service/spark.sql.service";
 
 @Component({
   selector: "app-airPlaneList",
   templateUrl: "./air_plane-list.component.html",
   styleUrls: ["./air_plane-list.component.css"],
 })
-export class AirPlaneListComponent
-  implements OnInit, AfterViewInit, OnDestroy
-{
+export class AirPlaneListComponent implements OnInit, AfterViewInit, OnDestroy {
   airPlaneList!: AirPlane[];
   subscriptions: Subscription[] = [];
 
-  searchPhase= "";
+  searchPhase = "";
 
   airPlaneListState!: Observable<any>;
   airPlaneDeleteState!: Observable<any>;
@@ -75,6 +74,7 @@ export class AirPlaneListComponent
     private adminService: AdminService,
     public dialog: MatDialog,
     private messageService: MessageService,
+    private fusekiService: FusekiService,
     private store: Store<AirPlaneListState>
   ) {
     this.airPlaneListState = this.store.select(getAirPlaneList);
@@ -84,66 +84,9 @@ export class AirPlaneListComponent
   }
 
   ngOnInit(): void {
-    this.subscriptions.push(
-      this.airPlaneListState.subscribe((state) => {
-        if (state) {
-          this.messageService.closeLoadingDialog();
-          this.airPlaneList = state.data;
-          this.length = state.count;
-        }
-      })
-    );
-
-    this.subscriptions.push(
-      this.airPlaneDeleteState.subscribe((state) => {
-        if (state) {
-          this.messageService.closeLoadingDialog();
-          this.messageService.openMessageNotifyDialog(state.messageCode);
-
-          if (state.resultCd === 0) {
-            this.store.dispatch(
-              AirPlaneListActions.getAirPlaneList({
-                payload: {
-                  page: this.pageIndex + 1,
-                  search: this.searchPhase
-                },
-              })
-            );
-          }
-        }
-      })
-    );
-
-    this.store.dispatch(AirPlaneListActions.initial());
-
-    this.store.dispatch(
-      AirPlaneListActions.getAirPlaneList({
-        payload: {
-          page: this.pageIndex + 1,
-          search: this.searchPhase
-        },
-      })
-    );
-    this.messageService.openLoadingDialog();
-
-    this.subscriptions.push(
-      this.errorMessageState.subscribe((state) => {
-        if (state) {
-          this.messageService.closeLoadingDialog();
-          this.messageService.openMessageNotifyDialog(state);
-        }
-      })
-    );
-
-    this.subscriptions.push(
-      this.errorSystemState.subscribe((state) => {  
-        if (state) {
-          this.messageService.closeLoadingDialog();
-          this.messageService.openSystemFailNotifyDialog(state);
-        }
-      })
-    );
+    this.sparkGet();
   }
+
   ngAfterViewInit(): void {}
 
   ngOnDestroy(): void {
@@ -153,22 +96,81 @@ export class AirPlaneListComponent
     this.subscriptions.forEach((subscription) => subscription.unsubscribe());
   }
 
+  sparkGet() {
+    const offset = this.pageIndex * this.pageSize;
+
+    const countQuery = `
+    PREFIX ex: <http://example.org/planeairline#>
+    SELECT (COUNT(?airplane) as ?totalCount)
+    WHERE {
+      ?airplane a ex:PlaneAirline .
+      ${
+        this.searchPhase
+          ? `FILTER(contains(?branch, "${this.searchPhase}"))`
+          : ""
+      }
+    }
+  `;
+
+    const queryString = `
+    PREFIX ex: <http://example.org/planeairline#>
+  
+    SELECT ?airplane ?id ?branch ?hotline ?email ?address ?discountFloat ?discountAmount ?description ?createDate ?updateDate
+    WHERE {
+      ?airplane a ex:PlaneAirline ;
+             ex:Id ?id ;
+             ex:BranchName ?branch ;
+             ex:HotlineNumber ?hotline ;
+             ex:SupportEmail ?email ;
+             ex:HeadQuarterAddress ?address ;
+             ex:DiscountFloat ?discountFloat ;
+             ex:DiscountAmount ?discountAmount ;
+             ex:Description ?description ;
+             ex:CreateDate ?createDate ;
+             ex:UpdateDate ?updateDate .
+      ${
+        this.searchPhase
+          ? `FILTER(contains(?branch, "${this.searchPhase}"))`
+          : ""
+      }
+    }
+    LIMIT ${this.pageSize}
+    OFFSET ${offset}
+  `;
+
+    this.fusekiService.queryFuseki(countQuery).subscribe((response) => {
+      console.log("res", JSON.stringify(response));
+      this.length = parseInt(response.results.bindings[0].totalCount.value, 10);
+      // Handle the response data here
+    });
+
+    this.fusekiService.queryFuseki(queryString).subscribe((response) => {
+      console.log("res", JSON.stringify(response));
+      const bindings = response.results.bindings;
+      this.airPlaneList = bindings.map((binding: any) => {
+        return {
+          id: binding.id.value,
+          branchName: binding.branch.value,
+          hotlineNumber: binding.hotline.value,
+          supportEmail: binding.email.value,
+          headQuarterAddress: binding.address.value,
+          discountFloat: parseFloat(binding.discountFloat.value),
+          discountAmount: parseFloat(binding.discountAmount.value),
+          description: binding.description.value,
+          createDate: new Date(binding.createDate.value),
+          updateDate: new Date(binding.updateDate.value),
+        };
+      });
+    });
+  }
+
   openEditDialog(id: string): void {
     const dialogRef = this.dialog.open(AirPlaneDetailComponent, {
       data: { id: id },
     });
 
     dialogRef.afterClosed().subscribe((result) => {
-
-      this.store.dispatch(
-        AirPlaneListActions.getAirPlaneList({
-          payload: {
-            page: this.pageIndex + 1,
-            search: this.searchPhase
-          },
-        })
-      );
-      this.messageService.openLoadingDialog();
+      this.sparkGet();
 
       console.log(result);
     });
@@ -180,14 +182,7 @@ export class AirPlaneListComponent
     dialogRef.afterClosed().subscribe((result) => {
       console.log(result);
 
-      this.store.dispatch(
-        AirPlaneListActions.getAirPlaneList({
-          payload: {
-            page: this.pageIndex + 1,
-            search: this.searchPhase
-          },
-        })
-      );
+      this.sparkGet();
     });
   }
 
@@ -212,13 +207,24 @@ export class AirPlaneListComponent
 
     ref.afterClosed().subscribe((result) => {
       if (result) {
-        this.store.dispatch(
-          AirPlaneListActions.deleteAirPlane({
-            payload: {
-              id: id,
-            },
-          })
-        );
+        const deleteQuery = `
+          PREFIX ex: <http://example.org/planeairline#>
+  
+          DELETE {
+            ?airPlaneToDelete ?p ?o .
+          }
+          WHERE {
+            ?airPlaneToDelete a ex:PlaneAirline ;
+                            ex:Id "${id}" .
+            ?airPlaneToDelete ?p ?o .
+          }
+        `;
+
+        this.fusekiService.insertFuseki(deleteQuery).subscribe((response) => {
+          console.log("AirPlane deleted successfully:", response);
+          this.messageService.openMessageNotifyDialog("Delete Ok");
+          // Handle the response as needed
+        });
       }
     });
   }
@@ -233,31 +239,14 @@ export class AirPlaneListComponent
 
     console.log(this.pageIndex);
 
-    this.store.dispatch(
-      AirPlaneListActions.getAirPlaneList({
-        payload: {
-          page: this.pageIndex + 1,
-          pageSize: this.pageSize,
-          search: this.searchPhase
-        },
-      })
-    );
+    this.sparkGet();
   }
 
   search() {
     this.pageSize = 5;
     this.pageIndex = 0;
 
-    this.messageService.openLoadingDialog();
-    this.store.dispatch(
-      AirPlaneListActions.getAirPlaneList({
-        payload: {
-          page: this.pageIndex + 1,
-          pageSize: this.pageSize,
-          search: this.searchPhase
-        },
-      })
-    );
+    this.sparkGet();
   }
 
   announceSortChange(sortState: Sort) {
@@ -268,24 +257,9 @@ export class AirPlaneListComponent
     console.log(sortState);
     if ((sortState.active = "name")) {
       if (sortState.direction === "asc") {
-        this.store.dispatch(
-          AirPlaneListActions.getAirPlaneList({
-            payload: {
-              page: 1,
-              pageSize: this.pageSize,
-            },
-          })
-        );
+        this.sparkGet();
       } else if (sortState.direction === "desc") {
-        this.store.dispatch(
-          AirPlaneListActions.getAirPlaneList({
-            payload: {
-              sortBy: "name_desc",
-              page: 1,
-              pageSize: this.pageSize,
-            },
-          })
-        );
+        this.sparkGet();
       }
     } else {
     }

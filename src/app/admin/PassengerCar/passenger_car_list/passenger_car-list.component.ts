@@ -27,6 +27,7 @@ import { PassengerCarCreateComponent } from "../passenger_car_create/passenger_c
 import { MessageService } from "src/app/utility/user_service/message.service";
 import { ConfirmDialogComponent } from "src/app/utility/confirm-dialog/confirm-dialog.component";
 import { PassengerCar } from "src/app/model/baseModel";
+import { FusekiService } from "src/app/utility/spark-sql-service/spark.sql.service";
 
 @Component({
   selector: "app-passengerCarList",
@@ -75,6 +76,7 @@ export class PassengerCarListComponent
     private adminService: AdminService,
     public dialog: MatDialog,
     private messageService: MessageService,
+    private fusekiService: FusekiService,
     private store: Store<PassengerCarListState>
   ) {
     this.passengerCarListState = this.store.select(getPassengerCarList);
@@ -84,65 +86,7 @@ export class PassengerCarListComponent
   }
 
   ngOnInit(): void {
-    this.subscriptions.push(
-      this.passengerCarListState.subscribe((state) => {
-        if (state) {
-          this.messageService.closeLoadingDialog();
-          this.passengerCarList = state.data;
-          this.length = state.count;
-        }
-      })
-    );
-
-    this.subscriptions.push(
-      this.passengerCarDeleteState.subscribe((state) => {
-        if (state) {
-          this.messageService.closeLoadingDialog();
-          this.messageService.openMessageNotifyDialog(state.messageCode);
-
-          if (state.resultCd === 0) {
-            this.store.dispatch(
-              PassengerCarListActions.getPassengerCarList({
-                payload: {
-                  search: this.searchPhase,
-                  page: this.pageIndex + 1,
-                },
-              })
-            );
-          }
-        }
-      })
-    );
-
-    this.store.dispatch(PassengerCarListActions.initial());
-
-    this.store.dispatch(
-      PassengerCarListActions.getPassengerCarList({
-        payload: {
-          page: this.pageIndex + 1,
-        },
-      })
-    );
-
-    this.messageService.openLoadingDialog();
-
-    this.subscriptions.push(
-      this.errorMessageState.subscribe((state) => {
-        if (state) {
-          this.messageService.closeLoadingDialog();
-          this.messageService.openMessageNotifyDialog(state);
-        }
-      })
-    );
-
-    this.subscriptions.push(
-      this.errorSystemState.subscribe((state) => {
-        if (state) {
-          this.messageService.closeLoadingDialog();
-          this.messageService.openSystemFailNotifyDialog(state);
-        }
-      })
-    );
+    this.sparkGet();
   }
   ngAfterViewInit(): void {}
 
@@ -153,6 +97,66 @@ export class PassengerCarListComponent
     this.subscriptions.forEach((subscription) => subscription.unsubscribe());
   }
 
+  sparkGet() {
+    const offset = this.pageIndex * this.pageSize;
+  
+    const countQuery = `
+      PREFIX ex: <http://example.org/passengercar#>
+      SELECT (COUNT(?car) as ?totalCount)
+      WHERE {
+        ?car a ex:PassengerCar .
+        ${this.searchPhase ? `FILTER(contains(?branch, "${this.searchPhase}"))` : ''}
+      }
+    `;
+  
+    const queryString = `
+      PREFIX ex: <http://example.org/passengercar#>
+    
+      SELECT ?car ?id ?branch ?hotline ?email ?address ?discountFloat ?discountAmount ?description ?createDate ?updateDate
+      WHERE {
+        ?car a ex:PassengerCar ;
+               ex:Id ?id ;
+               ex:BranchName ?branch ;
+               ex:HotlineNumber ?hotline ;
+               ex:SupportEmail ?email ;
+               ex:HeadQuarterAddress ?address ;
+               ex:DiscountFloat ?discountFloat ;
+               ex:DiscountAmount ?discountAmount ;
+               ex:Description ?description ;
+               ex:CreateDate ?createDate ;
+               ex:UpdateDate ?updateDate .
+        ${this.searchPhase ? `FILTER(contains(?branch, "${this.searchPhase}"))` : ''}
+      }
+      LIMIT ${this.pageSize}
+      OFFSET ${offset}
+    `;
+  
+    this.fusekiService.queryFuseki(countQuery).subscribe((response) => {
+      console.log("res", JSON.stringify(response));
+      this.length = parseInt(response.results.bindings[0].totalCount.value, 10);
+      // Handle the response data here
+    });
+  
+    this.fusekiService.queryFuseki(queryString).subscribe((response) => {
+      console.log("res", JSON.stringify(response));
+      const bindings = response.results.bindings;
+      this.passengerCarList = bindings.map((binding: any) => {
+        return {
+          id: binding.id.value,
+          branchName: binding.branch.value,
+          hotlineNumber: binding.hotline.value,
+          supportEmail: binding.email.value,
+          headQuarterAddress: binding.address.value,
+          discountFloat: parseFloat(binding.discountFloat.value),
+          discountAmount: parseFloat(binding.discountAmount.value),
+          description: binding.description.value,
+          createDate: new Date(binding.createDate.value),
+          updateDate: new Date(binding.updateDate.value),
+        };
+      });
+    });
+  }
+
   openEditDialog(id: string): void {
     const dialogRef = this.dialog.open(PassengerCarDetailComponent, {
       data: { id: id },
@@ -161,16 +165,7 @@ export class PassengerCarListComponent
     dialogRef.afterClosed().subscribe((result) => {
       console.log(result);
 
-      this.store.dispatch(
-        PassengerCarListActions.getPassengerCarList({
-          payload: {
-            page: this.pageIndex + 1,
-            search: this.searchPhase,
-          },
-        })
-      );
-
-      this.messageService.openLoadingDialog();
+      this.sparkGet();
     });
   }
 
@@ -180,16 +175,7 @@ export class PassengerCarListComponent
     dialogRef.afterClosed().subscribe((result) => {
       console.log(result);
 
-      this.store.dispatch(
-        PassengerCarListActions.getPassengerCarList({
-          payload: {
-            page: this.pageIndex + 1,
-            search: this.searchPhase,
-          },
-        })
-      );
-
-      this.messageService.openLoadingDialog();
+      this.sparkGet();
     });
   }
 
@@ -211,16 +197,27 @@ export class PassengerCarListComponent
         title: "Bạn có muốn xóa đối tác này không?",
       },
     });
-
+  
     ref.afterClosed().subscribe((result) => {
       if (result) {
-        this.store.dispatch(
-          PassengerCarListActions.deletePassengerCar({
-            payload: {
-              id: id,
-            },
-          })
-        );
+        const deleteQuery = `
+          PREFIX ex: <http://example.org/passengercar#>
+  
+          DELETE {
+            ?passengerCarToDelete ?p ?o .
+          }
+          WHERE {
+            ?passengerCarToDelete a ex:PassengerCar ;
+                                ex:Id "${id}" .
+            ?passengerCarToDelete ?p ?o .
+          }
+        `;
+  
+        this.fusekiService.insertFuseki(deleteQuery).subscribe((response) => {
+          console.log("PassengerCar deleted successfully:", response);
+          this.messageService.openMessageNotifyDialog("Delete Ok");
+          // Handle the response as needed
+        });
       }
     });
   }
@@ -235,31 +232,14 @@ export class PassengerCarListComponent
 
     console.log(this.pageIndex);
 
-    this.store.dispatch(
-      PassengerCarListActions.getPassengerCarList({
-        payload: {
-          page: this.pageIndex + 1,
-          pageSize: this.pageSize,
-        },
-      })
-    );
-    this.messageService.openLoadingDialog();
+    this.sparkGet();
   }
 
   search() {
     this.pageSize = 5;
     this.pageIndex = 0;
 
-    this.messageService.openLoadingDialog();
-    this.store.dispatch(
-      PassengerCarListActions.getPassengerCarList({
-        payload: {
-          page: this.pageIndex + 1,
-          pageSize: this.pageSize,
-          search: this.searchPhase,
-        },
-      })
-    );
+    this.sparkGet();
   }
 
   announceSortChange(sortState: Sort) {
@@ -270,28 +250,9 @@ export class PassengerCarListComponent
     console.log(sortState);
     if ((sortState.active = "name")) {
       if (sortState.direction === "asc") {
-        this.store.dispatch(
-          PassengerCarListActions.getPassengerCarList({
-            payload: {
-              page: 1,
-              pageSize: this.pageSize,
-              search: this.searchPhase,
-            },
-          })
-        );
-        this.messageService.openLoadingDialog();
+        this.sparkGet();
       } else if (sortState.direction === "desc") {
-        this.store.dispatch(
-          PassengerCarListActions.getPassengerCarList({
-            payload: {
-              sortBy: "name_desc",
-              page: 1,
-              pageSize: this.pageSize,
-              search: this.searchPhase,
-            },
-          })
-        );
-        this.messageService.openLoadingDialog();
+        this.sparkGet();
       }
     } else {
     }

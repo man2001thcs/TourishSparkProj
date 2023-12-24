@@ -214,26 +214,12 @@ export class HotelListComponent implements OnInit, AfterViewInit, OnDestroy {
               PREFIX ex: <http://example.org/hotel#>
         
               DELETE {
-                ?hotelToUpdate ex:PlaceBranch ?oldPlaceBranch ;
-                              ex:HotlineNumber ?oldHotline ;
-                              ex:SupportEmail ?oldEmail ;
-                              ex:HeadQuarterAddress ?oldAddress ;
-                              ex:DiscountFloat ?oldDiscountFloat ;
-                              ex:DiscountAmount ?oldDiscountAmount ;
-                              ex:Description ?oldDescription ;
-                              ex:UpdateDate ?oldUpdateDate .
+                ?hotelToDelete ?p ?o .
               }
               WHERE {
-                ?hotelToUpdate a ex:Hotel ;
-                              ex:Id "${id}" ;
-                              ex:PlaceBranch ?oldPlaceBranch ;
-                              ex:HotlineNumber ?oldHotline ;
-                              ex:SupportEmail ?oldEmail ;
-                              ex:HeadQuarterAddress ?oldAddress ;
-                              ex:DiscountFloat ?oldDiscountFloat ;
-                              ex:DiscountAmount ?oldDiscountAmount ;
-                              ex:Description ?oldDescription ;
-                              ex:UpdateDate ?oldUpdateDate .
+                ?hotelToDelete a ex:Hotel ;
+                               ex:Id "${id}" .
+                ?hotelToDelete ?p ?o .
               }
         `;
 
@@ -252,16 +238,7 @@ export class HotelListComponent implements OnInit, AfterViewInit, OnDestroy {
     this.pageSize = 5;
     this.pageIndex = 0;
 
-    this.messageService.openLoadingDialog();
-    this.store.dispatch(
-      HotelListActions.getHotelList({
-        payload: {
-          page: this.pageIndex + 1,
-          pageSize: this.pageSize,
-          search: this.searchPhase,
-        },
-      })
-    );
+    this.sparkGet();
   }
 
   handlePageEvent(e: PageEvent) {
@@ -270,50 +247,8 @@ export class HotelListComponent implements OnInit, AfterViewInit, OnDestroy {
     this.pageSize = e.pageSize;
     this.pageIndex = e.pageIndex;
 
-    const offset = this.pageIndex * this.pageSize;
-
-    const queryString = `
-    PREFIX ex: <http://example.org/hotel#>
-  
-    SELECT ?hotel ?id ?branch ?hotline ?email ?address ?discountFloat ?discountAmount ?description ?createDate ?updateDate
-    WHERE {
-      ?hotel a ex:Hotel ;
-             ex:Id ?id ;
-             ex:PlaceBranch ?branch ;
-             ex:HotlineNumber ?hotline ;
-             ex:SupportEmail ?email ;
-             ex:HeadQuarterAddress ?address ;
-             ex:DiscountFloat ?discountFloat ;
-             ex:DiscountAmount ?discountAmount ;
-             ex:Description ?description ;
-             ex:CreateDate ?createDate ;
-             ex:UpdateDate ?updateDate .
-    }
-    LIMIT ${this.pageSize}
-    OFFSET ${offset}
-  `;
-
-    this.fusekiService.queryFuseki(queryString).subscribe((response) => {
-      console.log("res", JSON.stringify(response));
-      const bindings = response.results.bindings;
-      this.hotelList = bindings.map((binding: any) => {
-        return {
-          id: binding.id.value,
-          placeBranch: binding.branch.value,
-          hotlineNumber: binding.hotline.value,
-          supportEmail: binding.email.value,
-          headQuarterAddress: binding.address.value,
-          discountFloat: parseFloat(binding.discountFloat.value),
-          discountAmount: parseFloat(binding.discountAmount.value),
-          description: binding.description.value,
-          createDate: new Date(binding.createDate.value),
-          updateDate: new Date(binding.updateDate.value),
-        };
-      });
-
-      console.log(this.hotelList);
-      // Handle the response data here
-    });
+    this.sparkGet();
+    // Handle the response data here
   }
 
   announceSortChange(sortState: Sort) {

@@ -100,6 +100,33 @@ export class HotelDetailComponent implements OnInit, OnDestroy {
       description: ["", Validators.compose([Validators.required])],
     });
 
+    this.getInfo();
+
+    this.messageService.openLoadingDialog();
+
+    // this.store.dispatch(
+    //   HotelActions.getHotel({
+    //     payload: {
+    //       id: this.data.id,
+    //     },
+    //   })
+    // );
+
+    this.store.dispatch(HotelActions.initial());
+
+    //console.log(this.this_book);
+    //Called after the constructor, initializing input properties, and the first call to ngOnChanges.
+    //Add 'implements OnInit' to the class.
+  }
+
+  ngOnDestroy(): void {
+    console.log("Destroy");
+    this.store.dispatch(HotelActions.resetHotel());
+
+    this.subscriptions.forEach((subscription) => subscription.unsubscribe());
+  }
+
+  getInfo() {
     const sparqlQuery = `
     PREFIX ex: <http://example.org/hotel#>
     SELECT ?hotel ?id ?branch ?hotline ?email ?address ?discountFloat ?discountAmount ?description ?createDate ?updateDate
@@ -165,29 +192,6 @@ export class HotelDetailComponent implements OnInit, OnDestroy {
 
       // Handle the response data here
     });
-
-    this.messageService.openLoadingDialog();
-
-    // this.store.dispatch(
-    //   HotelActions.getHotel({
-    //     payload: {
-    //       id: this.data.id,
-    //     },
-    //   })
-    // );
-
-    this.store.dispatch(HotelActions.initial());
-
-    //console.log(this.this_book);
-    //Called after the constructor, initializing input properties, and the first call to ngOnChanges.
-    //Add 'implements OnInit' to the class.
-  }
-
-  ngOnDestroy(): void {
-    console.log("Destroy");
-    this.store.dispatch(HotelActions.resetHotel());
-
-    this.subscriptions.forEach((subscription) => subscription.unsubscribe());
   }
 
   formReset(): void {
@@ -238,13 +242,27 @@ export class HotelDetailComponent implements OnInit, OnDestroy {
                        ex:UpdateDate ?oldUpdateDate .
       }
       INSERT {
-        ?hotelToUpdate ex:PlaceBranch "${this.editformGroup_info.value.placeBranch}" ;
-                       ex:HotlineNumber "${this.editformGroup_info.value.hotlineNumber}" ;
-                       ex:SupportEmail "${this.editformGroup_info.value.supportEmail}" ;
-                       ex:HeadQuarterAddress "${this.editformGroup_info.value.headQuarterAddress}" ;
-                       ex:DiscountFloat ${this.editformGroup_info.value.discountFloat} ;
-                       ex:DiscountAmount ${this.editformGroup_info.value.discountAmount} ;
-                       ex:Description "${this.editformGroup_info.value.description}" ;
+        ?hotelToUpdate ex:PlaceBranch "${
+          this.editformGroup_info.value.placeBranch
+        }" ;
+                       ex:HotlineNumber "${
+                         this.editformGroup_info.value.hotlineNumber
+                       }" ;
+                       ex:SupportEmail "${
+                         this.editformGroup_info.value.supportEmail
+                       }" ;
+                       ex:HeadQuarterAddress "${
+                         this.editformGroup_info.value.headQuarterAddress
+                       }" ;
+                       ex:DiscountFloat ${
+                         this.editformGroup_info.value.discountFloat
+                       } ;
+                       ex:DiscountAmount ${
+                         this.editformGroup_info.value.discountAmount
+                       } ;
+                       ex:Description "${
+                         this.editformGroup_info.value.description
+                       }" ;
                        ex:UpdateDate "${new Date().toISOString()}"^^xsd:dateTime .
       }
       WHERE {
@@ -261,11 +279,11 @@ export class HotelDetailComponent implements OnInit, OnDestroy {
       }
     `;
 
-    this.fusekiService.insertFuseki(updateQuery).subscribe((response) => {
-      console.log("Hotel inserted successfully:", response);
-      this.messageService.openMessageNotifyDialog("Update Ok");
-      // Handle the response as needed
-    });
+      this.fusekiService.insertFuseki(updateQuery).subscribe((response) => {
+        console.log("Hotel inserted successfully:", response);
+        this.messageService.openMessageNotifyDialog("Update Ok");
+        // Handle the response as needed
+      });
 
       // this.messageService.openLoadingDialog();
       // this.store.dispatch(

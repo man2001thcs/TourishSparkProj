@@ -27,6 +27,7 @@ import { HomeStayCreateComponent } from "../homeStay_create/homeStay-create.comp
 import { MessageService } from "src/app/utility/user_service/message.service";
 import { ConfirmDialogComponent } from "src/app/utility/confirm-dialog/confirm-dialog.component";
 import { HomeStay } from "src/app/model/baseModel";
+import { FusekiService } from "src/app/utility/spark-sql-service/spark.sql.service";
 
 @Component({
   selector: "app-homeStayList",
@@ -75,6 +76,7 @@ export class HomeStayListComponent
     private adminService: AdminService,
     public dialog: MatDialog,
     private messageService: MessageService,
+    private fusekiService: FusekiService,
     private store: Store<HomeStayListState>
   ) {
     this.homeStayListState = this.store.select(getHomeStayList);
@@ -84,64 +86,7 @@ export class HomeStayListComponent
   }
 
   ngOnInit(): void {
-    this.subscriptions.push(
-      this.homeStayListState.subscribe((state) => {
-        if (state) {         
-          this.messageService.closeLoadingDialog();
-          this.homeStayList = state.data;
-          this.length = state.count;
-        }
-      })
-    );
-
-    this.subscriptions.push(
-      this.homeStayDeleteState.subscribe((state) => {
-        if (state) {
-          this.messageService.closeLoadingDialog();
-          this.messageService.openMessageNotifyDialog(state.messageCode);
-
-          if (state.resultCd === 0) {
-            this.store.dispatch(
-              HomeStayListActions.getHomeStayList({
-                payload: {
-                  page: this.pageIndex + 1,
-                  search: this.searchPhase
-                },
-              })
-            );
-          }
-        }
-      })
-    );
-
-    this.store.dispatch(HomeStayListActions.initial());
-    this.store.dispatch(
-      HomeStayListActions.getHomeStayList({
-        payload: {
-          page: this.pageIndex + 1,
-          search: this.searchPhase
-        },
-      })
-    );
-    this.messageService.openLoadingDialog();
-
-    this.subscriptions.push(
-      this.errorMessageState.subscribe((state) => {
-        if (state) {
-          this.messageService.closeLoadingDialog();
-          this.messageService.openMessageNotifyDialog(state);
-        }
-      })
-    );
-
-    this.subscriptions.push(
-      this.errorSystemState.subscribe((state) => {
-        if (state) {
-          this.messageService.closeLoadingDialog();
-          this.messageService.openSystemFailNotifyDialog(state);
-        }
-      })
-    );
+    this.sparkGet();
   }
   ngAfterViewInit(): void {}
 
@@ -152,6 +97,66 @@ export class HomeStayListComponent
     this.subscriptions.forEach((subscription) => subscription.unsubscribe());
   }
 
+  sparkGet() {
+    const offset = this.pageIndex * this.pageSize;
+  
+    const countQuery = `
+      PREFIX ex: <http://example.org/homestay#>
+      SELECT (COUNT(?homeStay) as ?totalCount)
+      WHERE {
+        ?homeStay a ex:HomeStay .
+        ${this.searchPhase ? `FILTER(contains(?branch, "${this.searchPhase}"))` : ''}
+      }
+    `;
+  
+    const queryString = `
+    PREFIX ex: <http://example.org/homestay#>
+  
+    SELECT ?homeStay ?id ?branch ?hotline ?email ?address ?discountFloat ?discountAmount ?description ?createDate ?updateDate
+    WHERE {
+      ?homeStay a ex:HomeStay ;
+             ex:Id ?id ;
+             ex:PlaceBranch ?branch ;
+             ex:HotlineNumber ?hotline ;
+             ex:SupportEmail ?email ;
+             ex:HeadQuarterAddress ?address ;
+             ex:DiscountFloat ?discountFloat ;
+             ex:DiscountAmount ?discountAmount ;
+             ex:Description ?description ;
+             ex:CreateDate ?createDate ;
+             ex:UpdateDate ?updateDate .
+      ${this.searchPhase ? `FILTER(contains(?branch, "${this.searchPhase}"))` : ''}
+    }
+    LIMIT ${this.pageSize}
+    OFFSET ${offset}
+  `;
+  
+    this.fusekiService.queryFuseki(countQuery).subscribe((response) => {
+      console.log("res", JSON.stringify(response));
+      this.length = parseInt(response.results.bindings[0].totalCount.value, 10);
+      // Handle the response data here
+    });
+  
+    this.fusekiService.queryFuseki(queryString).subscribe((response) => {
+      console.log("res", JSON.stringify(response));
+      const bindings = response.results.bindings;
+      this.homeStayList = bindings.map((binding: any) => {
+        return {
+          id: binding.id.value,
+          placeBranch: binding.branch.value,
+          hotlineNumber: binding.hotline.value,
+          supportEmail: binding.email.value,
+          headQuarterAddress: binding.address.value,
+          discountFloat: parseFloat(binding.discountFloat.value),
+          discountAmount: parseFloat(binding.discountAmount.value),
+          description: binding.description.value,
+          createDate: new Date(binding.createDate.value),
+          updateDate: new Date(binding.updateDate.value),
+        };
+      });
+    });
+  }
+
   openEditDialog(id: string): void {
     const dialogRef = this.dialog.open(HomeStayDetailComponent, {
       data: { id: id },
@@ -160,15 +165,7 @@ export class HomeStayListComponent
     dialogRef.afterClosed().subscribe((result) => {
       console.log(result);
 
-      this.store.dispatch(
-        HomeStayListActions.getHomeStayList({
-          payload: {
-            page: this.pageIndex + 1,
-            search: this.searchPhase
-          },
-        })
-      );
-      this.messageService.openLoadingDialog();
+      this.sparkGet();
     });
   }
 
@@ -178,16 +175,7 @@ export class HomeStayListComponent
     dialogRef.afterClosed().subscribe((result) => {
       console.log(result);
 
-      this.store.dispatch(
-        HomeStayListActions.getHomeStayList({
-          payload: {
-            page: this.pageIndex + 1,
-            search: this.searchPhase
-          },
-        })
-      );
-
-      this.messageService.openLoadingDialog();
+      this.sparkGet();
     });
   }
 
@@ -209,17 +197,27 @@ export class HomeStayListComponent
         title: "Bạn có muốn xóa đối tác này không?",
       },
     });
-
+  
     ref.afterClosed().subscribe((result) => {
       if (result) {
-        this.messageService.openLoadingDialog();
-        this.store.dispatch(
-          HomeStayListActions.deleteHomeStay({
-            payload: {
-              id: id,
-            },
-          })
-        );
+        const deleteQuery = `
+          PREFIX ex: <http://example.org/homestay#>
+  
+          DELETE {
+            ?homeStayToDelete ?p ?o .
+          }
+          WHERE {
+            ?homeStayToDelete a ex:HomeStay ;
+                            ex:Id "${id}" .
+            ?homeStayToDelete ?p ?o .
+          }
+        `;
+  
+        this.fusekiService.insertFuseki(deleteQuery).subscribe((response) => {
+          console.log("HomeStay deleted successfully:", response);
+          this.messageService.openMessageNotifyDialog("Delete Ok");
+          // Handle the response as needed
+        });
       }
     });
   }
@@ -231,15 +229,7 @@ export class HomeStayListComponent
     this.pageIndex = 0;
 
     this.messageService.openLoadingDialog();
-    this.store.dispatch(
-      HomeStayListActions.getHomeStayList({
-        payload: {
-          page: this.pageIndex + 1,
-          pageSize: this.pageSize,
-          search: this.searchPhase
-        },
-      })
-    );
+    this.sparkGet();
   }
 
   handlePageEvent(e: PageEvent) {
@@ -250,16 +240,7 @@ export class HomeStayListComponent
 
     console.log(this.pageIndex);
 
-    this.messageService.openLoadingDialog();
-    this.store.dispatch(
-      HomeStayListActions.getHomeStayList({
-        payload: {
-          page: this.pageIndex + 1,
-          pageSize: this.pageSize,
-          search: this.searchPhase
-        },
-      })
-    );
+    this.sparkGet();
   }
 
   announceSortChange(sortState: Sort) {
@@ -270,28 +251,9 @@ export class HomeStayListComponent
     console.log(sortState);
     if ((sortState.active = "name")) {
       if (sortState.direction === "asc") {
-        this.messageService.openLoadingDialog();
-        this.store.dispatch(
-          HomeStayListActions.getHomeStayList({
-            payload: {
-              page: 1,
-              pageSize: this.pageSize,
-              search: this.searchPhase
-            },
-          })
-        );
+        this.sparkGet();
       } else if (sortState.direction === "desc") {
-        this.messageService.openLoadingDialog();
-        this.store.dispatch(
-          HomeStayListActions.getHomeStayList({
-            payload: {
-              sortBy: "name_desc",
-              page: 1,
-              pageSize: this.pageSize,
-              search: this.searchPhase
-            },
-          })
-        );
+        this.sparkGet();
       }
     } else {
     }

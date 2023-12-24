@@ -36,6 +36,7 @@ import {
 } from "./air_plane-detail.store.selector";
 import { MessageService } from "src/app/utility/user_service/message.service";
 import { AirPlane } from "src/app/model/baseModel";
+import { FusekiService } from "src/app/utility/spark-sql-service/spark.sql.service";
 
 @Component({
   selector: "app-book-detail",
@@ -73,6 +74,7 @@ export class AirPlaneDetailComponent implements OnInit, OnDestroy {
     private dialog: MatDialog,
     private fb: FormBuilder,
     private store: Store<AirPlaneState>,
+    private fusekiService: FusekiService,
     private messageService: MessageService,
     private _route: ActivatedRoute,
     @Inject(MAT_DIALOG_DATA) public data: AirPlaneParam
@@ -99,80 +101,66 @@ export class AirPlaneDetailComponent implements OnInit, OnDestroy {
       description: "",
     });
 
-    this.subscriptions.push(
-      this.passengerCarState.subscribe((state) => {
-        if (state) {
-          this.passengerCar = state;
-          this.messageService.closeLoadingDialog();
-
-          this.editformGroup_info.controls["branchName"].setValue(
-            state.branchName
-          );
-          this.editformGroup_info.controls["hotlineNumber"].setValue(
-            state.hotlineNumber
-          );
-          this.editformGroup_info.controls["supportEmail"].setValue(
-            state.supportEmail
-          );
-          this.editformGroup_info.controls["headQuarterAddress"].setValue(
-            state.headQuarterAddress
-          );
-
-          this.editformGroup_info.controls["discountFloat"].setValue(
-            state.discountFloat
-          );
-
-          this.editformGroup_info.controls["discountAmount"].setValue(
-            state.discountAmount
-          );
-
-          this.editformGroup_info.controls["description"].setValue(
-            state.description
-          );
-        }
-      })
-    );
-
-    this.subscriptions.push(
-      this.editAirPlaneState.subscribe((state) => {
-        if (state) {
-          this.messageService.closeLoadingDialog();
-          this.messageService.openMessageNotifyDialog(state.messageCode);
-        }
-      })
-    );
-
-    this.subscriptions.push(
-      this.errorMessageState.subscribe((state) => {
-        if (state) {
-          this.messageService.closeLoadingDialog();
-          this.messageService.openMessageNotifyDialog(state);
-        }
-      })
-    );
-
-    this.subscriptions.push(
-      this.errorSystemState.subscribe((state) => {
-        if (state) {
-          this.messageService.closeLoadingDialog();
-          this.messageService.openFailNotifyDialog(state);
-        }
-      })
-    );
-
-    this.store.dispatch(
-      AirPlaneActions.getAirPlane({
-        payload: {
-          id: this.data.id,
-        },
-      })
-    );
+    this.getInfo();
 
     this.store.dispatch(AirPlaneActions.initial());
 
     //console.log(this.this_book);
     //Called after the constructor, initializing input properties, and the first call to ngOnChanges.
     //Add 'implements OnInit' to the class.
+  }
+
+  getInfo() {
+    const sparqlQuery = `
+      PREFIX ex: <http://example.org/planeairline#>
+      SELECT ?airplane ?id ?branchName ?hotline ?supportEmail ?headQuarterAddress ?discountFloat ?discountAmount ?description ?createDate ?updateDate
+      WHERE {
+        ?airplane a ex:PlaneAirline ;
+                  ex:Id ?id ;
+                  ex:BranchName ?branchName ;
+                  ex:HotlineNumber ?hotline ;
+                  ex:SupportEmail ?supportEmail ;
+                  ex:HeadQuarterAddress ?headQuarterAddress ;
+                  ex:DiscountFloat ?discountFloat ;
+                  ex:DiscountAmount ?discountAmount ;
+                  ex:Description ?description ;
+                  ex:CreateDate ?createDate ;
+                  ex:UpdateDate ?updateDate .
+  
+        FILTER (?id = "${this.data.id}")
+      }
+    `;
+  
+    this.fusekiService.queryFuseki(sparqlQuery).subscribe((response: any) => {
+      console.log("res", JSON.stringify(response));
+      const bindings = response.results.bindings[0];
+      const state = {
+        id: bindings.id.value,
+        branchName: bindings.branchName.value,
+        hotlineNumber: bindings.hotline.value,
+        supportEmail: bindings.supportEmail.value,
+        headQuarterAddress: bindings.headQuarterAddress.value,
+        discountFloat: parseFloat(bindings.discountFloat.value),
+        discountAmount: parseFloat(bindings.discountAmount.value),
+        description: bindings.description.value,
+        createDate: new Date(bindings.createDate.value),
+        updateDate: new Date(bindings.updateDate.value),
+      };
+  
+      this.passengerCar = state;
+      this.messageService.closeLoadingDialog();
+  
+      // Update your Angular form group with the retrieved data
+      this.editformGroup_info.controls["branchName"].setValue(state.branchName);
+      this.editformGroup_info.controls["hotlineNumber"].setValue(state.hotlineNumber);
+      this.editformGroup_info.controls["supportEmail"].setValue(state.supportEmail);
+      this.editformGroup_info.controls["headQuarterAddress"].setValue(state.headQuarterAddress);
+      this.editformGroup_info.controls["discountFloat"].setValue(state.discountFloat);
+      this.editformGroup_info.controls["discountAmount"].setValue(state.discountAmount);
+      this.editformGroup_info.controls["description"].setValue(state.description);
+  
+      // Handle the response data here
+    });
   }
 
   ngOnDestroy(): void {
@@ -211,14 +199,53 @@ export class AirPlaneDetailComponent implements OnInit, OnDestroy {
         discountAmount: this.editformGroup_info.value.discountAmount,
         description: this.editformGroup_info.value.description,
       };
-
-      this.store.dispatch(
-        AirPlaneActions.editAirPlane({
-          payload: payload,
-        })
-      );
-
-      this.messageService.openLoadingDialog();
-    } else console.log(this.editformGroup_info.invalid);
+  
+      const updateQuery = `
+        PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+        PREFIX owl: <http://www.w3.org/2002/07/owl#>
+        PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+        PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+        PREFIX ex: <http://example.org/planeairline#>
+  
+        DELETE {
+          ?airPlaneToUpdate ex:BranchName ?oldBranchName ;
+                           ex:HotlineNumber ?oldHotline ;
+                           ex:SupportEmail ?oldEmail ;
+                           ex:HeadQuarterAddress ?oldAddress ;
+                           ex:DiscountFloat ?oldDiscountFloat ;
+                           ex:DiscountAmount ?oldDiscountAmount ;
+                           ex:Description ?oldDescription ;
+                           ex:UpdateDate ?oldUpdateDate .
+        }
+        INSERT {
+          ?airPlaneToUpdate ex:BranchName "${this.editformGroup_info.value.branchName}" ;
+                           ex:HotlineNumber "${this.editformGroup_info.value.hotlineNumber}" ;
+                           ex:SupportEmail "${this.editformGroup_info.value.supportEmail}" ;
+                           ex:HeadQuarterAddress "${this.editformGroup_info.value.headQuarterAddress}" ;
+                           ex:DiscountFloat ${this.editformGroup_info.value.discountFloat} ;
+                           ex:DiscountAmount ${this.editformGroup_info.value.discountAmount} ;
+                           ex:Description "${this.editformGroup_info.value.description}" ;
+                           ex:UpdateDate "${new Date().toISOString()}"^^xsd:dateTime .
+        }
+        WHERE {
+          ?airPlaneToUpdate a ex:PlaneAirline ;
+                           ex:Id "${this.data.id}" ;
+                           ex:BranchName ?oldBranchName ;
+                           ex:HotlineNumber ?oldHotline ;
+                           ex:SupportEmail ?oldEmail ;
+                           ex:HeadQuarterAddress ?oldAddress ;
+                           ex:DiscountFloat ?oldDiscountFloat ;
+                           ex:DiscountAmount ?oldDiscountAmount ;
+                           ex:Description ?oldDescription ;
+                           ex:UpdateDate ?oldUpdateDate .
+        }
+      `;
+  
+      this.fusekiService.insertFuseki(updateQuery).subscribe((response) => {
+        console.log("AirPlane updated successfully:", response);
+        this.messageService.openMessageNotifyDialog("Update Ok");
+        // Handle the response as needed
+      });
+    }
   }
 }

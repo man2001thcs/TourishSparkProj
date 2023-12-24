@@ -27,6 +27,7 @@ import { RestaurantCreateComponent } from "../restaurant_create/restaurant-creat
 import { MessageService } from "src/app/utility/user_service/message.service";
 import { ConfirmDialogComponent } from "src/app/utility/confirm-dialog/confirm-dialog.component";
 import { Restaurant } from "src/app/model/baseModel";
+import { FusekiService } from "src/app/utility/spark-sql-service/spark.sql.service";
 
 @Component({
   selector: "app-restaurantList",
@@ -74,6 +75,7 @@ export class RestaurantListComponent
     private adminService: AdminService,
     public dialog: MatDialog,
     private messageService: MessageService,
+    private fusekiService: FusekiService,
     private store: Store<RestaurantListState>
   ) {
     this.restaurantListState = this.store.select(getRestaurantList);
@@ -83,64 +85,7 @@ export class RestaurantListComponent
   }
 
   ngOnInit(): void {
-    this.subscriptions.push(
-      this.restaurantListState.subscribe((state) => {
-        if (state) {
-          this.messageService.closeLoadingDialog();
-          this.restaurantList = state.data;
-          this.length = state.count;
-        }
-      })
-    );
-
-    this.subscriptions.push(
-      this.restaurantDeleteState.subscribe((state) => {
-        if (state) {
-          this.messageService.closeLoadingDialog();
-          this.messageService.openMessageNotifyDialog(state.messageCode);
-
-          if (state.resultCd === 0) {
-            this.store.dispatch(
-              RestaurantListActions.getRestaurantList({
-                payload: {
-                  page: this.pageIndex + 1,
-                },
-              })
-            );
-          }
-        }
-      })
-    );
-
-    this.store.dispatch(RestaurantListActions.initial());
-
-    this.store.dispatch(
-      RestaurantListActions.getRestaurantList({
-        payload: {
-          page: this.pageIndex + 1,
-        },
-      })
-    );
-
-    this.messageService.openLoadingDialog();
-
-    this.subscriptions.push(
-      this.errorMessageState.subscribe((state) => {
-        if (state) {
-          this.messageService.closeLoadingDialog();
-          this.messageService.openMessageNotifyDialog(state);
-        }
-      })
-    );
-
-    this.subscriptions.push(
-      this.errorSystemState.subscribe((state) => {
-        if (state) {
-          this.messageService.closeLoadingDialog();
-          this.messageService.openSystemFailNotifyDialog(state);
-        }
-      })
-    );
+    this.sparkGet();
   }
   ngAfterViewInit(): void {}
 
@@ -151,6 +96,66 @@ export class RestaurantListComponent
     this.subscriptions.forEach((subscription) => subscription.unsubscribe());
   }
 
+  sparkGet() {
+    const offset = this.pageIndex * this.pageSize;
+  
+    const countQuery = `
+      PREFIX ex: <http://example.org/restaurant#>
+      SELECT (COUNT(?restaurant) as ?totalCount)
+      WHERE {
+        ?restaurant a ex:Restaurant .
+        ${this.searchPhase ? `FILTER(contains(?branch, "${this.searchPhase}"))` : ''}
+      }
+    `;
+  
+    const queryString = `
+      PREFIX ex: <http://example.org/restaurant#>
+    
+      SELECT ?restaurant ?id ?branch ?hotline ?email ?address ?discountFloat ?discountAmount ?description ?createDate ?updateDate
+      WHERE {
+        ?restaurant a ex:Restaurant ;
+               ex:Id ?id ;
+               ex:PlaceBranch ?branch ;
+               ex:HotlineNumber ?hotline ;
+               ex:SupportEmail ?email ;
+               ex:HeadQuarterAddress ?address ;
+               ex:DiscountFloat ?discountFloat ;
+               ex:DiscountAmount ?discountAmount ;
+               ex:Description ?description ;
+               ex:CreateDate ?createDate ;
+               ex:UpdateDate ?updateDate .
+        ${this.searchPhase ? `FILTER(contains(?branch, "${this.searchPhase}"))` : ''}
+      }
+      LIMIT ${this.pageSize}
+      OFFSET ${offset}
+    `;
+  
+    this.fusekiService.queryFuseki(countQuery).subscribe((response) => {
+      console.log("res", JSON.stringify(response));
+      this.length = parseInt(response.results.bindings[0].totalCount.value, 10);
+      // Handle the response data here
+    });
+  
+    this.fusekiService.queryFuseki(queryString).subscribe((response) => {
+      console.log("res", JSON.stringify(response));
+      const bindings = response.results.bindings;
+      this.restaurantList = bindings.map((binding: any) => {
+        return {
+          id: binding.id.value,
+          placeBranch: binding.branch.value,
+          hotlineNumber: binding.hotline.value,
+          supportEmail: binding.email.value,
+          headQuarterAddress: binding.address.value,
+          discountFloat: parseFloat(binding.discountFloat.value),
+          discountAmount: parseFloat(binding.discountAmount.value),
+          description: binding.description.value,
+          createDate: new Date(binding.createDate.value),
+          updateDate: new Date(binding.updateDate.value),
+        };
+      });
+    });
+  }
+
   openEditDialog(id: string): void {
     const dialogRef = this.dialog.open(RestaurantDetailComponent, {
       data: { id: id },
@@ -159,15 +164,7 @@ export class RestaurantListComponent
     dialogRef.afterClosed().subscribe((result) => {
       console.log(result);
 
-      this.store.dispatch(
-        RestaurantListActions.getRestaurantList({
-          payload: {
-            page: this.pageIndex + 1,
-            search: this.searchPhase,
-          },
-        })
-      );
-      this.messageService.openLoadingDialog();
+      this.sparkGet();
     });
   }
 
@@ -177,15 +174,7 @@ export class RestaurantListComponent
     dialogRef.afterClosed().subscribe((result) => {
       console.log(result);
 
-      this.store.dispatch(
-        RestaurantListActions.getRestaurantList({
-          payload: {
-            page: this.pageIndex + 1,
-            search: this.searchPhase,
-          },
-        })
-      );
-      this.messageService.openLoadingDialog();
+      this.sparkGet();
     });
   }
 
@@ -207,17 +196,27 @@ export class RestaurantListComponent
         title: "Bạn có muốn xóa đối tác này không?",
       },
     });
-
+  
     ref.afterClosed().subscribe((result) => {
       if (result) {
-        this.store.dispatch(
-          RestaurantListActions.deleteRestaurant({
-            payload: {
-              id: id,
-            },
-          })
-        );
-        this.messageService.openLoadingDialog();
+        const deleteQuery = `
+          PREFIX ex: <http://example.org/restaurant#>
+  
+          DELETE {
+            ?restaurantToDelete ?p ?o .
+          }
+          WHERE {
+            ?restaurantToDelete a ex:Restaurant ;
+                               ex:Id "${id}" .
+            ?restaurantToDelete ?p ?o .
+          }
+        `;
+  
+        this.fusekiService.insertFuseki(deleteQuery).subscribe((response) => {
+          console.log("Restaurant deleted successfully:", response);
+          this.messageService.openMessageNotifyDialog("Delete Ok");
+          // Handle the response as needed
+        });
       }
     });
   }
@@ -232,31 +231,14 @@ export class RestaurantListComponent
 
     console.log(this.pageIndex);
 
-    this.store.dispatch(
-      RestaurantListActions.getRestaurantList({
-        payload: {
-          page: this.pageIndex + 1,
-          pageSize: this.pageSize,
-        },
-      })
-    );
-    this.messageService.openLoadingDialog();
+    this.sparkGet();
   }
 
   search() {
     this.pageSize = 5;
     this.pageIndex = 0;
 
-    this.messageService.openLoadingDialog();
-    this.store.dispatch(
-      RestaurantListActions.getRestaurantList({
-        payload: {
-          page: this.pageIndex + 1,
-          pageSize: this.pageSize,
-          search: this.searchPhase,
-        },
-      })
-    );
+    this.sparkGet();
   }
 
   announceSortChange(sortState: Sort) {
@@ -267,28 +249,10 @@ export class RestaurantListComponent
     console.log(sortState);
     if ((sortState.active = "name")) {
       if (sortState.direction === "asc") {
-        this.store.dispatch(
-          RestaurantListActions.getRestaurantList({
-            payload: {
-              page: 1,
-              pageSize: this.pageSize,
-              search: this.searchPhase,
-            },
-          })
-        );
-        this.messageService.openLoadingDialog();
+        this.sparkGet();
+
       } else if (sortState.direction === "desc") {
-        this.store.dispatch(
-          RestaurantListActions.getRestaurantList({
-            payload: {
-              sortBy: "name_desc",
-              page: 1,
-              pageSize: this.pageSize,
-              search: this.searchPhase,
-            },
-          })
-        );
-        this.messageService.openLoadingDialog();
+        this.sparkGet();
       }
     } else {
     }

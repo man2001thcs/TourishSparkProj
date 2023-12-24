@@ -35,6 +35,7 @@ import {
 import { FailNotifyDialogComponent } from "src/app/utility/notification_admin/fail-notify-dialog.component";
 import { MessageService } from "src/app/utility/user_service/message.service";
 import { HomeStay } from "src/app/model/baseModel";
+import { FusekiService } from "src/app/utility/spark-sql-service/spark.sql.service";
 
 @Component({
   selector: "app-book-create",
@@ -63,6 +64,7 @@ export class HomeStayCreateComponent implements OnInit, OnDestroy {
     private fb: FormBuilder,
     private store: Store<passenger_carState>,
     private messageService: MessageService,
+    private fusekiService: FusekiService,
     private _route: ActivatedRoute,
     @Inject(MAT_DIALOG_DATA) public data: HomeStayParam
   ) {
@@ -73,32 +75,6 @@ export class HomeStayCreateComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.subscriptions.push(
-      this.createHomeStayState.subscribe((state) => {
-        if (state) {
-          this.messageService.closeLoadingDialog();
-          this.messageService.openMessageNotifyDialog(state.messageCode);
-        }
-      })
-    );
-
-    this.subscriptions.push(
-      this.errorMessageState.subscribe((state) => {
-        if (state) {
-          this.messageService.closeLoadingDialog();
-          this.messageService.openMessageNotifyDialog(state);
-        }
-      })
-    );
-
-    this.subscriptions.push(
-      this.errorSystemState.subscribe((state) => {
-        if (state) {
-          this.messageService.closeLoadingDialog();
-          this.messageService.openSystemFailNotifyDialog(state);
-        }
-      })
-    );
 
     this.store.dispatch(homeStayActions.initial());
 
@@ -138,7 +114,7 @@ export class HomeStayCreateComponent implements OnInit, OnDestroy {
   formSubmit_create_info(): void {
     this.isSubmitted = true;
     if (this.createformGroup_info.valid) {
-      const payload: HomeStay = {
+      const payload = {
         placeBranch: this.createformGroup_info.value.placeBranch,
         hotlineNumber: this.createformGroup_info.value.hotlineNumber,
         supportEmail: this.createformGroup_info.value.supportEmail,
@@ -147,13 +123,38 @@ export class HomeStayCreateComponent implements OnInit, OnDestroy {
         discountAmount: this.createformGroup_info.value.discountAmount,
         description: this.createformGroup_info.value.description,
       };
-
-      this.messageService.openLoadingDialog();
-      this.store.dispatch(
-        homeStayActions.createHomeStay({
-          payload: payload,
-        })
-      );
+  
+      const now = new Date();
+      const formattedNow = now.toISOString();
+  
+      const uuid = self.crypto.randomUUID();
+  
+      const sparqlQuery = `
+        PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+        PREFIX owl: <http://www.w3.org/2002/07/owl#>
+        PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+        PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+        PREFIX ex: <http://example.org/homestay#>
+        INSERT DATA
+        {
+          ex:${uuid} a ex:HomeStay ;
+            ex:Id "${uuid}" ;
+            ex:PlaceBranch "${this.createformGroup_info.value.placeBranch}" ;
+            ex:HotlineNumber "${this.createformGroup_info.value.hotlineNumber}" ;
+            ex:SupportEmail "${this.createformGroup_info.value.supportEmail}" ;
+            ex:HeadQuarterAddress "${this.createformGroup_info.value.headQuarterAddress}" ;
+            ex:DiscountFloat ${this.createformGroup_info.value.discountFloat} ;
+            ex:DiscountAmount ${this.createformGroup_info.value.discountAmount} ;
+            ex:Description "${this.createformGroup_info.value.description}" ;
+            ex:CreateDate "${formattedNow}"^^xsd:dateTime ;
+            ex:UpdateDate "${formattedNow}"^^xsd:dateTime .
+        }
+      `;
+  
+      this.fusekiService.insertFuseki(sparqlQuery).subscribe((response) => {
+        console.log("HomeStay inserted successfully:", response);
+        // Handle the response as needed
+      });
     }
   }
 }
