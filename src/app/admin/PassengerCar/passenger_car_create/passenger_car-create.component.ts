@@ -138,7 +138,7 @@ export class PassengerCarCreateComponent implements OnInit, OnDestroy {
         INSERT DATA
         {
           ex:${uuid} a ex:PassengerCar ;
-            ex:Id "${uuid}" ;
+            ex:CarId "${uuid}" ;
             ex:BranchName "${this.createformGroup_info.value.branchName}" ;
             ex:HotlineNumber "${this.createformGroup_info.value.hotlineNumber}" ;
             ex:SupportEmail "${this.createformGroup_info.value.supportEmail}" ;

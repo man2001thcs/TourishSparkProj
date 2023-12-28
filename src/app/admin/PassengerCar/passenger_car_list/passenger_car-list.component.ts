@@ -115,7 +115,7 @@ export class PassengerCarListComponent
       SELECT ?car ?id ?branch ?hotline ?email ?address ?discountFloat ?discountAmount ?description ?createDate ?updateDate
       WHERE {
         ?car a ex:PassengerCar ;
-               ex:Id ?id ;
+               ex:CarId ?id ;
                ex:BranchName ?branch ;
                ex:HotlineNumber ?hotline ;
                ex:SupportEmail ?email ;
@@ -208,7 +208,7 @@ export class PassengerCarListComponent
           }
           WHERE {
             ?passengerCarToDelete a ex:PassengerCar ;
-                                ex:Id "${id}" .
+                                ex:CarId "${id}" .
             ?passengerCarToDelete ?p ?o .
           }
         `;

@@ -118,7 +118,7 @@ export class AirPlaneListComponent implements OnInit, AfterViewInit, OnDestroy {
     SELECT ?airplane ?id ?branch ?hotline ?email ?address ?discountFloat ?discountAmount ?description ?createDate ?updateDate
     WHERE {
       ?airplane a ex:PlaneAirline ;
-             ex:Id ?id ;
+             ex:PlaneId ?id ;
              ex:BranchName ?branch ;
              ex:HotlineNumber ?hotline ;
              ex:SupportEmail ?email ;
@@ -215,7 +215,7 @@ export class AirPlaneListComponent implements OnInit, AfterViewInit, OnDestroy {
           }
           WHERE {
             ?airPlaneToDelete a ex:PlaneAirline ;
-                            ex:Id "${id}" .
+                            ex:PlaneId "${id}" .
             ?airPlaneToDelete ?p ?o .
           }
         `;

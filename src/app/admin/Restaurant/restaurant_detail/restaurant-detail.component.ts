@@ -122,7 +122,7 @@ export class RestaurantDetailComponent implements OnInit, OnDestroy {
       SELECT ?restaurant ?id ?placeBranch ?hotline ?email ?address ?discountFloat ?discountAmount ?description ?createDate ?updateDate
       WHERE {
         ?restaurant a ex:Restaurant ;
-                    ex:Id ?id ;
+                    ex:RestaurantId ?id ;
                     ex:PlaceBranch ?placeBranch ;
                     ex:HotlineNumber ?hotline ;
                     ex:SupportEmail ?email ;
@@ -228,7 +228,7 @@ export class RestaurantDetailComponent implements OnInit, OnDestroy {
         }
         WHERE {
           ?restaurantToUpdate a ex:Restaurant ;
-                              ex:Id "${this.data.id}" ;
+                              ex:RestaurantId "${this.data.id}" ;
                               ex:PlaceBranch ?oldPlaceBranch ;
                               ex:HotlineNumber ?oldHotline ;
                               ex:SupportEmail ?oldEmail ;

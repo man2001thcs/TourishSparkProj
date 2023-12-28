@@ -116,7 +116,7 @@ export class AirPlaneDetailComponent implements OnInit, OnDestroy {
       SELECT ?airplane ?id ?branchName ?hotline ?supportEmail ?headQuarterAddress ?discountFloat ?discountAmount ?description ?createDate ?updateDate
       WHERE {
         ?airplane a ex:PlaneAirline ;
-                  ex:Id ?id ;
+                  ex:PlaneId ?id ;
                   ex:BranchName ?branchName ;
                   ex:HotlineNumber ?hotline ;
                   ex:SupportEmail ?supportEmail ;
@@ -229,7 +229,7 @@ export class AirPlaneDetailComponent implements OnInit, OnDestroy {
         }
         WHERE {
           ?airPlaneToUpdate a ex:PlaneAirline ;
-                           ex:Id "${this.data.id}" ;
+                           ex:PlaneId "${this.data.id}" ;
                            ex:BranchName ?oldBranchName ;
                            ex:HotlineNumber ?oldHotline ;
                            ex:SupportEmail ?oldEmail ;

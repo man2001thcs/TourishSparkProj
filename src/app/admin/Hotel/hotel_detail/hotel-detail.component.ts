@@ -132,7 +132,7 @@ export class HotelDetailComponent implements OnInit, OnDestroy {
     SELECT ?hotel ?id ?branch ?hotline ?email ?address ?discountFloat ?discountAmount ?description ?createDate ?updateDate
     WHERE {
       ?hotel a ex:Hotel ;
-             ex:Id ?id ;
+             ex:HotelId ?id ;
              ex:PlaceBranch ?branch ;
              ex:HotlineNumber ?hotline ;
              ex:SupportEmail ?email ;
@@ -267,7 +267,7 @@ export class HotelDetailComponent implements OnInit, OnDestroy {
       }
       WHERE {
         ?hotelToUpdate a ex:Hotel ;
-                       ex:Id "${this.data.id}" ;
+                       ex:HotelId "${this.data.id}" ;
                        ex:PlaceBranch ?oldPlaceBranch ;
                        ex:HotlineNumber ?oldHotline ;
                        ex:SupportEmail ?oldEmail ;

@@ -122,7 +122,7 @@ export class HomeStayDetailComponent implements OnInit, OnDestroy {
       SELECT ?homestay ?id ?placeBranch ?hotline ?email ?address ?discountFloat ?discountAmount ?description ?createDate ?updateDate
       WHERE {
         ?homestay a ex:HomeStay ;
-                  ex:Id ?id ;
+                  ex:HomeStayId ?id ;
                   ex:PlaceBranch ?placeBranch ;
                   ex:HotlineNumber ?hotline ;
                   ex:SupportEmail ?email ;
@@ -228,7 +228,7 @@ export class HomeStayDetailComponent implements OnInit, OnDestroy {
         }
         WHERE {
           ?homestayToUpdate a ex:HomeStay ;
-                            ex:Id "${this.data.id}" ;
+                            ex:HomeStayId "${this.data.id}" ;
                             ex:PlaceBranch ?oldPlaceBranch ;
                             ex:HotlineNumber ?oldHotline ;
                             ex:SupportEmail ?oldEmail ;

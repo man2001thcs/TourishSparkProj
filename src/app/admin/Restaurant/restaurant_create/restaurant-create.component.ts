@@ -139,7 +139,7 @@ export class RestaurantCreateComponent implements OnInit, OnDestroy {
         INSERT DATA
         {
           ex:${uuid} a ex:Restaurant ;
-            ex:Id "${uuid}" ;
+            ex:RestaurantId "${uuid}" ;
             ex:PlaceBranch "${this.createformGroup_info.value.placeBranch}" ;
             ex:HotlineNumber "${this.createformGroup_info.value.hotlineNumber}" ;
             ex:SupportEmail "${this.createformGroup_info.value.supportEmail}" ;

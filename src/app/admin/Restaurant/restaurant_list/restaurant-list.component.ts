@@ -114,7 +114,7 @@ export class RestaurantListComponent
       SELECT ?restaurant ?id ?branch ?hotline ?email ?address ?discountFloat ?discountAmount ?description ?createDate ?updateDate
       WHERE {
         ?restaurant a ex:Restaurant ;
-               ex:Id ?id ;
+               ex:RestaurantId ?id ;
                ex:PlaceBranch ?branch ;
                ex:HotlineNumber ?hotline ;
                ex:SupportEmail ?email ;
@@ -207,7 +207,7 @@ export class RestaurantListComponent
           }
           WHERE {
             ?restaurantToDelete a ex:Restaurant ;
-                               ex:Id "${id}" .
+                               ex:RestaurantId "${id}" .
             ?restaurantToDelete ?p ?o .
           }
         `;

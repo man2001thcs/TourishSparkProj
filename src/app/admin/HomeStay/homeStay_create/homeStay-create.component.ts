@@ -138,7 +138,7 @@ export class HomeStayCreateComponent implements OnInit, OnDestroy {
         INSERT DATA
         {
           ex:${uuid} a ex:HomeStay ;
-            ex:Id "${uuid}" ;
+            ex:HomeStayId "${uuid}" ;
             ex:PlaceBranch "${this.createformGroup_info.value.placeBranch}" ;
             ex:HotlineNumber "${this.createformGroup_info.value.hotlineNumber}" ;
             ex:SupportEmail "${this.createformGroup_info.value.supportEmail}" ;

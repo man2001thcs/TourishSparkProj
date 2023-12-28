@@ -117,7 +117,7 @@ export class HotelListComponent implements OnInit, AfterViewInit, OnDestroy {
     SELECT ?hotel ?id ?branch ?hotline ?email ?address ?discountFloat ?discountAmount ?description ?createDate ?updateDate
     WHERE {
       ?hotel a ex:Hotel ;
-             ex:Id ?id ;
+             ex:HotelId ?id ;
              ex:PlaceBranch ?branch ;
              ex:HotlineNumber ?hotline ;
              ex:SupportEmail ?email ;
@@ -218,7 +218,7 @@ export class HotelListComponent implements OnInit, AfterViewInit, OnDestroy {
               }
               WHERE {
                 ?hotelToDelete a ex:Hotel ;
-                               ex:Id "${id}" .
+                               ex:HotelId "${id}" .
                 ?hotelToDelete ?p ?o .
               }
         `;

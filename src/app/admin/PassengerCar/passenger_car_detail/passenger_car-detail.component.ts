@@ -123,7 +123,7 @@ export class PassengerCarDetailComponent implements OnInit, OnDestroy {
       SELECT ?car ?id ?branch ?hotline ?email ?address ?discountFloat ?discountAmount ?description ?createDate ?updateDate
       WHERE {
         ?car a ex:PassengerCar ;
-             ex:Id ?id ;
+             ex:CarId ?id ;
              ex:BranchName ?branch ;
              ex:HotlineNumber ?hotline ;
              ex:SupportEmail ?email ;
@@ -244,7 +244,7 @@ export class PassengerCarDetailComponent implements OnInit, OnDestroy {
         }
         WHERE {
           ?passengerCarToUpdate a ex:PassengerCar ;
-                                ex:Id "${this.data.id}" ;
+                                ex:CarId "${this.data.id}" ;
                                 ex:BranchName ?oldBranchName ;
                                 ex:HotlineNumber ?oldHotline ;
                                 ex:SupportEmail ?oldEmail ;

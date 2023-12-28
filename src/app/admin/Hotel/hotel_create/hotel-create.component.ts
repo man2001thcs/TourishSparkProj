@@ -142,7 +142,7 @@ export class HotelCreateComponent implements OnInit, OnDestroy {
       INSERT DATA
       {
         ex:${uuid} a ex:Hotel ;
-          ex:Id "${uuid}" ;
+          ex:HotelId "${uuid}" ;
           ex:PlaceBranch "${this.createformGroup_info.value.placeBranch}" ;
           ex:HotlineNumber "${this.createformGroup_info.value.hotlineNumber}" ;
           ex:SupportEmail "${this.createformGroup_info.value.supportEmail}" ;

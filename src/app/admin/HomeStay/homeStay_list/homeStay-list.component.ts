@@ -115,7 +115,7 @@ export class HomeStayListComponent
     SELECT ?homeStay ?id ?branch ?hotline ?email ?address ?discountFloat ?discountAmount ?description ?createDate ?updateDate
     WHERE {
       ?homeStay a ex:HomeStay ;
-             ex:Id ?id ;
+             ex:HomeStayId ?id ;
              ex:PlaceBranch ?branch ;
              ex:HotlineNumber ?hotline ;
              ex:SupportEmail ?email ;
@@ -208,7 +208,7 @@ export class HomeStayListComponent
           }
           WHERE {
             ?homeStayToDelete a ex:HomeStay ;
-                            ex:Id "${id}" .
+                            ex:HomeStayId "${id}" .
             ?homeStayToDelete ?p ?o .
           }
         `;
