@@ -1,22 +1,39 @@
 <div class="container" style="padding: 20px 0 20px">
-  <div class="outlet" style="
+  <div
+    class="outlet"
+    style="
       display: flex;
       justify-content: center;
       width: 100%;
       flex-direction: column !important;
-    ">
-    <div class="row"
-      style="display: flex; flex-direction: column !important; flex-wrap: 1; padding-left: 90px !important;">
+    "
+  >
+    <div
+      class="row"
+      style="
+        display: flex;
+        flex-direction: column !important;
+        flex-wrap: 1;
+        padding-left: 90px !important;
+      "
+    >
       <div class="row">
         <h2 mat-form-label style="font-weight: heavy">
-          Thêm thông tin đối tác bay
+          Xem thông tin đối tác khách sạn
         </h2>
       </div>
-      <div>   
-        <div *ngFor="let imageName of imageList" style="display: flex; flex-direction: row;">
-          <img src="{{imageLink + imageName}}" class="external"
-            height="160" style="border-width:0"
-            alt="http://commons.wikimedia.org/wiki/Special:FilePath/PIA_Head_Office,_Lahore.jpg">
+      <div>
+        <div
+          *ngFor="let imageName of imageList"
+          style="display: flex; flex-direction: row"
+        >
+          <img
+            src="{{ imageLink + imageName }}"
+            class="external"
+            height="160"
+            style="border-width: 0"
+            alt="http://commons.wikimedia.org/wiki/Special:FilePath/PIA_Head_Office,_Lahore.jpg"
+          />
         </div>
       </div>
     </div>
@@ -27,7 +44,7 @@
         <p>{{ value[1].value }}</p>
       </div>
     </div>
-    
+
     <!-- <div class="row">
       <iframe
       width="100%"
@@ -38,3 +55,4 @@
     ></iframe>
     </div> -->
   </div>
+</div>

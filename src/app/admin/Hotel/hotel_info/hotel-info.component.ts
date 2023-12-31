@@ -83,7 +83,7 @@ export class HotelinfoComponent implements OnInit, OnDestroy {
     
     SELECT ?images
     WHERE {
-      ?airline a dbo:Airline ;
+      ?airline a dbo:Hotel ;
                dbp:image ?images ;
                rdfs:label "${this.data.name}"@en.
     }

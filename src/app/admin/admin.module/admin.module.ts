@@ -206,6 +206,7 @@ import { AccountInfoComponent } from "../Account/account-info/account-info.compo
 import { AccountEffects } from "../Account/account-info/account-info.store.effect";
 import { AirPlaneinfoComponent } from "../AirPlane/air_plane_info/air_plane-info.component";
 import { HotelinfoComponent } from "../Hotel/hotel_info/hotel-info.component";
+import { RestaurantinfoComponent } from "../Restaurant/restaurant_info/restaurant-info.component";
 
 @NgModule({
   declarations: [
@@ -230,6 +231,7 @@ import { HotelinfoComponent } from "../Hotel/hotel_info/hotel-info.component";
     RestaurantCreateComponent,
     RestaurantDetailComponent,
     RestaurantListComponent,
+    RestaurantinfoComponent,
 
     TourishPlanCreateAdminComponent,
     TourishPlanListAdminComponent,

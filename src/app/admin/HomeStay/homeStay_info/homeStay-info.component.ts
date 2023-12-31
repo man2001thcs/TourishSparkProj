@@ -19,10 +19,10 @@ import { FusekiService } from "src/app/utility/spark-sql-service/spark.sql.servi
 
 @Component({
   selector: "app-air-plane-info",
-  templateUrl: "./air_plane-info.component.html",
-  styleUrls: ["./air_plane-info.component.css"],
+  templateUrl: "./homeStay-info.component.html",
+  styleUrls: ["./homeStay-info.component.css"],
 })
-export class AirPlaneinfoComponent implements OnInit, OnDestroy {
+export class HomeStayinfoComponent implements OnInit, OnDestroy {
   isEditing: boolean = true;
   isSubmitted = false;
 
@@ -41,8 +41,6 @@ export class AirPlaneinfoComponent implements OnInit, OnDestroy {
   subscriptions: Subscription[] = [];
 
   dbpediaInfo: any;
-
-  objectArray!:any;
 
   constructor(
     private dialog: MatDialog,
@@ -63,14 +61,17 @@ export class AirPlaneinfoComponent implements OnInit, OnDestroy {
     PREFIX dbo: <http://dbpedia.org/ontology/>
     PREFIX dbp: <http://dbpedia.org/property/>
     
-    SELECT ?abstract ?formationDate
+    SELECT ?caption ?closingDate ?floorArea ?floors ?abstract
     WHERE {
-      ?airline a dbo:Airline ;
-               dbo:abstract ?abstract ;
-               rdfs:label "${this.data.name}"@en.
+      ?homeStay a dbo:HomeStay ;
+             dbp:caption ?caption ;
+             dbo:abstract ?abstract ;
+             rdfs:label "${this.data.name}"@en.
 
       OPTIONAL {
-      ?airline dbo:formationDate ?formationDate .
+        ?homeStay dbp:closingDate ?closingDate ;
+        dbp:floorArea ?floorArea ;
+        dbp:floors ?floors .
       }
       FILTER(LANG(?abstract) = "en")
     }
@@ -90,7 +91,6 @@ export class AirPlaneinfoComponent implements OnInit, OnDestroy {
 
     this.fusekiService.executeWikiDbQuery(sparqlQuery).subscribe((data: any) => {
       this.dbpediaInfo = data.results.bindings[0];
-      this.mapToArray();
     });
 
     this.fusekiService.executeWikiDbQuery(sparql2Query).subscribe((data: any) => {
@@ -125,15 +125,6 @@ export class AirPlaneinfoComponent implements OnInit, OnDestroy {
     const embedUrl = `https://dbpedia.org/page/${encodedUrl}?embed=1`;
 
     return embedUrl;
-  }
-
-  mapToArray(): Object | null {
-    if (this.dbpediaInfo !== null) {
-      this.objectArray = Object.entries(this.dbpediaInfo);
-      console.log(this.objectArray);
-      return Object.keys(this.dbpediaInfo).map((key) => this.dbpediaInfo[key]);
-    }
-    return null;
   }
 
 }

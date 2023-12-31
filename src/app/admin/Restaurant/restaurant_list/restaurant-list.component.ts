@@ -28,6 +28,7 @@ import { MessageService } from "src/app/utility/user_service/message.service";
 import { ConfirmDialogComponent } from "src/app/utility/confirm-dialog/confirm-dialog.component";
 import { Restaurant } from "src/app/model/baseModel";
 import { FusekiService } from "src/app/utility/spark-sql-service/spark.sql.service";
+import { RestaurantinfoComponent } from "../restaurant_info/restaurant-info.component";
 
 @Component({
   selector: "app-restaurantList",
@@ -165,6 +166,18 @@ export class RestaurantListComponent
       console.log(result);
 
       this.sparkGet();
+    });
+  }
+
+  openInfoDialog(name: string): void {
+    const dialogRef = this.dialog.open(RestaurantinfoComponent, {
+      data: { name: name },
+    });
+
+    dialogRef.afterClosed().subscribe((result) => {
+      this.sparkGet();
+
+      console.log(result);
     });
   }
 
