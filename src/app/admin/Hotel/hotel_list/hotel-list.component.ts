@@ -28,6 +28,7 @@ import { MessageService } from "src/app/utility/user_service/message.service";
 import { ConfirmDialogComponent } from "src/app/utility/confirm-dialog/confirm-dialog.component";
 import { Hotel } from "src/app/model/baseModel";
 import { FusekiService } from "src/app/utility/spark-sql-service/spark.sql.service";
+import { HotelinfoComponent } from "../hotel_info/hotel-info.component";
 
 @Component({
   selector: "app-hotelList",
@@ -173,6 +174,18 @@ export class HotelListComponent implements OnInit, AfterViewInit, OnDestroy {
     dialogRef.afterClosed().subscribe((result) => {
       console.log(result);
       this.sparkGet();
+    });
+  }
+
+  openInfoDialog(name: string): void {
+    const dialogRef = this.dialog.open(HotelinfoComponent, {
+      data: { name: name },
+    });
+
+    dialogRef.afterClosed().subscribe((result) => {
+      this.sparkGet();
+
+      console.log(result);
     });
   }
 

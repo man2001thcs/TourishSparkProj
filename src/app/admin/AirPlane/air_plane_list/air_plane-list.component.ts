@@ -28,6 +28,7 @@ import { MessageService } from "src/app/utility/user_service/message.service";
 import { ConfirmDialogComponent } from "src/app/utility/confirm-dialog/confirm-dialog.component";
 import { AirPlane } from "src/app/model/baseModel";
 import { FusekiService } from "src/app/utility/spark-sql-service/spark.sql.service";
+import { AirPlaneinfoComponent } from "../air_plane_info/air_plane-info.component";
 
 @Component({
   selector: "app-airPlaneList",
@@ -167,6 +168,18 @@ export class AirPlaneListComponent implements OnInit, AfterViewInit, OnDestroy {
   openEditDialog(id: string): void {
     const dialogRef = this.dialog.open(AirPlaneDetailComponent, {
       data: { id: id },
+    });
+
+    dialogRef.afterClosed().subscribe((result) => {
+      this.sparkGet();
+
+      console.log(result);
+    });
+  }
+
+  openInfoDialog(name: string): void {
+    const dialogRef = this.dialog.open(AirPlaneinfoComponent, {
+      data: { name: name },
     });
 
     dialogRef.afterClosed().subscribe((result) => {

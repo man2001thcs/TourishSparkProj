@@ -157,6 +157,11 @@ export class AuthInterceptor implements HttpInterceptor {
         url: request.url
       });
     }
+    if (request.url.includes("https://dbpedia.org/sparql") || request.url.includes("http://dbpedia.org/sparql")) {
+      return request.clone({
+        url: request.url
+      });
+    }
     return request.clone({
       url: environment.backend.baseURL + request.url,
       headers: request.headers.append(TOKEN_HEADER_KEY, "Bearer " + token),

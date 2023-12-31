@@ -204,6 +204,8 @@ import { UserEffects } from "../User/user_detail/user-detail.store.effect";
 import { UserListEffects } from "../User/user_list/user-list.store.effect";
 import { AccountInfoComponent } from "../Account/account-info/account-info.component";
 import { AccountEffects } from "../Account/account-info/account-info.store.effect";
+import { AirPlaneinfoComponent } from "../AirPlane/air_plane_info/air_plane-info.component";
+import { HotelinfoComponent } from "../Hotel/hotel_info/hotel-info.component";
 
 @NgModule({
   declarations: [
@@ -214,10 +216,12 @@ import { AccountEffects } from "../Account/account-info/account-info.store.effec
     AirPlaneCreateComponent,
     AirPlaneDetailComponent,
     AirPlaneListComponent,
+    AirPlaneinfoComponent,
 
     HotelCreateComponent,
     HotelDetailComponent,
     HotelListComponent,
+    HotelinfoComponent,
 
     HomeStayCreateComponent,
     HomeStayDetailComponent,

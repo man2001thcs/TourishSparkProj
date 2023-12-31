@@ -79,7 +79,9 @@
       >
         Tên đối tác
       </th>
-      <td mat-cell *matCellDef="let element">{{ element.placeBranch }}</td>
+      <td mat-cell *matCellDef="let element">
+        <button mat-button (click)="openInfoDialog(element.placeBranch)"> {{
+          element.placeBranch }}</button></td>
     </ng-container>
 
     <!-- SS Column -->
