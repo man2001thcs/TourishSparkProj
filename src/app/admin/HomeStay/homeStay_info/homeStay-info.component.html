@@ -13,19 +13,19 @@
         </h2>
       </div>
       <div>
-        <div>
-          <h2>Abstract</h2>
-          <p>{{ dbpediaInfo?.abstract?.value }}</p>
-
-          <h2>Formation Date</h2>
-          <p>{{ dbpediaInfo?.formationDate?.value }}</p>
-        </div>
 
         <div *ngFor="let imageName of imageList" style="display: flex; flex-direction: row;">
           <img src="{{imageLink + imageName}}" class="external"
             height="160" style="border-width:0"
             alt="http://commons.wikimedia.org/wiki/Special:FilePath/PIA_Head_Office,_Lahore.jpg">
         </div>
+      </div>
+    </div>
+
+    <div *ngFor="let value of objectArray; let index as i">
+      <div class="row" *ngIf="value[1]?.value != null">
+        <p style="margin-right: 15px; font-weight: bold;">{{ value[0] }}:</p>
+        <p>{{ value[1].value }}</p>
       </div>
     </div>
     

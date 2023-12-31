@@ -41,6 +41,7 @@ export class HotelinfoComponent implements OnInit, OnDestroy {
   subscriptions: Subscription[] = [];
 
   dbpediaInfo: any;
+  objectArray: any;
 
   constructor(
     private dialog: MatDialog,
@@ -64,7 +65,6 @@ export class HotelinfoComponent implements OnInit, OnDestroy {
     SELECT ?caption ?closingDate ?floorArea ?floors ?abstract
     WHERE {
       ?hotel a dbo:Hotel ;
-             dbp:caption ?caption ;
              dbo:abstract ?abstract ;
              rdfs:label "${this.data.name}"@en.
 
@@ -91,6 +91,7 @@ export class HotelinfoComponent implements OnInit, OnDestroy {
 
     this.fusekiService.executeWikiDbQuery(sparqlQuery).subscribe((data: any) => {
       this.dbpediaInfo = data.results.bindings[0];
+      this.mapToArray();
     });
 
     this.fusekiService.executeWikiDbQuery(sparql2Query).subscribe((data: any) => {
@@ -125,6 +126,15 @@ export class HotelinfoComponent implements OnInit, OnDestroy {
     const embedUrl = `https://dbpedia.org/page/${encodedUrl}?embed=1`;
 
     return embedUrl;
+  }
+
+  mapToArray(): Object | null {
+    if (this.dbpediaInfo !== null) {
+      this.objectArray = Object.entries(this.dbpediaInfo);
+      console.log(this.objectArray);
+      return Object.keys(this.dbpediaInfo).map((key) => this.dbpediaInfo[key]);
+    }
+    return null;
   }
 
 }
