@@ -1,0 +1,65 @@
+@prefix ex: <http://example.org/eatschedule#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+
+ex:Address rdf:type rdf:Property ;
+	rdfs:domain ex:EatSchedule ;
+	rdfs:range xsd:string .
+
+ex:CreateDate rdf:type rdf:Property ;
+	rdfs:domain ex:EatSchedule ;
+	rdfs:range xsd:dateTime .
+
+ex:Description rdf:type rdf:Property ;
+	rdfs:domain ex:EatSchedule ;
+	rdfs:range xsd:string .
+
+ex:EatSchedule rdf:type rdfs:Class .
+
+ex:EatScheduleId rdf:type rdf:Property ;
+	rdfs:domain ex:EatSchedule ;
+	rdfs:range xsd:string ;
+	rdfs:subClassOf _:r1 .
+
+ex:EndDate rdf:type rdf:Property ;
+	rdfs:domain ex:EatSchedule ;
+	rdfs:range xsd:dateTime .
+
+ex:PlaceName rdf:type rdf:Property ;
+	rdfs:domain ex:EatSchedule ;
+	rdfs:range xsd:string .
+
+ex:RestaurantLinkId rdf:type rdf:Property ;
+	rdfs:domain ex:EatSchedule ;
+	rdfs:range xsd:string ;
+	rdfs:subClassOf _:r2 .
+
+ex:SinglePrice rdf:type rdf:Property ;
+	rdfs:domain ex:EatSchedule ;
+	rdfs:range xsd:double .
+
+ex:StartDate rdf:type rdf:Property ;
+	rdfs:domain ex:EatSchedule ;
+	rdfs:range xsd:dateTime .
+
+ex:SupportNumber rdf:type rdf:Property ;
+	rdfs:domain ex:EatSchedule ;
+	rdfs:range xsd:string .
+
+ex:TourishPlanId rdf:type rdf:Property ;
+	rdfs:domain ex:EatSchedule ;
+	rdfs:range xsd:string ;
+	rdfs:subClassOf _:r0 .
+
+ex:UpdateDate rdf:type rdf:Property ;
+	rdfs:domain ex:EatSchedule ;
+	rdfs:range xsd:dateTime .
+
+_:r0 rdf:type owl:FunctionalProperty .
+
+_:r1 rdf:type owl:FunctionalProperty .
+
+_:r2 rdf:type owl:FunctionalProperty .
+

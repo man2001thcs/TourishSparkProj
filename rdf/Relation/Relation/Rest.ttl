@@ -1,0 +1,57 @@
+@prefix ex: <http://example.org/tourishplan#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix sh: <http://www.w3.org/ns/shacl#> .
+
+ex:RestHouse owl:unionOf _:r2 .
+
+ex:StayingScheduleShape rdf:type sh:NodeShape ;
+	sh:property _:r1 ;
+	sh:targetClass ex:StayingSchedule .
+
+ex:hasRestHouse rdf:domain ex:StayingSchedule ;
+	rdf:range ex:RestHouse ;
+	rdf:type owl:ObjectProperty .
+
+ex:isRestHouseServiceOf rdf:domain ex:RestHouse ;
+	rdf:range ex:StayingSchedule ;
+	rdf:type owl:ObjectProperty .
+
+_:r0 rdf:first ex:Hotel ;
+	rdf:rest rdf:nil .
+
+_:r1 sh:message "The TourishPlanId must be a URI." ;
+	sh:nodeKind sh:IRI ;
+	sh:path ex:TourishPlanId ;
+	sh:severity sh:Violation .
+
+_:r2 rdf:first ex:HomeStay ;
+	rdf:rest _:r0 .
+
+ex:StayingScheduleShape
+  rdf:type sh:NodeShape ;
+  sh:targetClass ex:StayingSchedule ;
+  sh:property [
+    sh:path ex:RestHouseBranchLinkId ;
+    sh:or (
+      [ sh:node ex:HotelIdConstraint ]
+      [ sh:node ex:HomeStayIdConstraint ]
+    );
+  ] .
+
+ex:HotelIdConstraint
+  rdf:type sh:NodeShape ;
+  sh:property [
+    sh:path rdf:type ;
+    sh:in (ex:HotelId);
+  ] .
+
+ex:HomeStayIdConstraint
+  rdf:type sh:NodeShape ;
+  sh:property [
+    sh:path rdf:type ;
+    sh:in (ex:HomeStayId);
+  ] .
+

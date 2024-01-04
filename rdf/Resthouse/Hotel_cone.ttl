@@ -1,0 +1,61 @@
+@prefix sh: <http://www.w3.org/ns/shacl#> .
+@prefix ex: <http://example.org/hotel#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+ex:HotelShape rdf:type sh:NodeShape ;
+	sh:property _:r0, _:r1, _:r2, _:r3, _:r4, _:r5, _:r6, _:r7, _:r8, _:r9 ;
+	sh:targetClass ex:Hotel .
+
+_:r0 sh:message "The HotlineNumber must be a string literal." ;
+	sh:nodeKind sh:Literal ;
+	sh:path ex:HotlineNumber ;
+	sh:severity sh:Violation .
+
+_:r1 sh:message "The Description must be a string literal." ;
+	sh:nodeKind sh:Literal ;
+	sh:path ex:Description ;
+	sh:severity sh:Violation .
+
+_:r2 sh:message "The Id must be a unique UUID." ;
+    sh:nodeKind sh:Literal ;
+    sh:datatype xsd:string ;
+    sh:pattern "^([a-fA-F0-9]{8}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{4}-[a-fA-F0-9]{12})$" ;
+    sh:path ex:HotelId ;
+    sh:severity sh:Violation .
+
+_:r3 sh:datatype xsd:dateTime ;
+	sh:message "The CreateDate must be a valid dateTime." ;
+	sh:path ex:CreateDate ;
+	sh:severity sh:Violation .
+
+_:r4 sh:message "The PlaceBranch must be a string literal." ;
+	sh:nodeKind sh:Literal ;
+	sh:path ex:PlaceBranch ;
+	sh:severity sh:Violation .
+
+_:r5 sh:datatype xsd:float ;
+	sh:message "The DiscountFloat must be a float." ;
+	sh:path ex:DiscountFloat ;
+	sh:severity sh:Violation .
+
+_:r6 sh:message "The HeadQuarterAddress must be a string literal." ;
+	sh:nodeKind sh:Literal ;
+	sh:path ex:HeadQuarterAddress ;
+	sh:severity sh:Violation .
+
+_:r7 sh:datatype xsd:dateTime ;
+	sh:message "The UpdateDate must be a valid dateTime." ;
+	sh:path ex:UpdateDate ;
+	sh:severity sh:Violation .
+
+_:r8 sh:message "The SupportEmail must be a string literal." ;
+	sh:nodeKind sh:Literal ;
+	sh:path ex:SupportEmail ;
+	sh:severity sh:Violation .
+
+_:r9 sh:datatype xsd:double ;
+	sh:message "The DiscountAmount must be a double." ;
+	sh:path ex:DiscountAmount ;
+	sh:severity sh:Violation .
+

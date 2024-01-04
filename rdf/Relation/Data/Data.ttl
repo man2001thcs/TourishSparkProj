@@ -1,0 +1,12 @@
+@prefix ex: <http://example.org/tourishplan#>.
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>.
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#>.
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#>.
+@prefix owl: <http://www.w3.org/2002/07/owl#>.
+# Định nghĩa lớp "TourishPlan"
+
+ex:movingSchedule1 rdf:type ex:MovingSchedule.
+ex:ThanhHoa rdf:type ex:PassengerCar.
+
+ex:movingSchedule1 ex:hasTransport ex:ThanhHoa.
+ex:ThanhHoa ex:isTransportServiceOf ex:movingSchedule1.

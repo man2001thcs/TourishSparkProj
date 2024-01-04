@@ -1,0 +1,78 @@
+@prefix ex: <http://example.org/homestay#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+
+ex:HS001 ex:CreateDate "2023-01-01T12:00:00"^^xsd:dateTime ;
+	ex:Description "A cozy homestay in the heart of the city." ;
+	ex:DiscountAmount "50.0"^^xsd:decimal ;
+	ex:DiscountFloat "0.1"^^xsd:decimal ;
+	ex:HeadQuarterAddress "123 Main Street, City" ;
+	ex:HotlineNumber "+123456789" ;
+	ex:HomeStayId "HS001" ;
+	ex:PlaceBranch "City Center" ;
+	ex:SupportEmail "info@example.com" ;
+	ex:UpdateDate "2023-12-24T15:30:00"^^xsd:dateTime ;
+	rdf:type ex:HomeStay .
+
+ex:HS002 ex:CreateDate "2023-02-15T10:30:00"^^xsd:dateTime ;
+	ex:Description "Tranquil homestay surrounded by nature." ;
+	ex:DiscountAmount "30.0"^^xsd:decimal ;
+	ex:DiscountFloat "0.05"^^xsd:decimal ;
+	ex:HeadQuarterAddress "456 Oak Street, Suburb" ;
+	ex:HotlineNumber "+987654321" ;
+	ex:HomeStayId "HS002" ;
+	ex:PlaceBranch "Suburb Area" ;
+	ex:SupportEmail "booking@example.com" ;
+	ex:UpdateDate "2023-12-24T16:45:00"^^xsd:dateTime ;
+	rdf:type ex:HomeStay .
+
+ex:HS003 ex:CreateDate "2023-03-10T08:45:00"^^xsd:dateTime ;
+	ex:Description "Enjoy the sea breeze in our beachside homestay." ;
+	ex:DiscountAmount "75.0"^^xsd:decimal ;
+	ex:DiscountFloat "0.15"^^xsd:decimal ;
+	ex:HeadQuarterAddress "789 Ocean Avenue, Beach" ;
+	ex:HotlineNumber "+111223344" ;
+	ex:HomeStayId "HS003" ;
+	ex:PlaceBranch "Beachside" ;
+	ex:SupportEmail "beachfront@example.com" ;
+	ex:UpdateDate "2023-12-24T14:20:00"^^xsd:dateTime ;
+	rdf:type ex:HomeStay .
+
+ex:HS004 ex:CreateDate "2023-04-05T15:10:00"^^xsd:dateTime ;
+	ex:Description "Experience tranquility in our mountain retreat homestay." ;
+	ex:DiscountAmount "90.0"^^xsd:decimal ;
+	ex:DiscountFloat "0.2"^^xsd:decimal ;
+	ex:HeadQuarterAddress "321 Summit Drive, Mountains" ;
+	ex:HotlineNumber "+555666777" ;
+	ex:HomeStayId "HS004" ;
+	ex:PlaceBranch "Mountain Retreat" ;
+	ex:SupportEmail "mountainescape@example.com" ;
+	ex:UpdateDate "2023-12-24T12:30:00"^^xsd:dateTime ;
+	rdf:type ex:HomeStay .
+
+ex:HS005 ex:CreateDate "2023-05-20T11:00:00"^^xsd:dateTime ;
+	ex:Description "Relax by the river in our riverside homestay." ;
+	ex:DiscountAmount "60.0"^^xsd:decimal ;
+	ex:DiscountFloat "0.12"^^xsd:decimal ;
+	ex:HeadQuarterAddress "555 Riverbank Lane, Riverside" ;
+	ex:HotlineNumber "+333444555" ;
+	ex:HomeStayId "HS005" ;
+	ex:PlaceBranch "Riverside" ;
+	ex:SupportEmail "riverside@example.com" ;
+	ex:UpdateDate "2023-12-24T17:00:00"^^xsd:dateTime ;
+	rdf:type ex:HomeStay .
+
+ex:HS006 ex:CreateDate "2023-06-15T13:30:00"^^xsd:dateTime ;
+	ex:Description "Immerse yourself in history in our historic district homestay." ;
+	ex:DiscountAmount "80.0"^^xsd:decimal ;
+	ex:DiscountFloat "0.18"^^xsd:decimal ;
+	ex:HeadQuarterAddress "789 Heritage Street, Historic District" ;
+	ex:HotlineNumber "+999000111" ;
+	ex:HomeStayId "HS006" ;
+	ex:PlaceBranch "Historic District" ;
+	ex:SupportEmail "historylovers@example.com" ;
+	ex:UpdateDate "2023-12-24T18:15:00"^^xsd:dateTime ;
+	rdf:type ex:HomeStay .
+

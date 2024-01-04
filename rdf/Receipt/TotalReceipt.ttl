@@ -1,0 +1,42 @@
+@prefix ex: <http://example.org/totalreceipt#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+
+ex:CompleteDate rdf:type rdf:Property ;
+	rdfs:domain ex:TotalReceipt ;
+	rdfs:range xsd:dateTime .
+
+ex:CreatedDate rdf:type rdf:Property ;
+	rdfs:domain ex:TotalReceipt ;
+	rdfs:range xsd:dateTime .
+
+ex:Description rdf:type rdf:Property ;
+	rdfs:domain ex:TotalReceipt ;
+	rdfs:range xsd:string .
+
+ex:Status rdf:type rdf:Property ;
+	rdfs:domain ex:TotalReceipt ;
+	rdfs:range xsd:int .
+
+ex:TotalReceipt rdf:type rdfs:Class .
+
+ex:TotalReceiptId rdf:type rdf:Property ;
+	rdfs:domain ex:TotalReceipt ;
+	rdfs:range xsd:string ;
+	rdfs:subClassOf _:r0 .
+
+ex:TourishPlanId rdf:type rdf:Property ;
+	rdfs:domain ex:TotalReceipt ;
+	rdfs:range xsd:string ;
+	rdfs:subClassOf _:r1 .
+
+ex:UpdateDate rdf:type rdf:Property ;
+	rdfs:domain ex:TotalReceipt ;
+	rdfs:range xsd:dateTime .
+
+_:r0 rdf:type owl:FunctionalProperty .
+
+_:r1 rdf:type owl:FunctionalProperty .
+

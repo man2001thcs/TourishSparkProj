@@ -1,0 +1,66 @@
+@prefix ex: <http://example.org/hotel#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+
+ex:hotel101 ex:CreateDate "2023-04-01T11:30:00Z"^^xsd:dateTime ;
+	ex:Description "A peaceful resort nestled in the mountains." ;
+	ex:DiscountAmount "60.0"^^xsd:decimal ;
+	ex:DiscountFloat "0.15"^^xsd:decimal ;
+	ex:HeadQuarterAddress "101 Pine Forest, Mountain Town" ;
+	ex:HotlineNumber "+9988776655" ;
+	ex:HotelId "hotel101" ;
+	ex:PlaceBranch "Astor House Hotel (Shanghai)" ;
+	ex:SupportEmail "info@mountainresort.com" ;
+	ex:UpdateDate "2023-04-02T07:45:00Z"^^xsd:dateTime ;
+	rdf:type ex:Hotel .
+
+ex:hotel123 ex:CreateDate "2023-01-01T12:00:00Z"^^xsd:dateTime ;
+	ex:Description "A luxurious hotel in the heart of the city." ;
+	ex:DiscountAmount "50.0"^^xsd:decimal ;
+	ex:DiscountFloat "0.1"^^xsd:decimal ;
+	ex:HeadQuarterAddress "123 Main Street, City" ;
+	ex:HotlineNumber "+123456789" ;
+	ex:HotelId "hotel123" ;
+	ex:PlaceBranch "Gunter Hotel" ;
+	ex:SupportEmail "info@hotel123.com" ;
+	ex:UpdateDate "2023-01-02T10:30:00Z"^^xsd:dateTime ;
+	rdf:type ex:Hotel .
+
+ex:hotel456 ex:CreateDate "2023-02-01T14:45:00Z"^^xsd:dateTime ;
+	ex:Description "A cozy hotel in a peaceful suburb." ;
+	ex:DiscountAmount "30.0"^^xsd:decimal ;
+	ex:DiscountFloat "0.05"^^xsd:decimal ;
+	ex:HeadQuarterAddress "456 Oak Avenue, Suburb" ;
+	ex:HotlineNumber "+987654321" ;
+	ex:HotelId "hotel456" ;
+	ex:PlaceBranch "Suburb" ;
+	ex:SupportEmail "info@hotel456.com" ;
+	ex:UpdateDate "2023-02-03T09:15:00Z"^^xsd:dateTime ;
+	rdf:type ex:Hotel .
+
+ex:hotel789 ex:CreateDate "2023-03-01T10:00:00Z"^^xsd:dateTime ;
+	ex:Description "An exotic hotel with a stunning beach view." ;
+	ex:DiscountAmount "75.0"^^xsd:decimal ;
+	ex:DiscountFloat "0.2"^^xsd:decimal ;
+	ex:HeadQuarterAddress "789 Sandy Beach, Coastal City" ;
+	ex:HotlineNumber "+1122334455" ;
+	ex:HotelId "hotel789" ;
+	ex:PlaceBranch "Beachfront" ;
+	ex:SupportEmail "info@beachhotel.com" ;
+	ex:UpdateDate "2023-03-02T08:30:00Z"^^xsd:dateTime ;
+	rdf:type ex:Hotel .
+
+ex:hotel999 ex:CreateDate "2023-05-01T09:15:00Z"^^xsd:dateTime ;
+	ex:Description "A modern hotel in the bustling city center." ;
+	ex:DiscountAmount "40.0"^^xsd:decimal ;
+	ex:DiscountFloat "0.12"^^xsd:decimal ;
+	ex:HeadQuarterAddress "999 Central Avenue, Busy City" ;
+	ex:HotlineNumber "+5544332211" ;
+	ex:HotelId "hotel999" ;
+	ex:PlaceBranch "City Center" ;
+	ex:SupportEmail "info@cityhotel.com" ;
+	ex:UpdateDate "2023-05-02T12:00:00Z"^^xsd:dateTime ;
+	rdf:type ex:Hotel .
+

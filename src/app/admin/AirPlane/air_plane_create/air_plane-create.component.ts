@@ -123,10 +123,10 @@ export class AirPlaneCreateComponent implements OnInit, OnDestroy {
         PREFIX owl: <http://www.w3.org/2002/07/owl#>
         PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
         PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
-        PREFIX ex: <http://example.org/airplane#>
+        PREFIX ex: <http://example.org/planeairline#>
         INSERT DATA
         {
-          ex:${uuid} a ex:AirPlane ;
+          ex:${uuid} a ex:PlaneAirline ;
             ex:PlaneId "${uuid}" ;
             ex:BranchName "${this.createformGroup_info.value.branchName}" ;
             ex:HotlineNumber "${this.createformGroup_info.value.hotlineNumber}" ;

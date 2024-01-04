@@ -1,0 +1,35 @@
+@prefix ex: <http://example.org/eatschedule#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix sh: <http://www.w3.org/ns/shacl#> .
+
+ex:EatPlace owl:unionOf _:r1 .
+
+ex:EatSchedule rdf:type sh:NodeShape ;
+	sh:property _:r2 .
+
+ex:hasEatPlace rdf:domain ex:EatSchedule ;
+	rdf:range ex:EatPlace ;
+	rdf:type owl:ObjectProperty .
+
+ex:isEatPlaceServiceOf rdf:domain ex:EatPlace ;
+	rdf:range ex:EatSchedule ;
+	rdf:type owl:ObjectProperty .
+
+ex:EatScheduleShape
+  rdf:type sh:NodeShape ;
+  sh:targetClass ex:EatSchedule ;
+  sh:property [
+    sh:path ex:RestaurantLinkId ;
+    sh:node ex:RestaurantIdConstraint ;
+  ] .
+
+ex:RestaurantIdConstraint
+  rdf:type sh:NodeShape ;
+  sh:property [
+    sh:path rdf:type ;
+    sh:in (ex:RestaurantId);
+  ] .
+

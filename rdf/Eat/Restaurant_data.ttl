@@ -1,0 +1,78 @@
+@prefix ex: <http://example.org/restaurant#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+
+ex:REST001 ex:CreateDate "2023-01-01T12:00:00"^^xsd:dateTime ;
+	ex:Description "A blend of international cuisines in the heart of the city." ;
+	ex:DiscountAmount "500.0"^^xsd:decimal ;
+	ex:DiscountFloat "0.1"^^xsd:decimal ;
+	ex:HeadQuarterAddress "789 Main Street, Downtown" ;
+	ex:HotlineNumber "+123456789" ;
+	ex:RestaurantId "REST001" ;
+	ex:PlaceBranch "Downtown Dining" ;
+	ex:SupportEmail "info@downtowndining.com" ;
+	ex:UpdateDate "2023-12-24T15:30:00"^^xsd:dateTime ;
+	rdf:type ex:Restaurant .
+
+ex:REST002 ex:CreateDate "2023-02-15T10:30:00"^^xsd:dateTime ;
+	ex:Description "A cozy and intimate dining experience for every occasion." ;
+	ex:DiscountAmount "300.0"^^xsd:decimal ;
+	ex:DiscountFloat "0.05"^^xsd:decimal ;
+	ex:HeadQuarterAddress "456 Comfort Lane, Suburb" ;
+	ex:HotlineNumber "+987654321" ;
+	ex:RestaurantId "REST002" ;
+	ex:PlaceBranch "Cozy Corner" ;
+	ex:SupportEmail "info@cozycorner.com" ;
+	ex:UpdateDate "2023-12-24T16:45:00"^^xsd:dateTime ;
+	rdf:type ex:Restaurant .
+
+ex:REST003 ex:CreateDate "2023-03-10T08:45:00"^^xsd:dateTime ;
+	ex:Description "Savor the heat with our spicy and flavorful dishes." ;
+	ex:DiscountAmount "800.0"^^xsd:decimal ;
+	ex:DiscountFloat "0.15"^^xsd:decimal ;
+	ex:HeadQuarterAddress "123 Spice Street, Flavor City" ;
+	ex:HotlineNumber "+111223344" ;
+	ex:RestaurantId "REST003" ;
+	ex:PlaceBranch "Spicy Bites" ;
+	ex:SupportEmail "info@spicybites.com" ;
+	ex:UpdateDate "2023-12-24T14:20:00"^^xsd:dateTime ;
+	rdf:type ex:Restaurant .
+
+ex:REST004 ex:CreateDate "2023-04-05T15:10:00"^^xsd:dateTime ;
+	ex:Description "Nourish your body with our delicious and nutritious menu." ;
+	ex:DiscountAmount "600.0"^^xsd:decimal ;
+	ex:DiscountFloat "0.2"^^xsd:decimal ;
+	ex:HeadQuarterAddress "321 Wellness Lane, Health City" ;
+	ex:HotlineNumber "+555666777" ;
+	ex:RestaurantId "REST004" ;
+	ex:PlaceBranch "Healthy Haven" ;
+	ex:SupportEmail "info@healthyhaven.com" ;
+	ex:UpdateDate "2023-12-24T12:30:00"^^xsd:dateTime ;
+	rdf:type ex:Restaurant .
+
+ex:REST005 ex:CreateDate "2023-05-20T11:00:00"^^xsd:dateTime ;
+	ex:Description "Experience the freshness of the sea with our seafood specialties." ;
+	ex:DiscountAmount "400.0"^^xsd:decimal ;
+	ex:DiscountFloat "0.12"^^xsd:decimal ;
+	ex:HeadQuarterAddress "555 Ocean Avenue, Seafood City" ;
+	ex:HotlineNumber "+333444555" ;
+	ex:RestaurantId "REST005" ;
+	ex:PlaceBranch "Seafood Delight" ;
+	ex:SupportEmail "info@seafooddelight.com" ;
+	ex:UpdateDate "2023-12-24T17:00:00"^^xsd:dateTime ;
+	rdf:type ex:Restaurant .
+
+ex:REST006 ex:CreateDate "2023-06-15T13:30:00"^^xsd:dateTime ;
+	ex:Description "Indulge in the rich and diverse flavors of the Mediterranean." ;
+	ex:DiscountAmount "700.0"^^xsd:decimal ;
+	ex:DiscountFloat "0.18"^^xsd:decimal ;
+	ex:HeadQuarterAddress "789 Olive Street, Mediterranean City" ;
+	ex:HotlineNumber "+999000111" ;
+	ex:RestaurantId "REST006" ;
+	ex:PlaceBranch "Mediterranean Flavors" ;
+	ex:SupportEmail "info@mediterraneanflavors.com" ;
+	ex:UpdateDate "2023-12-24T18:15:00"^^xsd:dateTime ;
+	rdf:type ex:Restaurant .
+

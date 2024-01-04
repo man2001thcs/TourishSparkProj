@@ -1,0 +1,70 @@
+@prefix ex: <http://example.org/fullreceipt#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+
+ex:CompleteDate rdf:type rdf:Property ;
+	rdfs:domain ex:FullReceipt ;
+	rdfs:range xsd:dateTime .
+
+ex:CreatedDate rdf:type rdf:Property ;
+	rdfs:domain ex:FullReceipt ;
+	rdfs:range xsd:dateTime .
+
+ex:Description rdf:type rdf:Property ;
+	rdfs:domain ex:FullReceipt ;
+	rdfs:range xsd:string .
+
+ex:DiscountAmount rdf:type rdf:Property ;
+	rdfs:domain ex:FullReceipt ;
+	rdfs:range xsd:double .
+
+ex:DiscountFloat rdf:type rdf:Property ;
+	rdfs:domain ex:FullReceipt ;
+	rdfs:range xsd:float .
+
+ex:Email rdf:type rdf:Property ;
+	rdfs:domain ex:FullReceipt ;
+	rdfs:range xsd:string .
+
+ex:FullReceipt rdf:type rdfs:Class .
+
+ex:FullReceiptId rdf:type rdf:Property ;
+	rdfs:domain ex:FullReceipt ;
+	rdfs:range xsd:string ;
+	rdfs:subClassOf _:r1 .
+
+ex:GuestName rdf:type rdf:Property ;
+	rdfs:domain ex:FullReceipt ;
+	rdfs:range xsd:string .
+
+ex:OriginalPrice rdf:type rdf:Property ;
+	rdfs:domain ex:FullReceipt ;
+	rdfs:range xsd:double .
+
+ex:PhoneNumber rdf:type rdf:Property ;
+	rdfs:domain ex:FullReceipt ;
+	rdfs:range xsd:string .
+
+ex:Status rdf:type rdf:Property ;
+	rdfs:domain ex:FullReceipt ;
+	rdfs:range xsd:int .
+
+ex:TotalReceiptLinkId rdf:type rdf:Property ;
+	rdfs:domain ex:FullReceipt ;
+	rdfs:range xsd:string ;
+	rdfs:subClassOf _:r0 .
+
+ex:TotalTicket rdf:type rdf:Property ;
+	rdfs:domain ex:FullReceipt ;
+	rdfs:range xsd:int .
+
+ex:UpdateDate rdf:type rdf:Property ;
+	rdfs:domain ex:FullReceipt ;
+	rdfs:range xsd:dateTime .
+
+_:r0 rdf:type owl:FunctionalProperty .
+
+_:r1 rdf:type owl:FunctionalProperty .
+

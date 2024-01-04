@@ -1,0 +1,88 @@
+@prefix ex: <http://example.org/tourishplan#>.
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>.
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#>.
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#>.
+@prefix owl: <http://www.w3.org/2002/07/owl#>.
+# Định nghĩa lớp "TourishPlan"
+ex:TourishPlan a rdfs:Class.
+
+# Định nghĩa thuộc tính "Id" là một thuộc tính duy nhất và là một URI
+ex:Id a rdf:Property;
+       rdf:type rdf:Property;
+       rdfs:domain ex:TourishPlan;
+       rdfs:range xsd:string.
+
+# Định nghĩa thuộc tính "TourName"
+ex:TourName a rdf:Property;
+              rdf:type rdf:Property;
+              rdfs:domain ex:TourishPlan;
+              rdfs:range xsd:string.
+
+# Định nghĩa thuộc tính "StartingPoint"
+ex:StartingPoint a rdf:Property;
+                rdf:type rdf:Property;
+                rdfs:domain ex:TourishPlan;
+                rdfs:range xsd:string.
+
+# Định nghĩa thuộc tính "EndPoint"
+ex:EndPoint a rdf:Property;
+               rdf:type rdf:Property;
+               rdfs:domain ex:TourishPlan;
+               rdfs:range xsd:string.
+
+# Định nghĩa thuộc tính "PlanStatus"
+ex:PlanStatus a rdf:Property;
+                   rdf:type rdf:Property;
+                   rdfs:domain ex:TourishPlan;
+                   rdfs:range xsd:int.
+
+# Định nghĩa thuộc tính "Description"
+ex:Description a rdf:Property;
+               rdf:type rdf:Property;
+               rdfs:domain ex:TourishPlan;
+               rdfs:range xsd:string.
+
+# Định nghĩa thuộc tính "CreateDate"
+ex:CreateDate a rdf:Property;
+               rdf:type rdf:Property;
+               rdfs:domain ex:TourishPlan;
+               rdfs:range xsd:dateTime.
+
+# Định nghĩa thuộc tính "UpdateDate"
+ex:UpdateDate a rdf:Property;
+               rdf:type rdf:Property;
+               rdfs:domain ex:TourishPlan;
+               rdfs:range xsd:dateTime.
+
+# Định nghĩa thuộc tính "StartDate"
+ex:StartDate a rdf:Property;
+               rdf:type rdf:Property;
+               rdfs:domain ex:TourishPlan;
+               rdfs:range xsd:dateTime.
+
+# Định nghĩa thuộc tính "EndDate"
+ex:EndDate a rdf:Property;
+               rdf:type rdf:Property;
+               rdfs:domain ex:TourishPlan;
+               rdfs:range xsd:dateTime.
+
+# Định nghĩa thuộc tính "RemainTicket"
+ex:RemainTicket a rdf:Property;
+               rdf:type rdf:Property;
+               rdfs:domain ex:TourishPlan;
+               rdfs:range xsd:int.
+
+# Định nghĩa thuộc tính "SupportNumber"
+ex:SupportNumber a rdf:Property;
+               rdf:type rdf:Property;
+               rdfs:domain ex:TourishPlan;
+               rdfs:range xsd:string.
+
+# Định nghĩa thuộc tính "TotalTicket"
+ex:TotalTicket a rdf:Property;
+               rdf:type rdf:Property;
+               rdfs:domain ex:TourishPlan;
+               rdfs:range xsd:int.
+
+# Định nghĩa ràng buộc cho thuộc tính "Id" là thuộc tính duy nhất
+ex:Id rdfs:subClassOf [ rdf:type owl:FunctionalProperty ].

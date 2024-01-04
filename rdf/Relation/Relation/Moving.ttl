@@ -1,0 +1,52 @@
+@prefix ex: <http://example.org/tourishplan#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix sh: <http://www.w3.org/ns/shacl#> .
+
+ex:MovingScheduleShape rdf:type sh:NodeShape ;
+	sh:property _:r0 ;
+	sh:targetClass ex:MovingSchedule .
+
+ex:Transport owl:unionOf _:r2 .
+
+ex:hasTransport rdf:domain ex:MovingSchedule ;
+	rdf:range ex:Transport ;
+	rdf:type owl:ObjectProperty .
+
+ex:isTransportServiceOf rdf:domain ex:Transport ;
+	rdf:range ex:MovingSchedule ;
+	rdf:type owl:ObjectProperty .
+
+_:r1 rdf:first ex:PassengerCar ;
+	rdf:rest rdf:nil .
+
+_:r2 rdf:first ex:PlaneAirline ;
+	rdf:rest _:r1 .
+
+ex:MovingScheduleShape
+  rdf:type sh:NodeShape ;
+  sh:targetClass ex:MovingSchedule ;
+  sh:property [
+    sh:path ex:TransportLinkId ;
+    sh:or (
+      [ sh:node ex:CarIdConstraint ]
+      [ sh:node ex:PlaneIdConstraint ]
+    );
+  ] .
+
+ex:CarIdConstraint
+  rdf:type sh:NodeShape ;
+  sh:property [
+    sh:path rdf:type ;
+    sh:in (ex:CarId);
+  ] .
+
+ex:PlaneIdConstraint
+  rdf:type sh:NodeShape ;
+  sh:property [
+    sh:path rdf:type ;
+    sh:in (ex:PlaneId);
+  ] .
+

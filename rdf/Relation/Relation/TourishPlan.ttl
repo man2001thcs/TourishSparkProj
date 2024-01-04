@@ -1,0 +1,41 @@
+@prefix sh: <http://www.w3.org/ns/shacl#> .
+@prefix ex: <http://example.org/eatschedule#> .
+@prefix tour: <http://example.org/tourishplan#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+
+ex:hasEatSchedule rdf:domain tour:TourishPlan ;
+	rdf:range ex:EatSchedule ;
+	rdf:type owl:FunctionalProperty, owl:ObjectProperty ;
+	owl:minCardinality "0"^^xsd:nonNegativeInteger .
+
+ex:hasMovingSchedule rdf:domain ex:TouristPlan ;
+	rdf:range ex:MovingSchedule ;
+	rdf:type owl:FunctionalProperty, owl:ObjectProperty ;
+	owl:minCardinality "0"^^xsd:nonNegativeInteger .
+
+ex:hasStayingSchedule rdf:domain ex:TouristPlan ;
+	rdf:range ex:StayingSchedule ;
+	rdf:type owl:FunctionalProperty, owl:ObjectProperty ;
+	owl:minCardinality "0"^^xsd:nonNegativeInteger .
+
+tour:TourishPlanShape rdf:type sh:NodeShape ;
+	sh:property _:r0, _:r1, _:r2 ;
+	sh:targetClass tour:TourishPlan .
+
+_:r0 sh:message "Invalid EatSchedule associated with TourishPlan." ;
+	sh:node ex:EatScheduleShape ;
+	sh:path ex:hasEatSchedule ;
+	sh:severity sh:Violation .
+
+_:r1 sh:message "Invalid MovingSchedule associated with TourishPlan." ;
+	sh:node ex:MovingScheduleShape ;
+	sh:path ex:hasMovingSchedule ;
+	sh:severity sh:Violation .
+
+_:r2 sh:message "Invalid StayingSchedule associated with TourishPlan." ;
+	sh:node ex:StayingScheduleShape ;
+	sh:path ex:hasStayingSchedule ;
+	sh:severity sh:Violation .
+
