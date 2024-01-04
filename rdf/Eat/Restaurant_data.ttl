@@ -11,7 +11,7 @@ ex:REST001 ex:CreateDate "2023-01-01T12:00:00"^^xsd:dateTime ;
 	ex:HeadQuarterAddress "789 Main Street, Downtown" ;
 	ex:HotlineNumber "+123456789" ;
 	ex:RestaurantId "REST001" ;
-	ex:PlaceBranch "Downtown Dining" ;
+	ex:PlaceBranch "California Fish Grill" ;
 	ex:SupportEmail "info@downtowndining.com" ;
 	ex:UpdateDate "2023-12-24T15:30:00"^^xsd:dateTime ;
 	rdf:type ex:Restaurant .
