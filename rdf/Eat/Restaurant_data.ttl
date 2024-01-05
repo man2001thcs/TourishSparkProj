@@ -4,13 +4,13 @@
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
 @prefix owl: <http://www.w3.org/2002/07/owl#> .
 
-ex:REST001 ex:CreateDate "2023-01-01T12:00:00"^^xsd:dateTime ;
+ex:ad6da383-2dd8-4950-827c-d7c9282525aa ex:CreateDate "2023-01-01T12:00:00"^^xsd:dateTime ;
 	ex:Description "A blend of international cuisines in the heart of the city." ;
-	ex:DiscountAmount "500.0"^^xsd:decimal ;
-	ex:DiscountFloat "0.1"^^xsd:decimal ;
+	ex:DiscountAmount "500.0"^^xsd:double ;
+	ex:DiscountFloat "0.1"^^xsd:float ;
 	ex:HeadQuarterAddress "789 Main Street, Downtown" ;
 	ex:HotlineNumber "+123456789" ;
-	ex:RestaurantId "REST001" ;
+	ex:RestaurantId "ad6da383-2dd8-4950-827c-d7c9282525aa" ;
 	ex:PlaceBranch "California Fish Grill" ;
 	ex:SupportEmail "info@downtowndining.com" ;
 	ex:UpdateDate "2023-12-24T15:30:00"^^xsd:dateTime ;

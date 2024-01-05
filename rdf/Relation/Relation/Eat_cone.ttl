@@ -1,0 +1,25 @@
+@prefix ex: <http://example.org/> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix sh: <http://www.w3.org/ns/shacl#> .
+
+ex:EatScheduleShape
+    a sh:NodeShape ;
+    sh:targetClass ex:EatSchedule ;
+    sh:sparql [
+        sh:message "Values of RestaurantLinkId and RestaurantId do not match." ;
+        sh:select """
+            PREFIX ex: <http://example.org/> 
+            SELECT $this
+            WHERE {
+                $this ex:RestaurantLinkId ?linkId1 .
+                $this ex:hasEatPlace ?restaurant .
+                ?restaurant ex:RestaurantId ?linkId2 .
+                FILTER (?linkId1 != ?linkId2)
+            }
+        """ ;
+    ] .
+
+

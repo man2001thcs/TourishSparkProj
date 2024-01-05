@@ -18,18 +18,4 @@ ex:isEatPlaceServiceOf rdf:domain ex:EatPlace ;
 	rdf:range ex:EatSchedule ;
 	rdf:type owl:ObjectProperty .
 
-ex:EatScheduleShape
-  rdf:type sh:NodeShape ;
-  sh:targetClass ex:EatSchedule ;
-  sh:property [
-    sh:path ex:RestaurantLinkId ;
-    sh:node ex:RestaurantIdConstraint ;
-  ] .
-
-ex:RestaurantIdConstraint
-  rdf:type sh:NodeShape ;
-  sh:property [
-    sh:path rdf:type ;
-    sh:in (ex:RestaurantId);
-  ] .
 
